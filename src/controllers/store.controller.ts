@@ -14,6 +14,7 @@ storeController.goHome = (req: Request, res: Response) => {
 
 storeController.getLogin = (req: Request, res: Response) => {
   try {
+    console.log("getLogin");
   } catch (err) {
     console.log("Error, getLogin:", err);
   }
@@ -22,6 +23,7 @@ storeController.getLogin = (req: Request, res: Response) => {
 
 storeController.getSignup = (req: Request, res: Response) => {
   try {
+    console.log("getSignup");
   } catch (err) {
     console.log("Error, getSignup :", err);
   }
