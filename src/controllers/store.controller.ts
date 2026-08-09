@@ -10,7 +10,7 @@ const storeController: T = {};
 storeController.goHome = (req: Request, res: Response) => {
   try {
     console.log("goHome");
-    res.send("Welcome to Home Page");
+    res.render("home");
   } catch (err) {
     console.log("Error, goHome:", err);
   }
