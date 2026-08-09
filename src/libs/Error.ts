@@ -12,7 +12,7 @@ export enum HttpCode {
 export enum Message {
   SOMETHING_WENT_WRONG = "Something went wrong!",
   NO_DATA_FOUND = "No data is found!",
-  CREATED_FAILED = "Created is failed!",
+  CREATION_FAILED = "Creation is failed!",
   UPDATE_FAILED = "Update is failed!",
 
   USED_NICK_PHONE = "You are inserting already used nick or phone!",
