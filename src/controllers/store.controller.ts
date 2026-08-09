@@ -6,28 +6,45 @@ const storeController: T = {};
 storeController.goHome = (req: Request, res: Response) => {
   try {
     console.log("goHome");
+    res.send("Welcome to Home Page");
   } catch (err) {
     console.log("Error, goHome:", err);
   }
-  res.send("Welcome to Home Page");
 };
 
 storeController.getLogin = (req: Request, res: Response) => {
   try {
     console.log("getLogin");
+    res.send("Login Page");
   } catch (err) {
     console.log("Error, getLogin:", err);
   }
-  res.send("Login Page");
 };
 
 storeController.getSignup = (req: Request, res: Response) => {
   try {
     console.log("getSignup");
+    res.send("Signup Page");
   } catch (err) {
     console.log("Error, getSignup :", err);
   }
-  res.send("Signup Page");
 };
 
+storeController.processLogin = (req: Request, res: Response) => {
+  try {
+    console.log("processLogin ");
+    res.send("DONE");
+  } catch (err) {
+    console.log("Error, processLogin  :", err);
+  }
+};
+
+storeController.processSignup = (req: Request, res: Response) => {
+  try {
+    console.log("processSignup");
+    res.send("DONE");
+  } catch (err) {
+    console.log("Error, processSignup  :", err);
+  }
+};
 export default storeController;
