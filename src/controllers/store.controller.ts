@@ -1,5 +1,5 @@
 import { T } from "../libs/types/common";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import MemberService from "../models/Member.service";
 import { AdminRequest, LoginInput, MemberInput } from "../libs/types/member";
 import { MemberType } from "../libs/enums/member.enum";
@@ -104,6 +104,22 @@ storeController.checkAuthSession = async (req: AdminRequest, res: Response) => {
   } catch (err) {
     console.log("Error, checkAuthSession:", err);
     res.send(err);
+  }
+};
+
+storeController.verifyStore = (
+  req: AdminRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (req.session?.member?.memberType === MemberType.STORE) {
+    req.member = req.session.member;
+    next();
+  } else {
+    const message = Message.NOT_AUTHENTICATED;
+    res.send(
+      `<script> alert("${Message.NOT_AUTHENTICATED}"); window.location.replace('/admin/login'); </script>`,
+    );
   }
 };
 
