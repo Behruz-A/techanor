@@ -2,6 +2,7 @@ import express from "express";
 const routerAdmin = express.Router();
 import storeController from "./controllers/store.controller";
 import productController from "./controllers/product.controlle";
+import makeUploader from "./libs/utils/uploader";
 
 /**STORE */
 routerAdmin.get("/", storeController.goHome);
@@ -12,7 +13,11 @@ routerAdmin
 
 routerAdmin
   .get("/signup", storeController.getSignup)
-  .post("/signup", storeController.processSignup);
+  .post(
+    "/signup",
+    makeUploader("members").single("memberImage"),
+    storeController.processSignup,
+  );
 routerAdmin.get("/logout", storeController.logout);
 routerAdmin.get("/check-me", storeController.checkAuthSession);
 
@@ -22,8 +27,17 @@ routerAdmin.get(
   storeController.verifyStore,
   productController.getAllProducts,
 );
-routerAdmin.post("/product/create", productController.createNewProduct);
-routerAdmin.post("/product/:id", productController.createNewProduct);
+routerAdmin.post(
+  "/product/create",
+  storeController.verifyStore,
+  makeUploader("products").array("productImages", 5),
+  productController.createNewProduct,
+);
+routerAdmin.post(
+  "/product/:id",
+  storeController.verifyStore,
+  productController.createNewProduct,
+);
 
 /**USER */
 
