@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import Errors, { HttpCode, Message } from "../libs/Error";
 import { T } from "../libs/types/common";
 import ProductService from "../models/product.service";
-
+import fs from "fs";
 import { AdminRequest, ExtendedRequest } from "../libs/types/member";
 import { ProductInput } from "../libs/types/product";
 
@@ -48,6 +48,13 @@ productController.createNewProduct = async (
       `<script> alert("Successful creation!"); window.location.replace('/admin/product/all') </script>`,
     );
   } catch (err) {
+    if (req.files?.length) {
+      req.files.forEach((file) => {
+        if (fs.existsSync(file.path)) {
+          fs.unlinkSync(file.path);
+        }
+      });
+    }
     console.log("Error, createNewProduct:", err);
     const message =
       err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;

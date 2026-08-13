@@ -4,7 +4,7 @@ import MemberService from "../models/Member.service";
 import { AdminRequest, LoginInput, MemberInput } from "../libs/types/member";
 import { MemberType } from "../libs/enums/member.enum";
 import Errors, { Message } from "../libs/Error";
-
+import fs from "fs";
 const memberService = new MemberService();
 
 const storeController: T = {};
@@ -55,6 +55,9 @@ storeController.processSignup = async (req: AdminRequest, res: Response) => {
       res.send(result);
     });
   } catch (err) {
+    if (req.file?.path && fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
     console.log("Error, processSignup  :", err);
     res.send(err);
   }
