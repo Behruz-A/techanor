@@ -36,7 +36,7 @@ routerAdmin.post(
 routerAdmin.post(
   "/product/:id",
   storeController.verifyStore,
-  productController.createNewProduct,
+  productController.updateChosenProduct,
 );
 
 /**USER */
