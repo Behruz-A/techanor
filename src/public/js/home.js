@@ -1,98 +1,56 @@
-console.log("Home frontend javascript file");
-
-function fitElementToParent(el, padding) {
-  let timeout = null;
-
-  function resize() {
-    if (timeout) clearTimeout(timeout);
-    anime.set(el, { scale: 1 });
-    let pad = padding || 0,
-      parentEl = el.parentNode,
-      elOffsetWidth = el.offsetWidth - pad,
-      parentOffsetWidth = parentEl.offsetWidth,
-      ratio = parentOffsetWidth / elOffsetWidth;
-    timeout = setTimeout(anime.set(el, { scale: ratio }), 10);
-  }
-
-  resize();
-  window.addEventListener("resize", resize);
-}
+/* TechAnor admin home laptop animation */
 
 (function () {
-  const sphereEl = document.querySelector(".sphere-animation"),
-    spherePathEls = sphereEl.querySelectorAll(".sphere path"),
-    pathLength = spherePathEls.length,
-    animations = [];
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
 
-  fitElementToParent(sphereEl);
-
-  const breathAnimation = anime({
-    begin: function () {
-      for (let i = 0; i < pathLength; i++) {
-        animations.push(
-          anime({
-            targets: spherePathEls[i],
-            stroke: {
-              value: ["rgba(255,75,75,1)", "rgba(80,80,80,.35)"],
-              duration: 500,
-            },
-            translateX: [2, -4],
-            translateY: [2, -4],
-            easing: "easeOutQuad",
-            autoplay: false,
-          }),
-        );
-      }
-    },
-    update: function (ins) {
-      animations.forEach(function (animation, i) {
-        let percent = (1 - Math.sin(i * 0.35 + 0.0022 * ins.currentTime)) / 2;
-        animation.seek(animation.duration * percent);
+  if (reduceMotion || typeof anime !== "function") {
+    document
+      .querySelectorAll(".macbook, .screen-link, .admin-welcome")
+      .forEach(function (element) {
+        element.style.opacity = "1";
+        element.style.transform = "none";
       });
-    },
-    duration: Infinity,
-    autoplay: false,
-  });
+    return;
+  }
 
-  const introAnimation = anime
-    .timeline({
-      autoplay: false,
+  anime
+    .timeline({ easing: "easeOutCubic" })
+    .add({
+      targets: ".macbook",
+      opacity: [0, 1],
+      duration: 240,
     })
     .add(
       {
-        targets: spherePathEls,
-        strokeDashoffset: {
-          value: [anime.setDashoffset, 0],
-          duration: 3900,
-          easing: "easeInOutCirc",
-          delay: anime.stagger(190, { direction: "reverse" }),
-        },
-        duration: 2000,
-        delay: anime.stagger(60, { direction: "reverse" }),
-        easing: "linear",
+        targets: ".macbook-image-screen",
+        rotateX: [-78, 0],
+        scaleY: [0.18, 1],
+        duration: 1800,
+        easing: "easeOutExpo",
       },
       0,
+    )
+    .add(
+      {
+        targets: ".screen-link",
+        opacity: [0, 1],
+        translateY: [7, 0],
+        delay: anime.stagger(20),
+        duration: 160,
+        easing: "easeOutCubic",
+      },
+      1850,
+    )
+    .add(
+      {
+        targets: ".admin-welcome",
+        opacity: [0, 1],
+        translateY: [8, 0],
+        duration: 400,
+        easing: "easeOutCubic",
+      },
+      2150,
     );
-
-  const shadowAnimation = anime(
-    {
-      targets: "#sphereGradient",
-      x1: "25%",
-      x2: "25%",
-      y1: "0%",
-      y2: "75%",
-      duration: 30000,
-      easing: "easeOutQuint",
-      autoplay: false,
-    },
-    0,
-  );
-
-  function init() {
-    introAnimation.play();
-    breathAnimation.play();
-    shadowAnimation.play();
-  }
-
-  init();
 })();

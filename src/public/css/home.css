@@ -1,67 +1,320 @@
-.home-container {
-  position: relative;
-  width: auto;
-  height: auto;
+/* TechAnor admin guest home */
+
+html,
+body {
+  width: 100%;
   min-height: 100%;
+}
+
+body.admin-home-page {
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  color: #1d1d1f;
+  background: #f5f5f7;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif;
+}
+
+#particles-js {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f7;
+  background-image: radial-gradient(
+      circle at 20% 20%,
+      rgba(139, 92, 246, 0.1),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 80% 30%,
+      rgba(34, 211, 238, 0.1),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 50% 80%,
+      rgba(99, 102, 241, 0.08),
+      transparent 28%
+    ),
+    linear-gradient(
+      125deg,
+      #f5f5f7 0%,
+      #e8f6fb 24%,
+      #edf1ff 48%,
+      #f2ecff 72%,
+      #eef8fa 100%
+    );
+  background-repeat: no-repeat;
+  background-position: 15% 20%, 80% 25%, 50% 80%, 0% 50%;
+  background-size: 130% 130%, 135% 135%, 130% 130%, 320% 320%;
+  animation: techanor-background-flow 18s ease-in-out infinite;
+}
+
+@keyframes techanor-background-flow {
+  0% {
+    background-position: 15% 20%, 80% 25%, 50% 80%, 0% 50%;
+  }
+
+  33% {
+    background-position: 28% 34%, 68% 18%, 58% 68%, 50% 35%;
+  }
+
+  66% {
+    background-position: 10% 38%, 88% 42%, 42% 74%, 100% 55%;
+  }
+
+  100% {
+    background-position: 15% 20%, 80% 25%, 50% 80%, 0% 50%;
+  }
+}
+
+#particles-js canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  vertical-align: bottom;
+}
+
+.admin-home {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 28px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(-45deg, #110303f0, #dd6d04, #011c1afc, #7a6868);
-}
-
-.home-container a {
-  text-decoration: none;
-  color: #000000;
-}
-
-.home-container .nav-item a {
-  color: #e3c08d;
-}
-
-.home-container .nav-item a.disabled {
-  color: #898071;
-}
-
-.home-container .navigation-menu {
-  position: relative;
-  z-index: 10000;
-  color: #efefee;
-  font-size: 40px;
-  font-family: monospace;
-}
-
-.home-container .animation-frame {
-  position: relative;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  margin-top: 55px;
+  box-sizing: border-box;
+  pointer-events: none;
 }
 
-.home-container .animation-wrapper {
+.admin-home::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: min(980px, 92vw);
+  height: min(610px, 72vh);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    rgba(245, 245, 247, 0.65) 0%,
+    rgba(245, 245, 247, 0.2) 50%,
+    transparent 74%
+  );
+  pointer-events: none;
+}
+
+.home-composition {
   position: relative;
-  width: 775px;
-  height: 775px;
+  top: -60px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  pointer-events: none;
 }
 
-.home-container .sphere-animation {
+.macbook {
   position: relative;
-  width: 580px;
-  height: 580px;
+  width: min(960px, 92vw);
+  aspect-ratio: 1.7 / 1;
+  overflow: hidden;
+  perspective: 1500px;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.home-container .sphere path {
-  fill: url(#sphereGradient);
-  stroke-width: 1px;
-  stroke: rgba(80, 80, 80, 0.35);
+.macbook-image {
+  position: absolute;
+  z-index: 0;
+  top: -33%;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
   backface-visibility: hidden;
+  pointer-events: none;
+  user-select: none;
 }
 
-@media (min-width: 500px) {
-  .sphere path {
-    stroke-width: 0.4px;
+.macbook-image-base {
+  clip-path: inset(76% 0 0 0);
+}
+
+.macbook-image-screen {
+  clip-path: inset(0 0 23% 0);
+  transform: rotateX(-78deg) scaleY(0.18);
+  transform-origin: 50% 96%;
+  will-change: transform;
+}
+
+.screen-content {
+  position: absolute;
+  z-index: 1;
+  top: 6.5%;
+  left: 13.5%;
+  width: 73%;
+  height: 84%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.screen-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 20px);
+  pointer-events: none;
+}
+
+.screen-link {
+  padding: 8px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: #c7c8d0;
+  background: rgba(8, 10, 17, 0.46);
+  font-size: clamp(12px, 1.55vw, 16px);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(7px);
+  transition: color 200ms ease, background-color 200ms ease,
+    border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  pointer-events: auto;
+  backdrop-filter: blur(4px);
+}
+
+.screen-link-home {
+  color: #a5f3fc;
+  border-color: rgba(34, 211, 238, 0.26);
+  background: linear-gradient(
+    135deg,
+    rgba(34, 211, 238, 0.12),
+    rgba(59, 130, 246, 0.08)
+  );
+  box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.025),
+    0 0 12px rgba(34, 211, 238, 0.06);
+}
+
+.screen-link-signup {
+  color: #c7d2fe;
+  border-color: rgba(99, 102, 241, 0.34);
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.15),
+    rgba(139, 92, 246, 0.13)
+  );
+  box-shadow: 0 0 13px rgba(99, 102, 241, 0.07);
+}
+
+.screen-link-login {
+  color: #ffffff;
+  border-color: rgba(99, 102, 241, 0.48);
+  background: linear-gradient(
+    90deg,
+    rgba(34, 211, 238, 0.72) 0%,
+    rgba(59, 130, 246, 0.72) 45%,
+    rgba(139, 92, 246, 0.72) 100%
+  );
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.18),
+    0 0 8px rgba(139, 92, 246, 0.1);
+}
+
+.screen-link:hover,
+.screen-link:focus-visible {
+  color: #ffffff;
+  border-color: rgba(34, 211, 238, 0.58);
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.14),
+    0 0 12px rgba(139, 92, 246, 0.1);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.admin-welcome {
+  margin: 20px 0 0;
+  color: #1d1d1f;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.admin-welcome h1 {
+  margin: 0;
+  color: #1d1d1f;
+  font-size: clamp(25px, 3vw, 36px);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+.admin-welcome p {
+  margin: 8px 0 0;
+  color: #6e6e73;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .admin-home {
+    padding: 22px 8px;
+  }
+
+  .macbook {
+    width: 98vw;
+  }
+
+  .screen-navigation {
+    gap: 6px;
+  }
+
+  .screen-link {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-height: 760px) and (min-width: 641px) {
+  .macbook {
+    width: min(790px, 82vw);
+  }
+
+  .admin-welcome {
+    margin-top: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #particles-js {
+    animation: none;
+  }
+
+  .macbook,
+  .screen-link,
+  .admin-welcome {
+    opacity: 1;
+    transform: none;
+  }
+
+  .macbook-image {
+    transform: none;
+  }
+
+  .macbook-image-base {
+    clip-path: inset(76% 0 0 0);
+  }
+
+  .macbook-image-screen {
+    clip-path: inset(0 0 23% 0);
   }
 }
