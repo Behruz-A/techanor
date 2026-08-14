@@ -1,8 +1,9 @@
 <%- include('includes/header') %>
 
 <link rel="stylesheet" type="text/css" href="/css/login.css" />
+<link rel="stylesheet" type="text/css" href="/css/google-auth.css" />
 
-<body>
+<body class="auth-page">
   <form class="login-container" action="/admin/login" METHOD="POST">
     <div class="login-frame">
       <div class="login-top">
@@ -13,6 +14,11 @@
           <a href="/admin/signup" style="color: #6440fb">Signup</a>
         </p>
       </div>
+      <div class="google-auth" data-client-id="<%= googleClientId %>">
+        <div class="google-auth-button"></div>
+        <p class="google-auth-error" role="alert"></p>
+      </div>
+      <div class="auth-divider"><span>OR</span></div>
       <div class="login-input-frame">
         <div class="login-input-container">
           <label>Restaurant *</label>
@@ -40,6 +46,14 @@
       <button class="login-btn btn" name="login" type="submit">Login</button>
     </div>
   </form>
+
+  <script src="/js/google-auth.js"></script>
+  <script
+    src="https://accounts.google.com/gsi/client"
+    async
+    defer
+    onload="initializeGoogleAuth()"
+  ></script>
 </body>
 
 <%- include('includes/footer') %>

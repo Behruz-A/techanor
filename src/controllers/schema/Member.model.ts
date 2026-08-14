@@ -1,5 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-import { MemberStatus, MemberType } from "../../libs/enums/member.enum";
+import {
+  AuthProvider,
+  MemberStatus,
+  MemberType,
+} from "../../libs/enums/member.enum";
 
 const memberSchema = new Schema(
   {
@@ -30,6 +34,24 @@ const memberSchema = new Schema(
       type: String,
       select: false,
       required: true,
+    },
+
+    memberEmail: {
+      type: String,
+      index: { unique: true, sparse: true },
+      lowercase: true,
+      trim: true,
+    },
+
+    googleId: {
+      type: String,
+      index: { unique: true, sparse: true },
+    },
+
+    authProvider: {
+      type: String,
+      enum: AuthProvider,
+      default: AuthProvider.LOCAL,
     },
 
     memberAddress: {

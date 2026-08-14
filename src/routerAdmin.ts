@@ -20,6 +20,7 @@ routerAdmin
   );
 routerAdmin.get("/logout", storeController.logout);
 routerAdmin.get("/check-me", storeController.checkAuthSession);
+routerAdmin.post("/auth/google", storeController.processGoogleAuth);
 
 /**PRODUCT*/
 routerAdmin.get(

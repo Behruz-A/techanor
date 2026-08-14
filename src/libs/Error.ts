@@ -5,6 +5,7 @@ export enum HttpCode {
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
+  CONFLICT = 409,
   NOT_FOUND = 404,
   INTERNAL_SEVER_ERROR = 500,
 }
@@ -21,6 +22,13 @@ export enum Message {
   WRONG_PASSWORD = "Wrong passsword, please try again!",
   NOT_AUTHENTICATED = "You are not authenticated, Please login first!",
   TOKEN_CREATION_FAILED = "Token creation error!",
+  GOOGLE_AUTH_NOT_CONFIGURED = "Google authentication is not configured!",
+  GOOGLE_CREDENTIAL_REQUIRED = "Google credential is required!",
+  INVALID_GOOGLE_CREDENTIAL = "Google credential is invalid!",
+  GOOGLE_EMAIL_NOT_VERIFIED = "Google email is not verified!",
+  GOOGLE_ACCOUNT_NOT_ALLOWED = "This Google account is not authorized!",
+  GOOGLE_ACCOUNT_CONFLICT = "This Google account conflicts with an existing member!",
+  STORE_ACCOUNT_REQUIRED = "Create the store account with local signup first!",
 }
 
 class Errors extends Error {

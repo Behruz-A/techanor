@@ -1,4 +1,4 @@
-/* TechAnor particles configuration */
+/* Techanor particles configuration */
 
 if (typeof particlesJS === "function") {
   particlesJS("particles-js", {
@@ -120,7 +120,7 @@ if (typeof particlesJS === "function") {
     const pJS = particlesInstance.pJS;
     const startedAt = performance.now();
 
-    function updateTechAnorPalette(now) {
+    function updateTechanorPalette(now) {
       const elapsed = now - startedAt;
       const palettePosition = elapsed / paletteDuration;
       const currentIndex = Math.floor(palettePosition) % techAnorPalettes.length;
@@ -144,9 +144,9 @@ if (typeof particlesJS === "function") {
         smoothProgress,
       );
 
-      requestAnimationFrame(updateTechAnorPalette);
+      requestAnimationFrame(updateTechanorPalette);
     }
 
-    requestAnimationFrame(updateTechAnorPalette);
+    requestAnimationFrame(updateTechanorPalette);
   }
 }

@@ -1,6 +1,6 @@
 import MemberModel from "../controllers/schema/Member.model";
 import { shapeIntoMongooseObjectId } from "../libs/config";
-import { MemberType } from "../libs/enums/member.enum";
+import { AuthProvider, MemberType } from "../libs/enums/member.enum";
 import Errors, { HttpCode, Message } from "../libs/Error";
 import {
   LoginInput,
@@ -9,6 +9,7 @@ import {
   MemberUpdateInput,
 } from "../libs/types/member";
 import * as bcrypt from "bcryptjs";
+import { OAuth2Client } from "google-auth-library";
 
 class MemberService {
   private readonly memberModel;
@@ -92,6 +93,85 @@ class MemberService {
     if (!isMatch)
       throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
     return await this.memberModel.findById(member._id).exec();
+  }
+
+  public async processGoogleAuth(credential: string): Promise<Member> {
+    const clientId = process.env.GOOGLE_CLIENT_ID?.trim();
+    const approvedEmail = process.env.ADMIN_GOOGLE_EMAIL?.trim().toLowerCase();
+
+    if (!clientId || !approvedEmail)
+      throw new Errors(
+        HttpCode.INTERNAL_SEVER_ERROR,
+        Message.GOOGLE_AUTH_NOT_CONFIGURED,
+      );
+    if (!credential)
+      throw new Errors(
+        HttpCode.BAD_REQUEST,
+        Message.GOOGLE_CREDENTIAL_REQUIRED,
+      );
+
+    let payload;
+    try {
+      const client = new OAuth2Client(clientId);
+      const ticket = await client.verifyIdToken({
+        idToken: credential,
+        audience: clientId,
+      });
+      payload = ticket.getPayload();
+    } catch (_) {
+      throw new Errors(
+        HttpCode.UNAUTHORIZED,
+        Message.INVALID_GOOGLE_CREDENTIAL,
+      );
+    }
+
+    const googleId = payload?.sub;
+    const email = payload?.email?.trim().toLowerCase();
+    if (!googleId || !email)
+      throw new Errors(
+        HttpCode.UNAUTHORIZED,
+        Message.INVALID_GOOGLE_CREDENTIAL,
+      );
+    if (!payload?.email_verified)
+      throw new Errors(
+        HttpCode.UNAUTHORIZED,
+        Message.GOOGLE_EMAIL_NOT_VERIFIED,
+      );
+    if (email !== approvedEmail)
+      throw new Errors(
+        HttpCode.FORBIDDEN,
+        Message.GOOGLE_ACCOUNT_NOT_ALLOWED,
+      );
+
+    const store = await this.memberModel
+      .findOne({ memberType: MemberType.STORE })
+      .exec();
+    if (!store)
+      throw new Errors(HttpCode.FORBIDDEN, Message.STORE_ACCOUNT_REQUIRED);
+
+    const identityOwner = await this.memberModel
+      .findOne({ $or: [{ googleId }, { memberEmail: email }] })
+      .exec();
+    if (identityOwner && !identityOwner._id.equals(store._id))
+      throw new Errors(
+        HttpCode.CONFLICT,
+        Message.GOOGLE_ACCOUNT_CONFLICT,
+      );
+    if (store.googleId && store.googleId !== googleId)
+      throw new Errors(
+        HttpCode.FORBIDDEN,
+        Message.GOOGLE_ACCOUNT_NOT_ALLOWED,
+      );
+    if (store.memberEmail && store.memberEmail.toLowerCase() !== email)
+      throw new Errors(
+        HttpCode.CONFLICT,
+        Message.GOOGLE_ACCOUNT_CONFLICT,
+      );
+
+    store.googleId = googleId;
+    store.memberEmail = email;
+    store.authProvider = AuthProvider.GOOGLE;
+    return await store.save();
   }
 
   public async getUsers(): Promise<Member[]> {

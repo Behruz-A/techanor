@@ -1,121 +1,374 @@
-.signup-container {
-  position: relative;
+/* Techanor admin signup */
+
+body.auth_page {
+  min-height: 100vh;
+  margin: 0;
+  color: #1d1d1f;
+  background: #eef2f7;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.signup_container {
   width: 100%;
-  height: 100%;
+  max-width: 1300px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 30px 24px 42px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-  animation: gradient 15s ease infinite;
-  -webkit-animation: gradient 15s ease infinite;
-  background-size: 200% 200%;
+  box-sizing: border-box;
 }
 
-.signup-container a {
+.signup_identity_panel {
+  margin-bottom: 18px;
+  color: #1d1d1f;
+  text-align: center;
+}
+
+.signup_identity_panel h1 {
+  margin: 0;
+  font-size: clamp(25px, 3vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+
+.signup_identity_panel p {
+  margin: 7px 0 0;
+  color: #6e6e73;
+  font-size: 15px;
+}
+
+.signup_frame {
+  position: relative;
+  width: min(540px, 100%);
+  padding: 34px 38px 36px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 20px;
+  background: #202b3d;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.signup_back {
+  align-self: flex-start;
+  margin-bottom: 22px;
+  color: #bfccdc;
+  font-size: 14px;
+  font-weight: 600;
   text-decoration: none;
-  color: black;
+  transition: color 180ms ease;
 }
 
-.signup-container .signup-frame {
-  position: relative;
-  width: 420px;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  background: #ffffff;
-  padding: 25px;
+.signup_back:hover {
+  color: #67e8f9;
+  text-decoration: none;
 }
 
-.signup-container .signup-frame .sign-input-frame {
+.signup_top {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.signup_identity {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto 14px;
+  display: block;
+  text-decoration: none;
+}
+
+.signup_logo_orbit {
   position: relative;
   width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-}
-
-.signup-container .sign-input-frame .sign-up-frame {
-  position: relative;
-  margin-top: 15px;
-  width: 49%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.signup-container .sign-up-frame label {
-  margin-bottom: 0px;
-  font-family: "Poppins";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 18px;
-}
-
-.signup-container .sign-up-frame input {
-  position: relative;
-  margin-top: 10px;
-  padding-left: 20px;
-  width: 100%;
-  height: 55px;
-  background: #f6f5f5;
-  border: 1px solid #dddddd;
-  border-radius: 8px;
-}
-
-.signup-container .media-frame {
-  position: relative;
-  margin-top: 15px;
-  width: 100%;
-  height: 250px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.signup-container .media-frame .upload-img-frame {
-  position: relative;
-  width: 275px;
-  height: 93%;
-  display: flex;
-  border-radius: 15px;
-}
-
-.signup-container .upload-img-frame .delete-img {
-  position: absolute;
-  width: 37px;
-  height: 37px;
-  right: 5%;
-  top: 5%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #ffffff;
-  box-shadow: 0px 6px 15px rgba(64, 79, 104, 0.05);
-  border-radius: 8px;
-}
-
-.signup-container .media-frame .upload-container {
-  position: relative;
-  margin-left: 30px;
-  width: 75%;
   height: 100%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.signup_orbit_dots {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.signup_orbit_dots > span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px;
+  border-radius: 50%;
+  background: #28b8e8;
+  transform: rotate(var(--dot-angle))
+    translateY(calc(0px - var(--dot-radius)));
+}
+
+.signup_orbit_dots .orbit_color_0 {
+  color: #28b8e8;
+  background: #28b8e8;
+}
+
+.signup_orbit_dots .orbit_color_1 {
+  color: #4f7df3;
+  background: #4f7df3;
+}
+
+.signup_orbit_dots .orbit_color_2 {
+  color: #8b4cf6;
+  background: #8b4cf6;
+}
+
+.signup_orbit_dots .orbit_color_3 {
+  color: #d72dd8;
+  background: #d72dd8;
+}
+
+.signup_orbit_dots .orbit_color_4 {
+  color: #ef2d8f;
+  background: #ef2d8f;
+}
+
+.signup_orbit_dots .orbit_color_5 {
+  color: #ff796b;
+  background: #ff796b;
+}
+
+.signup_orbit_dots .orbit_color_6 {
+  color: #f3a365;
+  background: #f3a365;
+}
+
+.signup_orbit_dots .orbit_color_7 {
+  color: #72c9c2;
+  background: #72c9c2;
+}
+
+.signup_logo {
+  position: relative;
+  z-index: 1;
+  width: 46px;
+  height: 46px;
+  display: block;
+  object-fit: contain;
+}
+
+.signup_top h1 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(25px, 4vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+
+.signup_top p {
+  margin: 10px 0 0;
+  color: #a8b3c5;
+  font-size: 14px;
+}
+
+.signup_intro {
+  line-height: 1.55;
+}
+
+.signup_intro a {
+  color: #60a5fa;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup_intro a:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+.sign_input_frame {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.sign_up_frame {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
 }
 
-.signup-container .media-text {
-  font-family: "GT Walsheim Pro";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 18px;
-  color: #140342;
+.sign_up_frame label,
+.media_text {
+  margin: 0 0 8px;
+  color: #e2e8f0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
-.signup-container .file-box input[type="file"] {
+.sign_up_frame input {
+  width: 100%;
+  height: 48px;
+  padding: 0 15px;
+  box-sizing: border-box;
+  color: #f8fafc;
+  border: 1px solid #475569;
+  border-radius: 10px;
+  outline: none;
+  background: #334155;
+  font-size: 15px;
+  transition: border-color 180ms ease, box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.sign_up_frame input::placeholder {
+  color: #94a3b8;
+}
+
+.sign_up_frame input:focus {
+  border-color: #6366f1;
+  background: #37475b;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.16);
+}
+
+.password_field {
+  position: relative;
+}
+
+.password_field input {
+  padding-right: 46px;
+}
+
+.password_toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: #94a3b8;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: color 160ms ease, background-color 160ms ease;
+}
+
+.password_toggle:hover {
+  color: #e2e8f0;
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.password_toggle svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.password_help {
+  margin-top: 7px;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.media_frame {
+  margin-top: 20px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  border: 1px solid #3d4b60;
+  border-radius: 13px;
+  background: #243146;
+}
+
+.upload_preview_wrap {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  overflow: hidden;
+  border: 1px solid #46566d;
+  border-radius: 11px;
+  background: #0f172a;
+}
+
+.upload_placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #93c5fd;
+  background: linear-gradient(
+    145deg,
+    rgba(37, 99, 235, 0.18),
+    rgba(124, 58, 237, 0.2)
+  );
+}
+
+.upload_placeholder svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.upload_img_frame {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.upload_img_frame[hidden] {
+  display: none;
+}
+
+.upload_container {
+  min-width: 0;
+}
+
+.media_text {
+  display: block;
+}
+
+.media_text b {
+  color: #93c5fd;
+  font-weight: 700;
+}
+
+.upload_help {
+  margin: -3px 0 9px;
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.file_box {
+  position: relative;
+  display: flex;
+}
+
+.file_box input[type="file"] {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -126,66 +379,102 @@
   border: 0;
 }
 
-.signup-container .file-box label {
-  margin-bottom: 0px;
-  width: 138px;
-  height: 55px;
+.file_box .upload_name {
+  min-width: 0;
+  flex: 1;
+  height: 40px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  color: #94a3b8;
+  border: 1px solid #3f5068;
+  border-right: 0;
+  border-radius: 9px 0 0 9px;
+  background: rgba(51, 65, 85, 0.72);
+  font-size: 12px;
+}
 
+.file_box label {
+  min-width: 104px;
+  height: 40px;
+  margin: 0;
+  padding: 0 12px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background: #6a7a99;
-  border-radius: 0px 8px 8px 0px;
-  font-family: "GT Walsheim Pro";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 26px;
+  justify-content: center;
+  box-sizing: border-box;
   color: #ffffff;
+  border-radius: 0 9px 9px 0;
+  background: #334e78;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms ease;
 }
 
-.signup-container .file-box .upload-name {
-  position: relative;
-  padding: 20px;
-  width: 85%;
-  height: 55px;
+.file_box label:hover {
+  background: #3d5d8e;
+}
+
+.auth_divider {
+  margin: 22px 0 18px;
   display: flex;
-  background: #ffffff;
-  border: 1px solid #dddddd;
-  border-radius: 8px 0px 0px 8px;
+  align-items: center;
+  gap: 16px;
+  color: #94a3b8;
+  font-size: 12px;
 }
 
-.signup-container .thumbnail-desc {
-  margin-top: 25px;
-  font-family: "GT Walsheim Pro";
-  font-style: normal;
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 26px;
-  color: #4f547b;
+.auth_divider::before,
+.auth_divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #475569;
 }
 
-/* Background animation */
-@-webkit-keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.social_auth_stack {
+  display: grid;
+  gap: 10px;
 }
 
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
+.signup_btn {
+  width: 100%;
+  height: 50px;
+  margin-top: 18px;
+  color: #ffffff;
+  border: 0;
+  border-radius: 10px;
+  background: #1a73e8;
+  box-shadow: 0 10px 24px rgba(26, 115, 232, 0.24);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.signup_btn:hover {
+  color: #ffffff;
+  background: #1769d2;
+  transform: translateY(-1px);
+  box-shadow: 0 13px 30px rgba(26, 115, 232, 0.3);
+}
+
+@media (max-width: 640px) {
+  .signup_container {
+    padding: 18px 12px;
   }
-  50% {
-    background-position: 100% 50%;
+
+  .signup_frame {
+    padding: 24px 18px;
+    border-radius: 17px;
   }
-  100% {
-    background-position: 0% 50%;
+
+  .sign_input_frame {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .media_frame {
+    grid-template-columns: 58px minmax(0, 1fr);
   }
 }

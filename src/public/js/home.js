@@ -1,4 +1,4 @@
-/* TechAnor admin home laptop animation */
+/* Techanor admin home laptop animation */
 
 (function () {
   const reduceMotion = window.matchMedia(

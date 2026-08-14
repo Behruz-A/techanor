@@ -1,7 +1,11 @@
 import { Request } from "express";
 import { Session } from "express-session";
 import { ObjectId } from "mongoose";
-import { MemberStatus, MemberType } from "../enums/member.enum";
+import {
+  AuthProvider,
+  MemberStatus,
+  MemberType,
+} from "../enums/member.enum";
 import multer from "multer";
 
 export interface Member {
@@ -11,6 +15,9 @@ export interface Member {
   memberNick: string;
   memberPhone: string;
   memberPassword?: string;
+  memberEmail?: string;
+  googleId?: string;
+  authProvider?: AuthProvider;
   memberAddress?: string;
   memberDesc?: string;
   memberImage?: string;
@@ -25,6 +32,9 @@ export interface MemberInput {
   memberNick: string;
   memberPhone: string;
   memberPassword: string;
+  memberEmail?: string;
+  googleId?: string;
+  authProvider?: AuthProvider;
   memberAddress?: string;
   memberDesc?: string;
   memberImage?: string;

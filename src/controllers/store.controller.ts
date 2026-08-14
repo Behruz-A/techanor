@@ -22,7 +22,9 @@ storeController.goHome = (req: Request, res: Response) => {
 storeController.getSignup = (req: Request, res: Response) => {
   try {
     console.log("getSignup");
-    res.render("signup");
+    res.render("signup", {
+      googleClientId: process.env.GOOGLE_CLIENT_ID ?? "",
+    });
   } catch (err) {
     console.log("Error, getSignup:", err);
     res.redirect("/admin");
@@ -32,7 +34,9 @@ storeController.getSignup = (req: Request, res: Response) => {
 storeController.getLogin = (req: Request, res: Response) => {
   try {
     console.log("getLogin");
-    res.render("login");
+    res.render("login", {
+      googleClientId: process.env.GOOGLE_CLIENT_ID ?? "",
+    });
   } catch (err) {
     console.log("Error, getLogin:", err);
     res.redirect("/admin");
@@ -83,6 +87,31 @@ storeController.processLogin = async (req: AdminRequest, res: Response) => {
     res.send(
       `<script> alert("${message}"); window.location.replace('/admin/login') </script>`,
     );
+  }
+};
+
+storeController.processGoogleAuth = async (
+  req: AdminRequest,
+  res: Response,
+) => {
+  try {
+    const result = await memberService.processGoogleAuth(req.body.credential);
+
+    req.session.member = result;
+    req.session.save(function (sessionError) {
+      if (sessionError)
+        return res
+          .status(HttpCode.INTERNAL_SEVER_ERROR)
+          .json(Errors.standart);
+
+      return res.status(HttpCode.OK).json({
+        redirectUrl: "/admin/product/all",
+      });
+    });
+  } catch (err) {
+    console.log("Error, processGoogleAuth");
+    if (err instanceof Errors) return res.status(err.code).json(err);
+    return res.status(Errors.standart.code).json(Errors.standart);
   }
 };
 

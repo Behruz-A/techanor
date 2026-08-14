@@ -1,108 +1,206 @@
 <%- include('includes/header') %>
 
 <link rel="stylesheet" type="text/css" href="/css/signup.css" />
+<link rel="stylesheet" type="text/css" href="/css/google-auth.css" />
 
-<body>
-  <div class="signup-container">
-    <form onsubmit="return validateSingupForm()" "/admin/signup" method="POST" enctype="multipart/form-data">
-      <div class="signup-frame" style="width: 650px">
-        <div class="signup-top">
-          <span>Signup</span>
-          <div>Go back <a href="/admin" style="color: #6440fb">Home</a></div>
-          <p>
-            Already signed up?
-            <a href="/admin/login" style="color: #6440fb">Login</a>
-          </p>
-        </div>
+<body class="auth_page">
+  <div class="signup_container">
+    <div class="signup_identity_panel">
+      <a class="signup_identity" href="/admin" aria-label="Techanor Home">
+        <span class="signup_logo_orbit">
+          <span class="signup_orbit_dots" aria-hidden="true">
+            <% for (let ringIndex = 0; ringIndex < 3; ringIndex += 1) { %>
+            <% for (let dotIndex = 0; dotIndex < 32; dotIndex += 1) { %>
+            <span
+              class="orbit_color_<%= Math.floor(dotIndex / 4) %>"
+              style="--dot-angle: <%= dotIndex * 11.25 + ringIndex * 5.625 %>deg; --dot-radius: <%= 51 + ringIndex * 11 %>px"
+            ></span>
+            <% } %>
+            <% } %>
+          </span>
+          <img
+            class="signup_logo"
+            src="/img/anorlogo.png"
+            alt="Techanor"
+          />
+        </span>
+      </a>
+      <h1>Techanor Account</h1>
+      <p>Manage your Techanor Account</p>
+    </div>
 
-        <div class="sign-input-frame" style="justify-content: space-between">
-          <div class="sign-up-frame">
-            <label>Restaurant *</label>
-            <input
-              type="text"
-              name="memberNick"
-              class="member-nick"
-              placeholder="Username"
-              value=""
-            />
-          </div>
-          <div class="sign-up-frame">
-            <label>Phone *</label>
-            <input
-              type="text"
-              name="memberPhone"
-              class="member-phone"
-              placeholder="Phone"
-              value=""
-            />
-          </div>
+    <form
+      class="signup_frame"
+      action="/admin/signup"
+      method="POST"
+      enctype="multipart/form-data"
+      onsubmit="return validateSignupForm()"
+    >
+      <a class="signup_back" href="/admin">← Back to home</a>
+
+      <div class="signup_top">
+        <h1>Create your account</h1>
+        <p class="signup_intro">
+          Start managing your Techanor store in seconds. Already have an
+          account? <a href="/admin/login">Log in here.</a>
+        </p>
+      </div>
+
+      <div class="sign_input_frame">
+        <div class="sign_up_frame">
+          <label for="signup-nick">Store name</label>
+          <input
+            id="signup-nick"
+            type="text"
+            name="memberNick"
+            class="member_nick"
+            placeholder="Store name"
+            required
+          />
         </div>
-        <div class="sign-input-frame" style="justify-content: space-between">
-          <div class="sign-up-frame">
-            <label>Password *</label>
+        <div class="sign_up_frame">
+          <label for="signup-phone">Phone</label>
+          <input
+            id="signup-phone"
+            type="text"
+            name="memberPhone"
+            class="member_phone"
+            placeholder="Phone"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="sign_input_frame">
+        <div class="sign_up_frame">
+          <label for="signup-password">Password</label>
+          <div class="password_field">
             <input
+              id="signup-password"
               type="password"
               name="memberPassword"
-              class="member-password"
+              class="member_password"
               placeholder="Password"
-              value=""
+              minlength="8"
+              required
             />
+            <button
+              class="password_toggle"
+              type="button"
+              data-password-target="signup-password"
+              aria-label="Show password"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                <circle cx="12" cy="12" r="2.75" />
+              </svg>
+            </button>
           </div>
-          <div class="sign-up-frame">
-            <label>Repeat password *</label>
+          <span class="password_help">Use at least 8 characters.</span>
+        </div>
+        <div class="sign_up_frame">
+          <label for="signup-confirm-password">Confirm password</label>
+          <div class="password_field">
             <input
+              id="signup-confirm-password"
               type="password"
               name="confirmPassword"
-              class="confirm-password"
-              placeholder="Repeat password"
-              value=""
+              class="confirm_password"
+              placeholder="Confirm password"
+              minlength="8"
+              required
+            />
+            <button
+              class="password_toggle"
+              type="button"
+              data-password-target="signup-confirm-password"
+              aria-label="Show confirm password"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                <circle cx="12" cy="12" r="2.75" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="media_frame">
+          <div class="upload_preview_wrap">
+            <div class="upload_placeholder" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img">
+                <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />
+              </svg>
+            </div>
+            <img
+              class="upload_img_frame"
+              alt="Selected store image preview"
+              hidden
             />
           </div>
-        </div>
-
-        <div class="signup-input-frame">
-          <div class="media-frame">
-            <img class="upload-img-frame" src="/img/default.jpeg" />
-            <div class="upload-container">
-              <span class="media-text">Product image</span>
-              <div
-                class="file-box bs3-primary preview-image"
-                style="margin-top: 25px; display: flex"
-              >
-                <input
-                  class="upload-name"
-                  value="Choose image"
-                  disabled="disabled"
-                />
-                <label for="input-file" class="file-input-label"
-                  >Upload Image</label
-                >
-                <input
-                  type="file"
-                  id="input-file"
-                  class="upload-hidden form-control-file member-image"
-                  name="memberImage"
-                />
-              </div>
-              <p class="thumbnail-desc">
-                Please upload restaurant image.<br />
-                Attention only:.jpg, .jpeg, or .png. <br />
-                formats allowed!
-              </p>
+          <div class="upload_container">
+            <span class="media_text">Store profile image <b>*</b></span>
+            <p class="upload_help">
+              Upload a square JPG or PNG image, maximum 2MB.
+            </p>
+            <div class="file_box">
+              <input
+                class="upload_name"
+                value="No image selected"
+                disabled="disabled"
+              />
+              <label for="input-file">
+                Choose Image
+              </label>
+              <input
+                type="file"
+                id="input-file"
+                class="upload_hidden member_image"
+                name="memberImage"
+                accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                required
+              />
             </div>
           </div>
-        </div>
-
-        <input name="memberType" value="RESTAURANT" hidden />
-
-        <button class="signup-btn btn" name="signup" type="submit">
-          Signup
-        </button>
       </div>
+
+      <div class="auth_divider"><span>OR</span></div>
+
+      <div class="social_auth_stack">
+        <div class="google_auth" data-client-id="<%= googleClientId %>">
+          <div class="google_auth_button">
+            <svg
+              class="google_auth_icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.39-.18-2.05H12v3.87h5.38a4.6 4.6 0 0 1-2 3.02v2.51h3.24c1.9-1.75 2.98-4.32 2.98-7.35Z" />
+              <path fill="#34A853" d="M12 22c2.7 0 4.97-.9 6.62-2.42l-3.24-2.51c-.9.6-2.05.96-3.38.96-2.61 0-4.82-1.76-5.61-4.13H3.04v2.59A10 10 0 0 0 12 22Z" />
+              <path fill="#FBBC05" d="M6.39 13.9A6.02 6.02 0 0 1 6.08 12c0-.66.11-1.3.31-1.9V7.51H3.04A10 10 0 0 0 2 12c0 1.61.39 3.14 1.04 4.49l3.35-2.59Z" />
+              <path fill="#EA4335" d="M12 5.97c1.47 0 2.79.5 3.82 1.49l2.87-2.87A9.63 9.63 0 0 0 12 2a10 10 0 0 0-8.96 5.51l3.35 2.59C7.18 7.73 9.39 5.97 12 5.97Z" />
+            </svg>
+            <span class="google_auth_label">Continue with Google</span>
+            <span class="google_auth_trigger" aria-hidden="true"></span>
+          </div>
+          <p class="google_auth_error" role="alert"></p>
+        </div>
+      </div>
+
+      <input name="memberType" value="STORE" hidden />
+      <button class="signup_btn" name="signup" type="submit">
+        Create Account
+      </button>
     </form>
   </div>
 
-<script type="text/javascript" src="/js/signup.js"></script>
+  <script src="/js/signup.js"></script>
+  <script src="/js/google-auth.js"></script>
+  <script
+    src="https://accounts.google.com/gsi/client"
+    async
+    defer
+    onload="initializeGoogleAuth()"
+  ></script>
 </body>
 
 <%- include('includes/footer') %>

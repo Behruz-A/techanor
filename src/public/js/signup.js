@@ -1,8 +1,20 @@
-console.log("Signup frontend javascript file");
-
 $(function () {
-  const fileTarget = $(".file-box .upload-hidden");
+  const fileTarget = $(".file_box .upload_hidden");
   let filename;
+
+  $(".password_toggle").on("click", function () {
+    const targetId = $(this).data("password-target"),
+      passwordInput = document.getElementById(targetId),
+      shouldShowPassword = passwordInput?.type === "password";
+
+    if (!passwordInput) return;
+
+    passwordInput.type = shouldShowPassword ? "text" : "password";
+    $(this).attr(
+      "aria-label",
+      shouldShowPassword ? "Hide password" : "Show password",
+    );
+  });
 
   fileTarget.on("change", function () {
     if (window.FileReader) {
@@ -11,25 +23,29 @@ $(function () {
         validImageType = ["image/jpg", "image/jpeg", "image/png"];
       if (!validImageType.includes(fileType)) {
         alert("Please only jpeg, jpg and png!");
+        $(this).val("");
+        $(this).siblings(".upload_name").val("No image selected");
+        return;
       } else {
         if (uploadFile) {
-          console.log(URL.createObjectURL(uploadFile));
-          $(".upload-img-frame")
+          $(".upload_img_frame")
             .attr("src", URL.createObjectURL(uploadFile))
+            .prop("hidden", false)
             .addClass("success");
+          $(".upload_placeholder").hide();
         }
         filename = $(this)[0].files[0].name;
       }
-      $(this).siblings(".upload-name").val(filename);
+      $(this).siblings(".upload_name").val(filename);
     }
   });
 });
 
-function validateSingupForm() {
-  const memberNick = $(".member-nick").val(),
-    memberPhone = $(".member-phone").val(),
-    memberPassword = $(".member-password").val(),
-    confirmPassword = $(".confirm-password").val();
+function validateSignupForm() {
+  const memberNick = String($(".member_nick").val() || "").trim(),
+    memberPhone = String($(".member_phone").val() || "").trim(),
+    memberPassword = $(".member_password").val(),
+    confirmPassword = $(".confirm_password").val();
 
   if (
     memberNick === "" ||
@@ -45,11 +61,13 @@ function validateSingupForm() {
     alert("Password differs, please check!");
     return false;
   }
-  const memberImage = $(".member-image").get(0)?.files[0]?.name
-    ? $(".member-image").get(0)?.files[0]?.name
+  const memberImage = $(".member_image").get(0)?.files[0]?.name
+    ? $(".member_image").get(0)?.files[0]?.name
     : null;
   if (!memberImage) {
-    alert("Please insert restaurant image!");
+    alert("Please select a store profile image!");
     return false;
   }
+
+  return true;
 }
