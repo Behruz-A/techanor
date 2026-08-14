@@ -3,50 +3,83 @@
 <link rel="stylesheet" type="text/css" href="/css/login.css" />
 <link rel="stylesheet" type="text/css" href="/css/google-auth.css" />
 
-<body class="auth-page">
-  <form class="login-container" action="/admin/login" METHOD="POST">
-    <div class="login-frame">
-      <div class="login-top">
-        <span>Enter</span>
-        <div>Go back <a href="/admin" style="color: #6440fb">Home</a></div>
-        <p>
-          Not registered yet?
-          <a href="/admin/signup" style="color: #6440fb">Signup</a>
-        </p>
-      </div>
-      <div class="google-auth" data-client-id="<%= googleClientId %>">
-        <div class="google-auth-button"></div>
-        <p class="google-auth-error" role="alert"></p>
-      </div>
-      <div class="auth-divider"><span>OR</span></div>
-      <div class="login-input-frame">
-        <div class="login-input-container">
-          <label>Restaurant *</label>
+<body class="auth_page">
+  <main class="login_page">
+    <form class="login_card" action="/admin/login" method="POST">
+      <a class="login_back" href="/admin">← Back to home</a>
+      <h1>Login to your account</h1>
+
+      <div class="login_fields">
+        <div class="login_field">
+          <label for="login-member-nick">Username</label>
           <input
+            id="login-member-nick"
             type="text"
             name="memberNick"
-            class="member-nick"
-            placeholder="Username"
-            value=""
+            class="member_nick"
+            placeholder="Enter your username"
+            autocomplete="username"
             required
           />
         </div>
-        <div class="login-input-container">
-          <label>Password *</label>
-          <input
-            type="password"
-            name="memberPassword"
-            class="member-password"
-            placeholder="Password"
-            value=""
-            required
-          />
+
+        <div class="login_field">
+          <label for="login-member-password">Password</label>
+          <div class="password_field">
+            <input
+              id="login-member-password"
+              type="password"
+              name="memberPassword"
+              class="member_password"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            />
+            <button
+              class="password_toggle"
+              type="button"
+              aria-label="Show password"
+              aria-pressed="false"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+                <circle cx="12" cy="12" r="2.75" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
-      <button class="login-btn btn" name="login" type="submit">Login</button>
-    </div>
-  </form>
 
+      <button class="login_button" name="login" type="submit">Login</button>
+
+      <div class="auth_divider"><span>OR</span></div>
+
+      <div class="google_auth" data-client-id="<%= googleClientId %>">
+        <div class="google_auth_button">
+          <svg
+            class="google_auth_icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path fill="#4285F4" d="M21.6 12.23c0-.71-.06-1.39-.18-2.05H12v3.87h5.38a4.6 4.6 0 0 1-2 3.02v2.51h3.24c1.9-1.75 2.98-4.32 2.98-7.35Z" />
+            <path fill="#34A853" d="M12 22c2.7 0 4.97-.9 6.62-2.42l-3.24-2.51c-.9.6-2.05.96-3.38.96-2.61 0-4.82-1.76-5.61-4.13H3.04v2.59A10 10 0 0 0 12 22Z" />
+            <path fill="#FBBC05" d="M6.39 13.9A6.02 6.02 0 0 1 6.08 12c0-.66.11-1.3.31-1.9V7.51H3.04A10 10 0 0 0 2 12c0 1.61.39 3.14 1.04 4.49l3.35-2.59Z" />
+            <path fill="#EA4335" d="M12 5.97c1.47 0 2.79.5 3.82 1.49l2.87-2.87A9.63 9.63 0 0 0 12 2a10 10 0 0 0-8.96 5.51l3.35 2.59C7.18 7.73 9.39 5.97 12 5.97Z" />
+          </svg>
+          <span class="google_auth_label">Continue with Google</span>
+          <span class="google_auth_trigger" aria-hidden="true"></span>
+        </div>
+        <p class="google_auth_error" role="alert"></p>
+      </div>
+
+      <p class="login_signup">
+        Don’t have an account yet?
+        <a href="/admin/signup">Sign up</a>
+      </p>
+    </form>
+  </main>
+
+  <script src="/js/login.js"></script>
   <script src="/js/google-auth.js"></script>
   <script
     src="https://accounts.google.com/gsi/client"

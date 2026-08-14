@@ -23,14 +23,27 @@
 
         <div class="screen-content">
           <nav class="screen-navigation" aria-label="Admin home navigation">
-            <a class="screen-link screen-link-home" href="/admin">Home</a>
-            <a class="screen-link screen-link-signup" href="/admin/signup"
-              >Sign Up</a
+            <a class="screen-link" href="/admin">Home</a>
+            <a class="screen-link" href="/admin/signup"
+              >Sign up</a
             >
-            <a class="screen-link screen-link-login" href="/admin/login"
+            <a class="screen-link" href="/admin/login"
               >Login</a
             >
           </nav>
+          <script>
+            (function setActiveNavigationLink() {
+              const currentPath = window.location.pathname.replace(/\/$/, "");
+
+              document.querySelectorAll(".screen-link").forEach(function (link) {
+                const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
+                const isActive = currentPath === linkPath;
+
+                link.classList.toggle("is_active", isActive);
+                if (isActive) link.setAttribute("aria-current", "page");
+              });
+            })();
+          </script>
         </div>
       </div>
 

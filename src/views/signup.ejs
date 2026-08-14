@@ -13,7 +13,7 @@
             <% for (let dotIndex = 0; dotIndex < 32; dotIndex += 1) { %>
             <span
               class="orbit_color_<%= Math.floor(dotIndex / 4) %>"
-              style="--dot-angle: <%= dotIndex * 11.25 + ringIndex * 5.625 %>deg; --dot-radius: <%= 51 + ringIndex * 11 %>px"
+              style="--dot-angle: <%= dotIndex * 11.25 + ringIndex * 5.625 %>deg; --dot-radius: <%= 51 + ringIndex * 11 %>px; --dot-delay: <%= ringIndex * 80 + dotIndex * 18 %>ms"
             ></span>
             <% } %>
             <% } %>
@@ -166,9 +166,8 @@
 
       <div class="auth_divider"><span>OR</span></div>
 
-      <div class="social_auth_stack">
-        <div class="google_auth" data-client-id="<%= googleClientId %>">
-          <div class="google_auth_button">
+      <div class="google_auth" data-client-id="<%= googleClientId %>">
+        <div class="google_auth_button">
             <svg
               class="google_auth_icon"
               viewBox="0 0 24 24"
@@ -181,9 +180,8 @@
             </svg>
             <span class="google_auth_label">Continue with Google</span>
             <span class="google_auth_trigger" aria-hidden="true"></span>
-          </div>
-          <p class="google_auth_error" role="alert"></p>
         </div>
+        <p class="google_auth_error" role="alert"></p>
       </div>
 
       <input name="memberType" value="STORE" hidden />

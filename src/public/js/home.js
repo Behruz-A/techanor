@@ -5,6 +5,13 @@
     "(prefers-reduced-motion: reduce)",
   ).matches;
 
+  function activateNavigation() {
+    document.querySelectorAll(".screen-link").forEach(function (link) {
+      link.style.removeProperty("opacity");
+    });
+    document.querySelector(".screen-navigation")?.classList.add("is_ready");
+  }
+
   if (reduceMotion || typeof anime !== "function") {
     document
       .querySelectorAll(".macbook, .screen-link, .admin-welcome")
@@ -12,6 +19,7 @@
         element.style.opacity = "1";
         element.style.transform = "none";
       });
+    activateNavigation();
     return;
   }
 
@@ -27,7 +35,7 @@
         targets: ".macbook-image-screen",
         rotateX: [-78, 0],
         scaleY: [0.18, 1],
-        duration: 1800,
+        duration: 1500,
         easing: "easeOutExpo",
       },
       0,
@@ -38,10 +46,13 @@
         opacity: [0, 1],
         translateY: [7, 0],
         delay: anime.stagger(20),
-        duration: 160,
+        duration: 180,
         easing: "easeOutCubic",
+        complete: function () {
+          activateNavigation();
+        },
       },
-      1850,
+      1350,
     )
     .add(
       {

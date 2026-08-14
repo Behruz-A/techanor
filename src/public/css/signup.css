@@ -107,47 +107,53 @@ body.auth_page {
   margin: -3.5px;
   border-radius: 50%;
   background: #28b8e8;
-  transform: rotate(var(--dot-angle))
-    translateY(calc(0px - var(--dot-radius)));
+  opacity: 0;
+  animation: signup_dot_assemble 1.08s cubic-bezier(0.22, 1, 0.36, 1)
+    var(--dot-delay) 1 both;
+}
+
+@keyframes signup_dot_assemble {
+  from {
+    opacity: 0;
+    transform: rotate(var(--dot-angle)) translateY(0) scale(0.15);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(var(--dot-angle))
+      translateY(calc(0px - var(--dot-radius))) scale(1);
+  }
 }
 
 .signup_orbit_dots .orbit_color_0 {
-  color: #28b8e8;
   background: #28b8e8;
 }
 
 .signup_orbit_dots .orbit_color_1 {
-  color: #4f7df3;
   background: #4f7df3;
 }
 
 .signup_orbit_dots .orbit_color_2 {
-  color: #8b4cf6;
   background: #8b4cf6;
 }
 
 .signup_orbit_dots .orbit_color_3 {
-  color: #d72dd8;
   background: #d72dd8;
 }
 
 .signup_orbit_dots .orbit_color_4 {
-  color: #ef2d8f;
   background: #ef2d8f;
 }
 
 .signup_orbit_dots .orbit_color_5 {
-  color: #ff796b;
   background: #ff796b;
 }
 
 .signup_orbit_dots .orbit_color_6 {
-  color: #f3a365;
   background: #f3a365;
 }
 
 .signup_orbit_dots .orbit_color_7 {
-  color: #72c9c2;
   background: #72c9c2;
 }
 
@@ -430,11 +436,6 @@ body.auth_page {
   height: 1px;
   flex: 1;
   background: #475569;
-}
-
-.social_auth_stack {
-  display: grid;
-  gap: 10px;
 }
 
 .signup_btn {
