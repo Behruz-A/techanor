@@ -1,0 +1,364 @@
+.products-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  height: auto;
+  min-height: 100%;
+  background: linear-gradient(-45deg, #110303bf, #e37813, #011c1aba, #968383);
+}
+
+.products-container a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.products-container .nav-item a {
+  color: #e3c08d;
+}
+
+.products-container .nav-item a.disabled {
+  color: #898071;
+}
+
+.products-container .navigation-menu {
+  position: absolute;
+  top: 1%;
+  z-index: 10000;
+  font-family: monospace;
+  font-size: 40px;
+  color: #efefee;
+}
+
+.products-container .restaurant-menu-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding-bottom: 80px;
+}
+
+.products-container .restaurant-menu-frame .board {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1320px;
+  height: auto;
+  margin-top: 100px;
+}
+
+.products-container .board .dishes-table {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin-top: 30px;
+}
+
+.products-container .board .dish-container {
+  position: relative;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+.products-container .new-dish-txt {
+  font-family: "Source Serif Pro";
+  font-size: 30px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 25px;
+  color: #ffffff;
+}
+
+.products-container .long-input {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  margin-top: 25px;
+}
+
+.products-container .long-input label {
+  font-family: "Source Serif Pro";
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 25px;
+  color: #ffffff;
+}
+
+.products-container .long-input input {
+  position: relative;
+  width: 100%;
+  height: 54px;
+  padding-left: 20px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-family: "GT Walsheim Pro";
+  font-size: 15px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 26px;
+  color: #4f547b;
+  background: #f7f7f7;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.products-container .long-input textarea {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  padding: 20px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-family: "GT Walsheim Pro";
+  font-size: 15px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 26px;
+  color: #4f547b;
+  background: #f7f7f7;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.products-container .half-input select {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 55px;
+  padding: 0px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-family: "GT Walsheim Pro";
+  font-size: 15px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 26px;
+  color: #4f547b;
+  background: #f7f7f7;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.products-container select:focus {
+  width: auto;
+  min-width: 100%;
+}
+
+.products-container .long-input select {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 55px;
+  padding: 0px 20px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-family: "GT Walsheim Pro";
+  font-size: 15px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 26px;
+  color: #4f547b;
+  background: #f7f7f7;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.products-container .dish-container .half-input-frame {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: auto;
+  margin-top: 25px;
+}
+
+.products-container .half-input-frame .half-input {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 49%;
+  height: auto;
+}
+
+.products-container .half-input label {
+  font-family: "Source Serif Pro";
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 25px;
+  color: #ffffff;
+}
+
+.products-container .half-input input {
+  position: relative;
+  width: 100%;
+  height: 54px;
+  padding-left: 20px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  background: #f7f7f7;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.products-container .media-frame {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 250px;
+  margin-top: 10px;
+}
+
+.products-container .media-frame .upload-img-box {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 19%;
+  height: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.products-container .upload-img-box img {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.products-container .img-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.products-container .img-frame label {
+  margin-top: 30px;
+  font-family: "Source Serif Pro";
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 25px;
+  color: #ffffff;
+}
+
+.products-container #file {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 10px;
+  background: grey;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.products-container .operation-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.products-container .spec-select {
+  position: relative;
+  height: 27px;
+  padding: 0px 7px;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+  font-family: "GT Walsheim Pro";
+  font-size: 15px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 26px;
+  color: #4f547b;
+  background: #ffffff;
+}
+
+.products-container table td,
+table th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.products-container .switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 20px;
+}
+
+.products-container .switch input {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.products-container .slider {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+.products-container .slider:before {
+  content: "";
+  position: absolute;
+  bottom: 3.5px;
+  left: 6px;
+  width: 14px;
+  height: 14px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.products-container input:checked + .slider {
+  background-color: #2196f3;
+}
+
+.products-container input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+.products-container input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+.products-container .slider.round {
+  border-radius: 34px;
+}
+
+.products-container .slider.round:before {
+  border-radius: 50%;
+}

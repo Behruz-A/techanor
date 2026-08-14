@@ -22,10 +22,9 @@ storeController.goHome = (req: Request, res: Response) => {
 storeController.getSignup = (req: Request, res: Response) => {
   try {
     console.log("getSignup");
-    res.send("Signup Page");
+    res.render("signup");
   } catch (err) {
-    console.log("Error, getSignup :", err);
-
+    console.log("Error, getSignup:", err);
     res.redirect("/admin");
   }
 };
@@ -33,10 +32,9 @@ storeController.getSignup = (req: Request, res: Response) => {
 storeController.getLogin = (req: Request, res: Response) => {
   try {
     console.log("getLogin");
-    res.send("Login Page");
+    res.render("login");
   } catch (err) {
     console.log("Error, getLogin:", err);
-
     res.redirect("/admin");
   }
 };

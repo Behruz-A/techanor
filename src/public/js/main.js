@@ -1,1 +1,1 @@
-console.log("Frontend Javaspript");
+console.log("Basic frontend javascript file");

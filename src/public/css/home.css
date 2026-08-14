@@ -1,0 +1,67 @@
+.home-container {
+  position: relative;
+  width: auto;
+  height: auto;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(-45deg, #110303f0, #dd6d04, #011c1afc, #7a6868);
+}
+
+.home-container a {
+  text-decoration: none;
+  color: #000000;
+}
+
+.home-container .nav-item a {
+  color: #e3c08d;
+}
+
+.home-container .nav-item a.disabled {
+  color: #898071;
+}
+
+.home-container .navigation-menu {
+  position: relative;
+  z-index: 10000;
+  color: #efefee;
+  font-size: 40px;
+  font-family: monospace;
+}
+
+.home-container .animation-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 55px;
+}
+
+.home-container .animation-wrapper {
+  position: relative;
+  width: 775px;
+  height: 775px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-container .sphere-animation {
+  position: relative;
+  width: 580px;
+  height: 580px;
+}
+
+.home-container .sphere path {
+  fill: url(#sphereGradient);
+  stroke-width: 1px;
+  stroke: rgba(80, 80, 80, 0.35);
+  backface-visibility: hidden;
+}
+
+@media (min-width: 500px) {
+  .sphere path {
+    stroke-width: 0.4px;
+  }
+}
