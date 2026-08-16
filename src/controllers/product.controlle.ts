@@ -14,7 +14,6 @@ const productController: T = {};
 
 productController.getAllProducts = async (req: Request, res: Response) => {
   try {
-    console.log("getAllProducts");
     const data = await productService.getAllProducts();
 
     res.render("products", { products: data });
@@ -30,12 +29,8 @@ productController.createNewProduct = async (
   res: Response,
 ) => {
   try {
-    console.log("createNewProduct");
-    console.log("req.body:", req.body);
-    console.log("req.files:", req.files);
-
     if (!req.files?.length)
-      throw new Errors(HttpCode.INTERNAL_SEVER_ERROR, Message.CREATION_FAILED);
+      throw new Errors(HttpCode.BAD_REQUEST, Message.CREATION_FAILED);
 
     const data: ProductInput = req.body;
     data.productImages = req.files?.map((ele) => {
@@ -66,7 +61,6 @@ productController.createNewProduct = async (
 
 productController.updateChosenProduct = async (req: Request, res: Response) => {
   try {
-    console.log("updateChosenProduct");
     const id = req.params.id;
 
     const result = await productService.updateChosenProduct(
@@ -77,6 +71,17 @@ productController.updateChosenProduct = async (req: Request, res: Response) => {
     res.status(HttpCode.OK).json({ data: result });
   } catch (err) {
     console.log("Error, updateChosenProduct:", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standart.code).json(Errors.standart);
+  }
+};
+
+productController.deleteChosenProduct = async (req: Request, res: Response) => {
+  try {
+    const result = await productService.deleteChosenProduct(req.params.id as string);
+    res.status(HttpCode.OK).json({ data: result });
+  } catch (err) {
+    console.log("Error, deleteChosenProduct:", err);
     if (err instanceof Errors) res.status(err.code).json(err);
     else res.status(Errors.standart.code).json(Errors.standart);
   }

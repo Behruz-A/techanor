@@ -50,6 +50,11 @@ routerAdmin.post(
   storeController.verifyStore,
   productController.updateChosenProduct,
 );
+routerAdmin.delete(
+  "/product/:id",
+  storeController.verifyStore,
+  productController.deleteChosenProduct,
+);
 
 /**BLOG */
 routerAdmin.get(

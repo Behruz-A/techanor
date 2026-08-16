@@ -5,6 +5,8 @@ import {
   ProductCondition,
   ProductCategory,
   ProductBrand,
+  ProductMemory,
+  ProductScreenSize,
 } from "../../libs/enums/product.enum";
 
 const productSchema = new Schema(
@@ -24,6 +26,14 @@ const productSchema = new Schema(
       enum: ProductBrand,
       default: ProductBrand.OTHER,
     },
+    productMemory: {
+      type: String,
+      enum: ProductMemory,
+    },
+    productScreenSize: {
+      type: String,
+      enum: ProductScreenSize,
+    },
 
     productCondition: {
       type: String,
@@ -34,6 +44,12 @@ const productSchema = new Schema(
     productName: {
       type: String,
       required: true,
+    },
+    productSku: {
+      type: String,
+      trim: true,
+      uppercase: true,
+      maxlength: 64,
     },
     productPrice: {
       type: Number,

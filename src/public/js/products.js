@@ -15,7 +15,12 @@ $(function () {
   });
 
   $("#cancel-btn").on("click", function () {
-    productForm.slideUp(250);
+    productForm.slideUp(250, function () {
+      document.querySelector(".products_card")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
     processButton.prop("disabled", false);
   });
 
@@ -34,6 +39,8 @@ $(function () {
       });
 
       if (!response.data.data) throw new Error("Product update failed");
+      statusSelect.removeClass("status_pause status_process status_delete").addClass(`status_${String(productStatus).toLowerCase()}`);
+      statusSelect.closest(".product_row").attr("data-status", productStatus);
       statusSelect.blur();
     } catch (error) {
       console.error("Error, updateProductStatus:", error);
@@ -42,22 +49,68 @@ $(function () {
     }
   });
 
+  $(".new-product-condition").on("change", async function (event) {
+    const conditionSelect = $(event.currentTarget);
+    const productId = conditionSelect.data("product-id");
+    const productCondition = conditionSelect.val();
+    const previousCondition = productCondition === "NEW" ? "USED" : "NEW";
+
+    conditionSelect.prop("disabled", true);
+    try {
+      const response = await axios.post(`/admin/product/${productId}`, { productCondition });
+      if (!response.data.data) throw new Error("Product condition update failed");
+      conditionSelect.removeClass("condition_new condition_used").addClass(`condition_${String(productCondition).toLowerCase()}`);
+      conditionSelect.closest(".product_row").attr("data-condition", productCondition);
+      document.dispatchEvent(new CustomEvent("techanor:producttablechange"));
+      conditionSelect.blur();
+    } catch (error) {
+      console.error("Error, updateProductCondition:", error);
+      conditionSelect.val(previousCondition);
+      alert("Product condition update failed!");
+    } finally {
+      conditionSelect.prop("disabled", false);
+    }
+  });
+
   $("input[name='productImages']").on("change", function (event) {
     previewProductImage(event.currentTarget);
   });
 
   productForm.on("submit", function (event) {
+    const description = document.getElementById("product-description");
+    const value = description?.value.trim() || "";
+    const testCopy = /\b(test|lorem ipsum)\b|this is really good product|good product/i;
+    if (description && value && (value.length < 20 || testCopy.test(value))) {
+      event.preventDefault();
+      const language = document.documentElement.lang || "en";
+      const message = language === "ko"
+        ? "설명은 의미 있는 20자 이상으로 작성하고 테스트 문구를 사용하지 마세요."
+        : language === "uz"
+          ? "Tavsif kamida 20 ta mazmunli belgidan iborat bo‘lsin va test matnlaridan foydalanmang."
+          : "Use at least 20 meaningful characters and remove test or placeholder wording.";
+      description.setCustomValidity(message);
+      description.reportValidity();
+      description.focus();
+      return;
+    }
+    description?.setCustomValidity("");
     if (!event.currentTarget.checkValidity()) {
       event.preventDefault();
       event.currentTarget.reportValidity();
     }
   });
+  document.getElementById("product-description")?.addEventListener("input", function (event) {
+    event.currentTarget.setCustomValidity("");
+  });
 
   initializeProductSearch();
+  initializeProductTable();
+  initializeProductActions();
   initializeLanguagePicker();
   initializeSidebar();
   initializeThemeToggle();
   initializeComingSoon();
+  initializeMemoryField();
 });
 
 const productTranslations = {
@@ -104,6 +157,43 @@ Object.assign(productTranslations.ko, {
 });
 Object.assign(productTranslations.uz, {
   catalog:"DO‘KON KATALOGI",addProduct:"Mahsulot qo‘shish",productList:"Mahsulotlar ro‘yxati",number:"№"
+});
+
+Object.assign(productTranslations.en, {
+  productList: "Products List", productListSubtitle: "Manage inventory, availability and product details.",
+  export: "Export", filter: "Filter", allCategories: "All categories", allStatuses: "All statuses",
+  clearFilters: "Clear filters", active: "Active", paused: "Paused", deleted: "Deleted", added: "Added", newCondition: "New", usedCondition: "Used",
+  actions: "Actions", viewMore: "View More", deleteProduct: "Delete", stock: "Product Left Count",
+  filterProducts: "Filter products", filterHint: "Results update automatically", allBrands: "All brands", allConditions: "All conditions",
+  memoryStorage: "Memory / Storage", addMemory: "Add memory / storage", selectMemory: "Select memory",
+  screenSize: "Screen size", addScreenSize: "Add TV screen size", selectScreenSize: "Select screen size", optional: "Optional",
+  navigationSearch: "Search pages...", tableSearchLabel: "Search this table", tableSearch: "Search products...",
+  deleteSelected: "Delete selected", changeStatus: "Change status", chooseStatus: "Choose status", descriptionHelp: "If provided, use at least 20 meaningful characters.",
+  brands: "Brands", searchCategory: "Search category...", searchBrands: "Search brands...", applyFilters: "Apply"
+});
+Object.assign(productTranslations.ko, {
+  productList: "제품 목록", productListSubtitle: "재고, 판매 상태 및 제품 정보를 관리하세요.",
+  export: "내보내기", filter: "필터", allCategories: "모든 카테고리", allStatuses: "모든 상태",
+  clearFilters: "필터 초기화", active: "활성", paused: "일시 중지", deleted: "삭제됨", added: "등록일", newCondition: "신품", usedCondition: "중고",
+  actions: "작업", viewMore: "자세히 보기", deleteProduct: "삭제", stock: "남은 제품 수량",
+  filterProducts: "제품 필터", filterHint: "결과가 자동으로 업데이트됩니다", allBrands: "모든 브랜드", allConditions: "모든 상태",
+  memoryStorage: "메모리 / 저장 용량", addMemory: "메모리 / 저장 용량 추가", selectMemory: "용량 선택",
+  screenSize: "화면 크기", addScreenSize: "TV 화면 크기 추가", selectScreenSize: "화면 크기 선택", optional: "선택 사항",
+  navigationSearch: "페이지 검색...", tableSearchLabel: "이 표에서 검색", tableSearch: "제품 검색...",
+  deleteSelected: "선택 항목 삭제", changeStatus: "상태 변경", chooseStatus: "상태 선택", descriptionHelp: "입력하는 경우 의미 있는 20자 이상을 사용하세요.",
+  brands: "브랜드", searchCategory: "카테고리 검색...", searchBrands: "브랜드 검색...", applyFilters: "적용"
+});
+Object.assign(productTranslations.uz, {
+  productList: "Mahsulotlar ro‘yxati", productListSubtitle: "Zaxira, mavjudlik va mahsulot ma’lumotlarini boshqaring.",
+  export: "Eksport", filter: "Filtr", allCategories: "Barcha kategoriyalar", allStatuses: "Barcha statuslar",
+  clearFilters: "Filtrlarni tozalash", active: "Faol", paused: "To‘xtatilgan", deleted: "O‘chirilgan", added: "Qo‘shilgan", newCondition: "Yangi", usedCondition: "Ishlatilgan",
+  actions: "Amallar", viewMore: "Batafsil", deleteProduct: "O‘chirish", stock: "Qolgan mahsulot soni",
+  filterProducts: "Mahsulotlarni filtrlash", filterHint: "Natijalar avtomatik yangilanadi", allBrands: "Barcha brendlar", allConditions: "Barcha holatlar",
+  memoryStorage: "Xotira / saqlash hajmi", addMemory: "Xotira hajmini qo‘shish", selectMemory: "Xotira hajmini tanlang",
+  screenSize: "Ekran o‘lchami", addScreenSize: "TV ekran o‘lchamini qo‘shish", selectScreenSize: "Ekran o‘lchamini tanlang", optional: "Ixtiyoriy",
+  navigationSearch: "Sahifalarni qidiring...", tableSearchLabel: "Shu jadvaldan qidirish", tableSearch: "Mahsulotlarni qidiring...",
+  deleteSelected: "Tanlanganlarni o‘chirish", changeStatus: "Statusni o‘zgartirish", chooseStatus: "Statusni tanlang", descriptionHelp: "Kiritilsa, kamida 20 ta mazmunli belgidan foydalaning.",
+  brands: "Brendlar", searchCategory: "Kategoriyani qidiring...", searchBrands: "Brendlarni qidiring...", applyFilters: "Qo‘llash"
 });
 
 const pageTextTranslations = {
@@ -186,6 +276,24 @@ function initializeProductSearch() {
   const searchInput = document.getElementById("product-search");
   if (!searchInput) return;
 
+  if (document.body.classList.contains("products_page")) {
+    const destinations = [
+      { words: ["product", "products", "mahsulot", "제품"], url: "/admin/product/all" },
+      { words: ["analytics", "analysis", "tahlil", "분석"], url: "/admin/analytics" },
+      { words: ["marketing", "마케팅"], url: "/admin/marketing" },
+      { words: ["user", "users", "foydalanuvchi", "사용자"], url: "/admin/user/all" },
+      { words: ["blog", "blogs", "블로그"], url: "/admin/blog/all" },
+      { words: ["home", "dashboard", "bosh", "홈"], url: "/admin" },
+    ];
+    searchInput.addEventListener("keydown", function (event) {
+      if (event.key !== "Enter") return;
+      const query = searchInput.value.trim().toLocaleLowerCase(document.documentElement.lang || "en");
+      const destination = destinations.find((item) => item.words.some((word) => query.includes(word)));
+      if (destination) window.location.assign(destination.url);
+    });
+    return;
+  }
+
   searchInput.addEventListener("input", function () {
     const query = searchInput.value.trim().toLocaleLowerCase(document.documentElement.lang || "en");
     document.querySelectorAll(".product_row, [data-search-row]").forEach(function (row) {
@@ -196,6 +304,326 @@ function initializeProductSearch() {
       row.hidden = searchMismatch || row.dataset.filterHidden === "true";
     });
   });
+}
+
+function initializeProductTable() {
+  const tableSearch = document.getElementById("product-table-search");
+  let rows = Array.from(document.querySelectorAll(".products_table .product_row"));
+  if (!tableSearch || !rows.length) return;
+
+  const categoryFilter = document.getElementById("product-category-filter");
+  const brandFilter = document.getElementById("product-brand-filter");
+  const applyFilters = document.getElementById("apply-product-filters");
+  const clearFilters = document.getElementById("clear-product-filters");
+  const filterToggle = document.getElementById("product-filter-toggle");
+  const filterPanel = document.getElementById("product-filters");
+  const pagination = document.getElementById("products-pagination");
+  const resultCount = document.getElementById("products-result-count");
+  const activeFilterCount = document.getElementById("active-filter-count");
+  const selectAll = document.getElementById("select-all-products");
+  const bulkBar = document.getElementById("bulk-actions-bar");
+  const selectedCount = document.getElementById("selected-products-count");
+  const deleteSelected = document.getElementById("delete-selected-products");
+  const bulkStatus = document.getElementById("bulk-status-select");
+  const pageSize = 5;
+  let page = 1;
+
+  function checkedRows() {
+    return rows.filter((row) => row.querySelector(".product_select_checkbox")?.checked);
+  }
+
+  function updateSelection() {
+    const selected = checkedRows();
+    const language = document.documentElement.lang || "en";
+    selectedCount.textContent = language === "ko" ? `${selected.length}개 선택됨` : language === "uz" ? `${selected.length} ta tanlandi` : `${selected.length} selected`;
+    bulkBar.hidden = selected.length === 0;
+    const visible = rows.filter((row) => !row.hidden);
+    const visibleChecked = visible.filter((row) => row.querySelector(".product_select_checkbox")?.checked).length;
+    selectAll.checked = Boolean(visible.length && visibleChecked === visible.length);
+    selectAll.indeterminate = visibleChecked > 0 && visibleChecked < visible.length;
+  }
+
+  function copy() {
+    const language = document.documentElement.lang || "en";
+    return language === "ko"
+      ? { showing: (a, b, total) => `전체 ${total}개 중 ${a}–${b}개 표시`, previous: "이전", next: "다음" }
+      : language === "uz"
+        ? { showing: (a, b, total) => `${total} ta mahsulotdan ${a}–${b} tasi`, previous: "Oldingi", next: "Keyingi" }
+        : { showing: (a, b, total) => `Showing ${a}–${b} of ${total} products`, previous: "Previous", next: "Next" };
+  }
+
+  function filteredRows() {
+    const query = tableSearch.value.trim().toLocaleLowerCase(document.documentElement.lang || "en");
+    return rows.filter(function (row) {
+      const text = `${row.dataset.search || ""} ${row.textContent || ""}`.replace(/\s+/g, " ").toLocaleLowerCase(document.documentElement.lang || "en");
+      return (!query || text.includes(query)) &&
+        (!categoryFilter.value.trim() || row.dataset.category.includes(categoryFilter.value.trim().toUpperCase())) &&
+        (!brandFilter.value.trim() || row.dataset.brand.includes(brandFilter.value.trim().toUpperCase()));
+    });
+  }
+
+  function render() {
+    const visibleRows = filteredRows();
+    const filterCount = [categoryFilter.value.trim(), brandFilter.value.trim()].filter(Boolean).length;
+    activeFilterCount.textContent = String(filterCount);
+    activeFilterCount.hidden = filterCount === 0;
+    if (clearFilters) clearFilters.disabled = filterCount === 0;
+    const pageCount = Math.max(1, Math.ceil(visibleRows.length / pageSize));
+    page = Math.min(page, pageCount);
+    rows.forEach((row) => { row.hidden = true; });
+    const start = (page - 1) * pageSize;
+    visibleRows.forEach(function (row, index) {
+      const number = row.querySelector(".product_row_number");
+      if (number) number.textContent = String(index + 1);
+    });
+    visibleRows.slice(start, start + pageSize).forEach((row) => { row.hidden = false; });
+    updateSelection();
+    const labels = copy();
+    resultCount.textContent = visibleRows.length ? labels.showing(start + 1, Math.min(start + pageSize, visibleRows.length), visibleRows.length) : labels.showing(0, 0, 0);
+    pagination.replaceChildren();
+
+    const addButton = function (label, target, disabled, active) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = label;
+      button.disabled = disabled;
+      button.classList.toggle("is_active", active);
+      if (active) button.setAttribute("aria-current", "page");
+      button.addEventListener("click", function () { page = target; render(); });
+      pagination.appendChild(button);
+    };
+    addButton("‹", page - 1, page === 1, false);
+    for (let number = 1; number <= pageCount; number += 1) addButton(String(number), number, false, number === page);
+    addButton("›", page + 1, page === pageCount, false);
+  }
+
+  function updateQuery(value) {
+    tableSearch.value = value;
+    page = 1;
+    render();
+  }
+
+  tableSearch.addEventListener("input", () => updateQuery(tableSearch.value));
+  rows.forEach((row) => row.querySelector(".product_select_checkbox")?.addEventListener("change", updateSelection));
+  selectAll?.addEventListener("change", function () {
+    rows.filter((row) => !row.hidden).forEach((row) => { row.querySelector(".product_select_checkbox").checked = selectAll.checked; });
+    updateSelection();
+  });
+  deleteSelected?.addEventListener("click", async function () {
+    const selected = checkedRows();
+    if (!selected.length) return;
+    const language = document.documentElement.lang || "en";
+    const message = language === "ko" ? `선택한 ${selected.length}개 제품을 삭제하시겠습니까?` : language === "uz" ? `Tanlangan ${selected.length} ta mahsulot o‘chirilsinmi?` : `Delete ${selected.length} selected products?`;
+    if (!window.confirm(message)) return;
+    deleteSelected.disabled = true;
+    try {
+      await Promise.all(selected.map((row) => axios.delete(`/admin/product/${row.dataset.productId}`)));
+      selected.forEach((row) => row.remove());
+      document.dispatchEvent(new CustomEvent("techanor:producttablechange"));
+    } catch (error) {
+      console.error("Bulk product delete failed:", error);
+      alert(language === "ko" ? "선택한 제품을 삭제하지 못했습니다." : language === "uz" ? "Tanlangan mahsulotlarni o‘chirib bo‘lmadi." : "Selected products could not be deleted.");
+    } finally { deleteSelected.disabled = false; }
+  });
+  bulkStatus?.addEventListener("change", async function () {
+    const productStatus = bulkStatus.value;
+    const selected = checkedRows();
+    if (!productStatus || !selected.length) return;
+    bulkStatus.disabled = true;
+    try {
+      await Promise.all(selected.map((row) => axios.post(`/admin/product/${row.dataset.productId}`, { productStatus })));
+      selected.forEach(function (row) {
+        const select = row.querySelector(".new-product-status");
+        select.value = productStatus;
+        select.className = `new-product-status status_select status_${productStatus.toLowerCase()}`;
+        row.dataset.status = productStatus;
+      });
+      document.dispatchEvent(new CustomEvent("techanor:producttablechange"));
+    } catch (error) {
+      console.error("Bulk product status update failed:", error);
+      window.location.reload();
+    } finally { bulkStatus.value = ""; bulkStatus.disabled = false; }
+  });
+  applyFilters?.addEventListener("click", function () { page = 1; render(); filterPanel.hidden = true; filterToggle.setAttribute("aria-expanded", "false"); });
+  clearFilters?.addEventListener("click", function () {
+    categoryFilter.value = "";
+    brandFilter.value = "";
+    page = 1;
+    render();
+    filterPanel.hidden = true;
+    filterToggle.setAttribute("aria-expanded", "false");
+  });
+  [categoryFilter, brandFilter].forEach(function (input) {
+    input.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") { event.preventDefault(); applyFilters.click(); }
+    });
+  });
+  filterToggle.addEventListener("click", function () {
+    filterPanel.hidden = !filterPanel.hidden;
+    filterToggle.setAttribute("aria-expanded", String(!filterPanel.hidden));
+    if (!filterPanel.hidden) window.setTimeout(() => categoryFilter.focus(), 0);
+  });
+  document.addEventListener("click", function (event) {
+    if (!filterPanel.hidden && !event.target.closest(".filter_control")) { filterPanel.hidden = true; filterToggle.setAttribute("aria-expanded", "false"); }
+  });
+  document.addEventListener("techanor:languagechange", render);
+  document.addEventListener("techanor:producttablechange", function () {
+    rows = rows.filter((row) => row.isConnected);
+    render();
+  });
+
+  render();
+}
+
+function initializeProductActions() {
+  const rows = document.querySelectorAll(".products_table .product_row");
+  if (!rows.length) return;
+
+  function closeMenus(except) {
+    document.querySelectorAll(".row_actions_menu").forEach(function (menu) {
+      if (menu === except) return;
+      menu.hidden = true;
+      menu.previousElementSibling?.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  document.querySelectorAll(".row_actions_toggle").forEach(function (toggle) {
+    toggle.addEventListener("click", function (event) {
+      event.stopPropagation();
+      const menu = toggle.nextElementSibling;
+      const willOpen = menu.hidden;
+      closeMenus(menu);
+      menu.hidden = !willOpen;
+      toggle.setAttribute("aria-expanded", String(willOpen));
+    });
+  });
+
+  document.querySelectorAll("[data-product-action='view']").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const row = button.closest(".product_row");
+      const cells = row.cells;
+      const language = document.documentElement.lang || "en";
+      const labels = language === "ko"
+        ? ["카테고리", "브랜드", "상태", "가격", "남은 제품 수량", "판매 상태", "등록일"]
+        : language === "uz"
+          ? ["Kategoriya", "Brend", "Holati", "Narxi", "Qolgan mahsulot soni", "Status", "Qo‘shilgan"]
+          : ["Category", "Brand", "Condition", "Price", "Product Left Count", "Status", "Added"];
+      const values = [cells[2], cells[3], cells[4], cells[5], cells[6], cells[7], cells[8]].map(function (cell) {
+        return cell.querySelector("select")?.selectedOptions[0]?.textContent || cell.textContent.trim();
+      });
+      const title = cells[1].querySelector("strong")?.textContent || "Product";
+      const overlay = document.createElement("div");
+      overlay.className = "product_details_overlay";
+      overlay.innerHTML = `<section class="product_details_modal" role="dialog" aria-modal="true" aria-labelledby="product-details-title"><header><h2 id="product-details-title"></h2><button type="button" aria-label="Close">×</button></header><div class="product_details_grid"></div></section>`;
+      overlay.querySelector("h2").textContent = title;
+      const grid = overlay.querySelector(".product_details_grid");
+      labels.forEach(function (label, index) {
+        const item = document.createElement("div");
+        const small = document.createElement("small");
+        const strong = document.createElement("strong");
+        small.textContent = label; strong.textContent = values[index]; item.append(small, strong); grid.appendChild(item);
+      });
+      document.body.appendChild(overlay);
+      const close = () => overlay.remove();
+      overlay.querySelector("button").addEventListener("click", close);
+      overlay.addEventListener("click", (event) => { if (event.target === overlay) close(); });
+      closeMenus();
+    });
+  });
+
+  document.querySelectorAll("[data-product-action='delete']").forEach(function (button) {
+    button.addEventListener("click", async function () {
+      const row = button.closest(".product_row");
+      const statusSelect = row.querySelector(".new-product-status");
+      const name = row.querySelector(".product_copy strong")?.textContent || "product";
+      const language = document.documentElement.lang || "en";
+      const message = language === "ko" ? `${name} 제품을 삭제 상태로 변경하시겠습니까?` : language === "uz" ? `${name} mahsulotini o‘chirishga ishonchingiz komilmi?` : `Are you sure you want to delete ${name}?`;
+      if (!window.confirm(message)) return;
+      button.disabled = true;
+      try {
+        const response = await axios.delete(`/admin/product/${statusSelect.dataset.productId}`);
+        if (!response.data.data) throw new Error("Product delete failed");
+        row.remove();
+        document.dispatchEvent(new CustomEvent("techanor:producttablechange"));
+        closeMenus();
+      } catch (error) {
+        console.error("Error, deleteProduct:", error);
+        alert(language === "uz" ? "Mahsulotni o‘chirib bo‘lmadi." : language === "ko" ? "제품을 삭제하지 못했습니다." : "Product could not be deleted.");
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+
+  document.addEventListener("click", () => closeMenus());
+  document.addEventListener("keydown", function (event) { if (event.key === "Escape") closeMenus(); });
+}
+
+function initializeMemoryField() {
+  const category = document.getElementById("product-category");
+  const triggerField = document.getElementById("memory-trigger-field");
+  const inputField = document.getElementById("memory-input-field");
+  const memorySelect = document.getElementById("product-memory");
+  const addButton = document.getElementById("add-memory-button");
+  const removeButton = document.getElementById("remove-memory-button");
+  const screenTriggerField = document.getElementById("screen-trigger-field");
+  const screenInputField = document.getElementById("screen-input-field");
+  const screenSelect = document.getElementById("product-screen-size");
+  const addScreenButton = document.getElementById("add-screen-button");
+  const removeScreenButton = document.getElementById("remove-screen-button");
+  if (!category || !triggerField || !inputField || !memorySelect || !screenTriggerField || !screenInputField || !screenSelect) return;
+
+  const memoryCategories = new Set(["LAPTOP", "SMARTPHONE"]);
+
+  function removeMemory() {
+    memorySelect.value = "";
+    memorySelect.disabled = true;
+    inputField.hidden = true;
+    triggerField.hidden = !memoryCategories.has(category.value);
+  }
+
+  function removeScreenSize() {
+    screenSelect.value = "";
+    screenSelect.disabled = true;
+    screenInputField.hidden = true;
+    screenTriggerField.hidden = category.value !== "TV";
+  }
+
+  function syncCategory() {
+    if (!memoryCategories.has(category.value)) {
+      removeMemory();
+      triggerField.hidden = true;
+    } else {
+      triggerField.hidden = !inputField.hidden;
+    }
+
+    if (category.value !== "TV") {
+      removeScreenSize();
+      screenTriggerField.hidden = true;
+    } else {
+      screenTriggerField.hidden = !screenInputField.hidden;
+    }
+  }
+
+  category.addEventListener("change", syncCategory);
+  addButton.addEventListener("click", function () {
+    triggerField.hidden = true;
+    inputField.hidden = false;
+    memorySelect.disabled = false;
+    memorySelect.focus();
+  });
+  removeButton.addEventListener("click", removeMemory);
+  addScreenButton.addEventListener("click", function () {
+    screenTriggerField.hidden = true;
+    screenInputField.hidden = false;
+    screenSelect.disabled = false;
+    screenSelect.focus();
+  });
+  removeScreenButton.addEventListener("click", removeScreenSize);
+  document.getElementById("reset-btn")?.addEventListener("click", function () {
+    window.setTimeout(function () { removeMemory(); removeScreenSize(); triggerField.hidden = true; screenTriggerField.hidden = true; }, 0);
+  });
+  syncCategory();
 }
 
 function initializeSidebar() {

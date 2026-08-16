@@ -17,7 +17,7 @@
 
 .google_auth_button:hover {
   border-color: #b8c0cc;
-  background: #f8fafc;
+  background: var(--color-surface);
   transform: translateY(-1px);
 }
 

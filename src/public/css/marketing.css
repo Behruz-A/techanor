@@ -10,16 +10,16 @@ body.marketing_page { color:#1d2939; background:#f9fafb; font-family:"Outfit",-a
 .marketing_navigation { gap:0; }
 .marketing_navigation > a { color:#344054; font-size:16px; font-weight:500; }
 .marketing_navigation .nav_icon svg { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-.marketing_navigation > a:hover,.marketing_navigation > a.is_active { color:#6366f1; background:#eef2ff; box-shadow:none; }
-.marketing_navigation > a:hover .nav_icon,.marketing_navigation > a.is_active .nav_icon { color:#6366f1; }
-.marketing_navigation .dashboard_parent { min-height:52px; color:#6366f1; background:#eef2ff; }
-.marketing_navigation .dashboard_parent:hover { color:#6366f1; background:#eef2ff; }
-.marketing_navigation .dashboard_parent .nav_icon { color:#6366f1; }
-.marketing_navigation .dashboard_parent b { margin-left:auto; color:#6366f1; font-size:16px; }
+.marketing_navigation > a:hover,.marketing_navigation > a.is_active { color:var(--color-primary); background:#eef2ff; box-shadow:none; }
+.marketing_navigation > a:hover .nav_icon,.marketing_navigation > a.is_active .nav_icon { color:var(--color-primary); }
+.marketing_navigation .dashboard_parent { min-height:52px; color:var(--color-primary); background:#eef2ff; }
+.marketing_navigation .dashboard_parent:hover { color:var(--color-primary); background:#eef2ff; }
+.marketing_navigation .dashboard_parent .nav_icon { color:var(--color-primary); }
+.marketing_navigation .dashboard_parent b { margin-left:auto; color:var(--color-primary); font-size:16px; }
 .dashboard_children { display:grid; gap:4px; padding:14px 0 12px 42px; }
 .dashboard_children a { min-height:44px; padding:0 14px; color:#344054; background:transparent; font-size:14px; }
-.dashboard_children a:hover { color:#6366f1; background:#f5f7ff; }
-.dashboard_children a.is_active { color:#6366f1; background:#eef2ff; box-shadow:none; }
+.dashboard_children a:hover { color:var(--color-primary); background:#f5f7ff; }
+.dashboard_children a.is_active { color:var(--color-primary); background:#eef2ff; box-shadow:none; }
 .dashboard_children em,.assistant_link em { margin-left:auto; padding:4px 10px; border-radius:999px; color:#067647; background:#ecfdf3; font-size:12px; font-style:normal; font-weight:700; }
 .marketing_navigation .assistant_link { margin-top:6px; }
 .marketing_navigation .assistant_link b { margin-left:5px; font-size:15px; }
@@ -38,7 +38,7 @@ body.marketing_page { color:#1d2939; background:#f9fafb; font-family:"Outfit",-a
 .metric_grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-bottom:18px; }
 .metric_card,.marketing_card { border:1px solid #e4e7ec; border-radius:16px; background:#fff; box-shadow:none; }
 .metric_card { position:relative; min-height:190px; padding:26px; }
-.metric_icon { display:grid; width:48px; height:48px; border-radius:14px; color:#6366f1; background:rgba(99,102,241,.09); font-size:25px; place-items:center; }
+.metric_icon { display:grid; width:48px; height:48px; border-radius:14px; color:var(--color-primary); background:color-mix(in srgb,var(--color-primary) 9%,transparent); font-size:25px; place-items:center; }
 .metric_card p { margin:28px 0 10px; color:#667085; font-size:16px; font-weight:500; }
 .metric_card div { display:flex; gap:12px; align-items:center; }
 .metric_card strong { color:#1d2939; font-size:32px; font-weight:600; letter-spacing:-1px; }
@@ -54,11 +54,11 @@ body.marketing_page { color:#1d2939; background:#f9fafb; font-family:"Outfit",-a
 .card_menu_icon { min-width:36px; min-height:36px; display:grid; color:#98a2b3; font-size:16px; font-weight:800; letter-spacing:2px; place-items:center; }
 .period_tabs button:focus-visible,.view_all_button:focus-visible,.traffic_chart:focus-visible { outline:3px solid rgba(99,102,241,.25); outline-offset:2px; }
 .chart_legend { display:flex; gap:18px; justify-content:flex-end; margin:22px 0 6px; color:#667085; font-size:14px; }
-.chart_legend i { display:inline-block; width:8px; height:8px; margin-right:6px; border-radius:50%; }.legend_primary { background:#6366f1; }.legend_secondary { background:#8b5cf6; }
-.traffic_chart { display:block; width:100%; height:auto; overflow:visible; }.chart_grid line { stroke:#e5e7eb; stroke-width:1; }.chart_area { fill:url(#chartFill); }.chart_line { fill:none; stroke-width:4; stroke-linecap:round; }.chart_line_primary { stroke:#3b82f6; }.chart_line_secondary { stroke:#8b5cf6; stroke-width:3; }
+.chart_legend i { display:inline-block; width:8px; height:8px; margin-right:6px; border-radius:50%; }.legend_primary,.legend_secondary { background:var(--color-primary); }
+.traffic_chart { display:block; width:100%; height:auto; overflow:visible; }.chart_grid line { stroke:#e5e7eb; stroke-width:1; }.chart_area { fill:url(#chartFill); }.chart_line { fill:none; stroke-width:4; stroke-linecap:round; }.chart_line_primary,.chart_line_secondary { stroke:var(--color-primary); }.chart_line_secondary { stroke-width:3; opacity:.62; }
 .period_tabs { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin:26px 0; padding:4px; border-radius:12px; background:#f1f5f9; }.period_tabs button { min-height:42px; border:0; border-radius:9px; color:#64748b; background:transparent; font-size:14px; font-weight:650; cursor:pointer; }.period_tabs button.is_active { color:#1d1d1f; background:#fff; box-shadow:0 2px 8px rgba(15,23,42,.07); }
 .traffic_stat { padding:18px 0; border-bottom:1px solid #e5e7eb; }.traffic_stat:last-child { border-bottom:0; }.traffic_stat p { margin:0 0 8px; color:#6e6e73; font-size:15px; font-weight:500; }.traffic_stat strong { display:block; color:#1d1d1f; font-size:30px; }.trend_text { display:block; margin-top:6px; font-size:14px; font-weight:700; }.trend_text small { color:#667085; font-size:14px; font-weight:500; }.trend_text.up { color:#067647; }.trend_text.down { color:#b42318; }
-.mini_bar { height:6px; margin-top:15px; overflow:hidden; border-radius:6px; background:#e5e7eb; }.mini_bar i { display:block; height:100%; border-radius:inherit; background:#3b82f6; }.mini_bar.is_purple i { background:#8b5cf6; }
+.mini_bar { height:6px; margin-top:15px; overflow:hidden; border-radius:6px; background:#e5e7eb; }.mini_bar i,.mini_bar.is_purple i { display:block; height:100%; border-radius:inherit; background:var(--color-primary); }
 .campaign_head,.campaign_row { display:grid; grid-template-columns:minmax(190px,.9fr) minmax(230px,1.3fr) 100px; gap:18px; align-items:center; }.campaign_head { margin-top:22px; padding:14px 0; border-bottom:1px solid #e5e7eb; color:#667085; font-size:14px; font-weight:600; }.campaign_row { min-height:92px; border-bottom:1px solid #eef0f4; }.campaign_row:last-child { border-bottom:0; }.campaign_creator,.campaign_details { display:flex; gap:12px; align-items:center; min-width:0; }.campaign_creator img { width:46px; height:46px; flex:0 0 46px; border-radius:50%; object-fit:cover; background:#e5e7eb; }.campaign_creator strong,.campaign_details strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }.campaign_row strong,.campaign_row small { display:block; }.campaign_row strong { color:#334155; font-size:15px; }.campaign_row small { margin-top:5px; color:#667085; font-size:13px; }
 .social_logo,.source_logo { position:relative; display:grid; width:40px; height:40px; flex:0 0 40px; border-radius:11px; color:#fff; font-size:25px; font-weight:800; font-style:normal; place-items:center; }
 .facebook_logo { border-radius:50%; background:linear-gradient(160deg,#24a4f2,#0866ff); font-family:Arial,sans-serif; }
@@ -67,7 +67,7 @@ body.marketing_page { color:#1d2939; background:#f9fafb; font-family:"Outfit",-a
 .google_ads_logo i,.google_ads_logo b,.google_ads_logo em { position:absolute; display:block; width:9px; height:34px; border-radius:8px; transform-origin:center bottom; }
 .google_ads_logo i { left:10px; bottom:4px; background:#4285f4; transform:rotate(30deg); }.google_ads_logo b { right:10px; bottom:4px; background:#34a853; transform:rotate(-30deg); }.google_ads_logo em { right:7px; bottom:2px; width:13px; height:13px; border-radius:50%; background:#fbbc04; }
 .campaign_status { justify-self:start; padding:6px 10px; border-radius:999px; font-size:14px; font-weight:700; }.campaign_status.success { color:#067647; background:#ecfdf3; }.campaign_status.pending { color:#a16207; background:#fffbeb; }.campaign_status.failed { color:#b42318; background:#fef2f2; }
-.source_row { display:grid; grid-template-columns:42px 82px 1fr 42px; gap:12px; align-items:center; padding:22px 0; border-bottom:1px solid #e5e7eb; }.source_row strong { color:#334155; font-size:15px; }.source_row > div { height:8px; overflow:hidden; border-radius:8px; background:#e5e7eb; }.source_row i { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#3b82f6,#6366f1); }.source_row > span:last-child { color:#64748b; font-size:14px; font-weight:700; text-align:right; }.source_logo { width:36px; height:36px; flex-basis:36px; font-size:21px; }.google_logo { color:transparent; background:conic-gradient(from -45deg,#4285f4 0 25%,#34a853 0 42%,#fbbc05 0 63%,#ea4335 0 78%,#4285f4 0); background-clip:text; -webkit-background-clip:text; font-family:Arial,sans-serif; font-size:28px; }.youtube_logo { border-radius:9px; background:#ff0000; font-size:15px; }.view_all_button { width:100%; min-height:44px; margin-top:22px; display:flex; align-items:center; justify-content:center; border:1px solid #e5e7eb; border-radius:11px; color:#334155; background:#fff; font-weight:700; text-decoration:none; cursor:pointer; }.view_all_button:hover { border-color:#6366f1; color:#6366f1; text-decoration:none; }.campaign_empty { margin:24px 0 4px; padding:18px; border-radius:12px; color:#667085; background:#f8fafc; font-size:15px; text-align:center; }
+.source_row { display:grid; grid-template-columns:42px 82px 1fr 42px; gap:12px; align-items:center; padding:22px 0; border-bottom:1px solid #e5e7eb; }.source_row strong { color:#334155; font-size:15px; }.source_row > div { height:8px; overflow:hidden; border-radius:8px; background:#e5e7eb; }.source_row i { display:block; height:100%; border-radius:inherit; background:var(--color-primary); }.source_row > span:last-child { color:#64748b; font-size:14px; font-weight:700; text-align:right; }.source_logo { width:36px; height:36px; flex-basis:36px; font-size:21px; }.google_logo { color:transparent; background:conic-gradient(from -45deg,#4285f4 0 25%,#34a853 0 42%,#fbbc05 0 63%,#ea4335 0 78%,#4285f4 0); background-clip:text; -webkit-background-clip:text; font-family:Arial,sans-serif; font-size:28px; }.youtube_logo { border-radius:9px; background:#ff0000; font-size:15px; }.view_all_button { width:100%; min-height:44px; margin-top:22px; display:flex; align-items:center; justify-content:center; border:1px solid #e5e7eb; border-radius:11px; color:#334155; background:#fff; font-weight:700; text-decoration:none; cursor:pointer; }.view_all_button:hover { border-color:var(--color-primary); color:var(--color-primary); text-decoration:none; }.campaign_empty { margin:24px 0 4px; padding:18px; border-radius:12px; color:#667085; background:var(--color-surface); font-size:15px; text-align:center; }
 
 html[data-theme="dark"] .marketing_heading h1,html[data-theme="dark"] .metric_card strong,html[data-theme="dark"] .marketing_card_header h2,html[data-theme="dark"] .marketing_card_header > div:last-child strong,html[data-theme="dark"] .traffic_stat strong,html[data-theme="dark"] .campaign_row strong,html[data-theme="dark"] .source_row strong { color:#f8fafc; }
 html[data-theme="dark"] .marketing_page .sidebar_brand strong { color:#f8fafc; }
@@ -77,11 +77,11 @@ html[data-theme="dark"] .dashboard_children a { color:#cbd5e1; }
 html[data-theme="dark"] .dashboard_children a:hover,html[data-theme="dark"] .dashboard_children a.is_active { color:#a5b4fc; background:rgba(99,102,241,.12); }
 html[data-theme="dark"] .marketing_heading p:not(.section_label),html[data-theme="dark"] .metric_card p,html[data-theme="dark"] .marketing_card_header p,html[data-theme="dark"] .traffic_stat p { color:#94a3b8; }
 html[data-theme="dark"] .metric_card,html[data-theme="dark"] .marketing_card { border-color:#293548; background:#182235; box-shadow:0 16px 40px rgba(0,0,0,.18); }
-html[data-theme="dark"] .period_tabs { background:#111827; }html[data-theme="dark"] .period_tabs button.is_active { color:#f8fafc; background:#1e293b; }
+html[data-theme="dark"] .period_tabs { background:var(--color-dark); }html[data-theme="dark"] .period_tabs button.is_active { color:var(--color-surface); background:#1e293b; }
 html[data-theme="dark"] .traffic_stat,html[data-theme="dark"] .campaign_head,html[data-theme="dark"] .campaign_row,html[data-theme="dark"] .source_row { border-color:#293548; }
 html[data-theme="dark"] .chart_grid line { stroke:#293548; }html[data-theme="dark"] .mini_bar,html[data-theme="dark"] .source_row > div { background:#293548; }
 html[data-theme="dark"] .view_all_button { border-color:#293548; color:#e2e8f0; background:#1e293b; }
-html[data-theme="dark"] .campaign_empty { color:#94a3b8; background:#111827; }
+html[data-theme="dark"] .campaign_empty { color:#94a3b8; background:var(--color-dark); }
 .metric_card,.marketing_card,.period_tabs,.view_all_button { transition:color 240ms ease,background-color 240ms ease,border-color 240ms ease,box-shadow 240ms ease; }
 .traffic_stat strong,.trend_text,.mini_bar i { transition:color 220ms ease,width 300ms ease,opacity 220ms ease; }
 .traffic_chart_card { position:relative; }
@@ -90,14 +90,12 @@ html[data-theme="dark"] .campaign_empty { color:#94a3b8; background:#111827; }
 .traffic_chart_card.is_tracking .chart_cursor { opacity:1; }
 .chart_cursor line { stroke:#94a3b8; stroke-width:1.5; stroke-dasharray:5 5; }
 .chart_cursor circle { fill:#fff; stroke-width:4; }
-#traffic-primary-point { stroke:#3b82f6; }
-#traffic-secondary-point { stroke:#8b5cf6; }
+#traffic-primary-point,#traffic-secondary-point { stroke:var(--color-primary); }
 .traffic_tooltip { position:absolute; z-index:3; display:none; min-width:170px; padding:12px 14px; border:1px solid #e5e7eb; border-radius:11px; color:#334155; background:rgba(255,255,255,.97); box-shadow:0 12px 30px rgba(15,23,42,.14); font-size:14px; line-height:1.55; pointer-events:none; transform:translate(-50%,-100%); }
 .traffic_tooltip.is_visible { display:block; }
 .traffic_tooltip strong,.traffic_tooltip span { display:block; }
 .traffic_tooltip strong { color:#1d2939; font-size:15px; }
-.traffic_tooltip i { display:inline-block; width:8px; height:8px; margin-right:6px; border-radius:50%; background:#3b82f6; }
-.traffic_tooltip span:last-child i { background:#8b5cf6; }
+.traffic_tooltip i,.traffic_tooltip span:last-child i { display:inline-block; width:8px; height:8px; margin-right:6px; border-radius:50%; background:var(--color-primary); }
 html[data-theme="dark"] .traffic_tooltip { border-color:#293548; color:#cbd5e1; background:rgba(24,34,53,.98); }
 html[data-theme="dark"] .traffic_tooltip strong { color:#f8fafc; }
 
@@ -110,7 +108,7 @@ html[data-theme="dark"] .traffic_tooltip strong { color:#f8fafc; }
 .source_card .marketing_card_header h2 { font-size:22px; }
 .source_row { min-height:84px; grid-template-columns:44px 86px 1fr 42px; gap:13px; padding:20px 0; }
 .source_row strong { font-size:15px; }
-.source_row i { background:#6366f1; }
+.source_row i { background:var(--color-primary); }
 .source_row > span:last-child { color:#344054; font-size:14px; }
 .source_logo { display:block; width:40px; height:40px; border-radius:0; object-fit:contain; }
 .view_all_button { min-height:50px; margin-top:24px; border-color:#d0d5dd; border-radius:10px; font-size:15px; }

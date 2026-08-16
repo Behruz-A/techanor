@@ -1,6 +1,7 @@
 /* Techanor particles configuration */
 
 if (typeof particlesJS === "function") {
+  const techanorPrimary = getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim() || "#4F46E5";
   particlesJS("particles-js", {
     particles: {
       number: {
@@ -11,7 +12,7 @@ if (typeof particlesJS === "function") {
         },
       },
       color: {
-        value: ["#22D3EE", "#6366F1", "#8B5CF6"],
+        value: techanorPrimary,
       },
       shape: {
         type: "circle",
@@ -43,7 +44,7 @@ if (typeof particlesJS === "function") {
       line_linked: {
         enable: true,
         distance: 150,
-        color: "#A5B4FC",
+        color: techanorPrimary,
         opacity: 0.3,
         width: 1,
       },
@@ -88,12 +89,8 @@ if (typeof particlesJS === "function") {
     retina_detect: true,
   });
 
-  const techanorPalettes = [
-    ["#22D3EE", "#3B82F6", "#8B5CF6"],
-    ["#38BDF8", "#6366F1", "#A78BFA"],
-    ["#67E8F9", "#4F46E5", "#7C3AED"],
-  ];
-  const techanorLineColors = ["#22D3EE", "#6366F1", "#8B5CF6"];
+  const techanorPalettes = [[techanorPrimary, techanorPrimary, techanorPrimary]];
+  const techanorLineColors = [techanorPrimary];
   const paletteDuration = 5500;
   const particlesInstance = window.pJSDom && window.pJSDom[0];
 

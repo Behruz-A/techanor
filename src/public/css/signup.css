@@ -58,7 +58,7 @@ body.auth_page {
 
 .signup_top h1 {
   margin: 0;
-  color: #f8fafc;
+  color: var(--color-surface);
   font-size: clamp(25px, 4vw, 28px);
   font-weight: 700;
   letter-spacing: -0.04em;
@@ -113,7 +113,7 @@ body.auth_page {
   height: 48px;
   padding: 0 15px;
   box-sizing: border-box;
-  color: #f8fafc;
+  color: var(--color-surface);
   border: 1px solid #475569;
   border-radius: 10px;
   outline: none;
@@ -128,7 +128,7 @@ body.auth_page {
 }
 
 .sign_up_frame input:focus {
-  border-color: #6366f1;
+  border-color: var(--color-primary);
   background: #37475b;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.16);
 }
@@ -199,7 +199,7 @@ body.auth_page {
   overflow: hidden;
   border: 1px solid #46566d;
   border-radius: 11px;
-  background: #0f172a;
+  background: var(--color-dark);
 }
 
 .upload_placeholder {
