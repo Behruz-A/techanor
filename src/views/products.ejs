@@ -46,6 +46,10 @@
           <input id="product-search" type="search" data-i18n-placeholder="search" placeholder="Search products..." />
         </label>
         <div class="header_actions">
+          <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+            <span class="theme_icon theme_icon_sun" aria-hidden="true">☀</span>
+            <span class="theme_icon theme_icon_moon" aria-hidden="true">☾</span>
+          </button>
           <label class="language_picker" for="language-select">
             <span>文</span>
             <select id="language-select" aria-label="Language">
@@ -54,10 +58,6 @@
               <option value="uz">O‘zbek</option>
             </select>
           </label>
-          <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-            <span class="theme_icon theme_icon_sun" aria-hidden="true">☀</span>
-            <span class="theme_icon theme_icon_moon" aria-hidden="true">☾</span>
-          </button>
           <div class="admin_identity">
             <img src="/img/Asensio.png" alt="Ryan" />
             <div><strong>Ryan</strong><small>Admin</small></div>

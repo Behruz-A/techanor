@@ -26,19 +26,19 @@
 
       <p class="sidebar_label">MENU</p>
       <nav class="sidebar_navigation marketing_navigation" aria-label="Admin navigation">
-        <a href="/admin"><span class="nav_icon">⌂</span><span>Home</span></a>
-        <a href="/admin/product/all"><span class="nav_icon">▦</span><span>Products</span></a>
-        <a href="/admin/analytics"><span class="nav_icon">⌁</span><span>Analytics</span></a>
-        <a class="is_active" href="/admin/marketing" aria-current="page"><span class="nav_icon">⌁</span><span>Marketing</span></a>
-        <a href="/admin/user/all"><span class="nav_icon">♙</span><span>Users</span></a>
-        <a href="/admin/blog/all"><span class="nav_icon">▤</span><span>Blogs</span></a>
+        <a href="/admin"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10Z"/></svg></span><span>Home</span></a>
+        <a href="/admin/product/all"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.8 7.5 4.3 7.5-4.3M12 12v9"/></svg></span><span>Products</span></a>
+        <a href="/admin/analytics"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/></svg></span><span>Analytics</span></a>
+        <a class="is_active" href="/admin/marketing" aria-current="page"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 13 2.2 6h3.6L8 13m0-5h3l7-4v16l-7-4H5a3 3 0 0 1 0-6h3V8Z"/></svg></span><span>Marketing</span></a>
+        <a href="/admin/user/all"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.9m-2-11.8a4 4 0 0 1 0 7.4"/></svg></span><span>Users</span></a>
+        <a href="/admin/blog/all"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3h14a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span><span>Blogs</span></a>
         <button class="sidebar_future_item" type="button" data-coming-soon="AI"><span>AI</span><em>NEW</em></button>
         <button class="sidebar_future_item" type="button" data-coming-soon="AI Assistant"><span>AI Assistant</span><em>NEW</em></button>
       </nav>
 
       <div class="sidebar_footer">
         <span><i></i><span data-i18n="systemOnline">SYSTEM ONLINE</span></span>
-        <a class="sidebar_logout" href="/admin/logout" onclick="return confirm('Do you want to logout?')"><span>↪</span><span data-i18n="logout">Logout</span></a>
+        <a class="sidebar_logout" href="/admin/logout"><svg class="logout_icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5m5 5H3m10-8h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"/></svg><span data-i18n="logout">Logout</span></a>
       </div>
     </aside>
 
@@ -78,58 +78,61 @@
 
         <section class="analytics_grid">
           <article class="marketing_card traffic_chart_card">
-            <div class="marketing_card_header"><div><h2>Impressions & Data Traffic</h2><p>Jan 1, 2026 – Aug 16, 2026</p></div><div><strong>$9,758.00</strong><span class="trend trend_up">+7.96%</span></div></div>
+            <div class="marketing_card_header"><div><h2>Impressions &amp; Traffic</h2><p>Jan 1, 2026 – Aug 17, 2026</p></div><div><strong id="traffic-chart-total">$9,758.00</strong><span class="trend trend_up" id="traffic-chart-trend">+7.96%</span></div></div>
             <div class="chart_legend"><span><i class="legend_primary"></i>Impressions</span><span><i class="legend_secondary"></i>Engagement</span></div>
-            <svg class="traffic_chart" viewBox="0 0 760 280" role="img" aria-label="Marketing traffic chart">
+            <svg class="traffic_chart" viewBox="0 0 760 280" role="img" aria-label="Marketing traffic chart" tabindex="0">
               <defs><linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6366F1" stop-opacity=".25"/><stop offset="1" stop-color="#6366F1" stop-opacity="0"/></linearGradient></defs>
               <g class="chart_grid"><line x1="45" y1="35" x2="740" y2="35"/><line x1="45" y1="95" x2="740" y2="95"/><line x1="45" y1="155" x2="740" y2="155"/><line x1="45" y1="215" x2="740" y2="215"/></g>
               <path class="chart_area" d="M45 205 C95 190 120 150 170 165 S245 205 300 166 S370 135 420 115 S490 145 535 92 S610 64 655 75 S705 42 740 55 L740 250 L45 250 Z"/>
               <path class="chart_line chart_line_primary" d="M45 205 C95 190 120 150 170 165 S245 205 300 166 S370 135 420 115 S490 145 535 92 S610 64 655 75 S705 42 740 55"/>
               <path class="chart_line chart_line_secondary" d="M45 232 C110 238 130 215 178 222 S252 240 310 214 S375 194 430 178 S510 187 565 151 S645 132 690 110 S720 118 740 105"/>
+              <g class="chart_cursor" id="traffic-chart-cursor" aria-hidden="true"><line id="traffic-cursor-line" x1="45" y1="30" x2="45" y2="250"/><circle id="traffic-primary-point" cx="45" cy="205" r="6"/><circle id="traffic-secondary-point" cx="45" cy="232" r="5"/></g>
             </svg>
+            <div class="traffic_tooltip" id="traffic-tooltip" role="status" aria-live="polite"></div>
           </article>
 
           <article class="marketing_card traffic_stats">
-            <div class="marketing_card_header"><h2>Traffic Stats</h2><button type="button">•••</button></div>
-            <div class="period_tabs"><button class="is_active">Today</button><button>Week</button><button>Month</button></div>
-            <div class="traffic_stat"><p>New Subscribers</p><strong>567K</strong><span class="trend_text up">+3.85% <small>than last week</small></span><div class="mini_bar"><i style="width:78%"></i></div></div>
-            <div class="traffic_stat"><p>Conversion Rate</p><strong>276K</strong><span class="trend_text down">−5.39% <small>than last week</small></span><div class="mini_bar is_purple"><i style="width:58%"></i></div></div>
+            <div class="marketing_card_header"><h2>Traffic Stats</h2><span class="card_menu_icon" aria-hidden="true">•••</span></div>
+            <div class="period_tabs" role="group" aria-label="Traffic statistics period"><button class="is_active" type="button" data-traffic-period="today" aria-pressed="true">Today</button><button type="button" data-traffic-period="week" aria-pressed="false">Week</button><button type="button" data-traffic-period="month" aria-pressed="false">Month</button></div>
+            <div class="traffic_stat"><p>New Subscribers</p><strong id="subscriber-value">567K</strong><span class="trend_text up" id="subscriber-trend">+3.85% <small>than yesterday</small></span><div class="mini_bar"><i id="subscriber-bar" style="width:78%"></i></div></div>
+            <div class="traffic_stat"><p>Conversion Rate</p><strong id="conversion-value">27.6%</strong><span class="trend_text down" id="conversion-trend">−5.39% <small>than yesterday</small></span><div class="mini_bar is_purple"><i id="conversion-bar" style="width:58%"></i></div></div>
           </article>
         </section>
 
         <section class="marketing_bottom_grid">
           <article class="marketing_card campaign_card">
-            <div class="marketing_card_header"><h2>Featured Campaigns</h2><button type="button">•••</button></div>
+            <div class="marketing_card_header"><h2>Featured Campaigns</h2><span class="card_menu_icon" aria-hidden="true">•••</span></div>
             <div class="campaign_head"><span>Creator</span><span>Campaign</span><span>Status</span></div>
             <div class="campaign_row" data-search-row data-search="wilson google search visibility growth success">
-              <div class="campaign_creator"><img src="/img/marketing/wilson.jpg" alt="Wilson Gouse" /><strong>Wilson Gouse</strong></div>
+              <div class="campaign_creator"><img src="/img/marketing/wilson.jpg" alt="" /><strong>Wilson Gouse</strong></div>
               <div class="campaign_details"><img class="platform_logo" src="/img/marketing/google-ads.svg" alt="Google Ads" /><div><strong>Grow your brand visibility</strong><small>Ads campaign</small></div></div><span class="campaign_status success">Success</span>
             </div>
             <div class="campaign_row" data-search-row data-search="terry facebook new product audience pending">
-              <div class="campaign_creator"><img src="/img/marketing/terry.jpg" alt="Terry Franci" /><strong>Terry Franci</strong></div>
+              <div class="campaign_creator"><img src="/img/marketing/terry.jpg" alt="" /><strong>Terry Franci</strong></div>
               <div class="campaign_details"><img class="platform_logo" src="/img/marketing/facebook.svg" alt="Facebook" /><div><strong>Make better product ideas</strong><small>Ads campaign</small></div></div><span class="campaign_status pending">Pending</span>
             </div>
             <div class="campaign_row" data-search-row data-search="alena google ads website traffic success">
-              <div class="campaign_creator"><img src="/img/marketing/alena.jpg" alt="Alena Franci" /><strong>Alena Franci</strong></div>
+              <div class="campaign_creator"><img src="/img/marketing/alena.jpg" alt="" /><strong>Alena Franci</strong></div>
               <div class="campaign_details"><img class="platform_logo" src="/img/marketing/google-ads.svg" alt="Google Ads" /><div><strong>Increase your website traffic</strong><small>Ads campaign</small></div></div><span class="campaign_status success">Success</span>
             </div>
             <div class="campaign_row" data-search-row data-search="jocelyn instagram techanor brand story failed">
-              <div class="campaign_creator"><img src="/img/marketing/jocelyn.jpg" alt="Jocelyn Kenter" /><strong>Jocelyn Kenter</strong></div>
+              <div class="campaign_creator"><img src="/img/marketing/jocelyn.jpg" alt="" /><strong>Jocelyn Kenter</strong></div>
               <div class="campaign_details"><img class="platform_logo" src="/img/marketing/instagram.svg" alt="Instagram" /><div><strong>Digital marketing that works</strong><small>Ads campaign</small></div></div><span class="campaign_status failed">Failed</span>
             </div>
             <div class="campaign_row" data-search-row data-search="brandon facebook self branding success">
-              <div class="campaign_creator"><img src="/img/marketing/brandon.jpg" alt="Brandon Philips" /><strong>Brandon Philips</strong></div>
+              <div class="campaign_creator"><img src="/img/marketing/brandon.jpg" alt="" /><strong>Brandon Philips</strong></div>
               <div class="campaign_details"><img class="platform_logo" src="/img/marketing/facebook.svg" alt="Facebook" /><div><strong>Self branding</strong><small>Ads campaign</small></div></div><span class="campaign_status success">Success</span>
             </div>
+            <p class="campaign_empty" id="campaign-search-empty" hidden>No campaigns match your search.</p>
           </article>
 
           <article class="marketing_card source_card">
-            <div class="marketing_card_header"><h2>Top Traffic Sources</h2><button type="button">•••</button></div>
-            <div class="source_row"><img class="source_logo" src="/img/marketing/google.svg" alt="Google" /><strong>Google</strong><div><i style="width:79%"></i></div><span>79%</span></div>
-            <div class="source_row"><img class="source_logo" src="/img/marketing/youtube.svg" alt="YouTube" /><strong>YouTube</strong><div><i style="width:55%"></i></div><span>55%</span></div>
-            <div class="source_row"><img class="source_logo" src="/img/marketing/facebook.svg" alt="Facebook" /><strong>Facebook</strong><div><i style="width:48%"></i></div><span>48%</span></div>
-            <div class="source_row"><img class="source_logo" src="/img/marketing/instagram.svg" alt="Instagram" /><strong>Instagram</strong><div><i style="width:42%"></i></div><span>42%</span></div>
-            <button class="view_all_button" type="button">View All</button>
+            <div class="marketing_card_header"><h2>Top Traffic Sources</h2><span class="card_menu_icon" aria-hidden="true">•••</span></div>
+            <div class="source_row"><img class="source_logo" src="/img/marketing/google.svg" alt="Google" /><strong>Google</strong><div role="progressbar" aria-label="Google traffic share" aria-valuemin="0" aria-valuemax="100" aria-valuenow="79"><i style="width:79%"></i></div><span>79%</span></div>
+            <div class="source_row"><img class="source_logo" src="/img/marketing/youtube.svg" alt="YouTube" /><strong>YouTube</strong><div role="progressbar" aria-label="YouTube traffic share" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55"><i style="width:55%"></i></div><span>55%</span></div>
+            <div class="source_row"><img class="source_logo" src="/img/marketing/facebook.svg" alt="Facebook" /><strong>Facebook</strong><div role="progressbar" aria-label="Facebook traffic share" aria-valuemin="0" aria-valuemax="100" aria-valuenow="48"><i style="width:48%"></i></div><span>48%</span></div>
+            <div class="source_row"><img class="source_logo" src="/img/marketing/instagram.svg" alt="Instagram" /><strong>Instagram</strong><div role="progressbar" aria-label="Instagram traffic share" aria-valuemin="0" aria-valuemax="100" aria-valuenow="48"><i style="width:48%"></i></div><span>48%</span></div>
+            <a class="view_all_button" href="/admin/analytics">View All</a>
           </article>
         </section>
       </main>
@@ -137,6 +140,7 @@
   </div>
 
   <script type="text/javascript" src="/js/products.js"></script>
+  <script type="text/javascript" src="/js/marketing.js?v=4"></script>
 </body>
 
 <%- include('includes/footer') %>

@@ -88,12 +88,12 @@ if (typeof particlesJS === "function") {
     retina_detect: true,
   });
 
-  const techAnorPalettes = [
+  const techanorPalettes = [
     ["#22D3EE", "#3B82F6", "#8B5CF6"],
     ["#38BDF8", "#6366F1", "#A78BFA"],
     ["#67E8F9", "#4F46E5", "#7C3AED"],
   ];
-  const techAnorLineColors = ["#22D3EE", "#6366F1", "#8B5CF6"];
+  const techanorLineColors = ["#22D3EE", "#6366F1", "#8B5CF6"];
   const paletteDuration = 5500;
   const particlesInstance = window.pJSDom && window.pJSDom[0];
 
@@ -123,24 +123,24 @@ if (typeof particlesJS === "function") {
     function updateTechanorPalette(now) {
       const elapsed = now - startedAt;
       const palettePosition = elapsed / paletteDuration;
-      const currentIndex = Math.floor(palettePosition) % techAnorPalettes.length;
-      const nextIndex = (currentIndex + 1) % techAnorPalettes.length;
+      const currentIndex = Math.floor(palettePosition) % techanorPalettes.length;
+      const nextIndex = (currentIndex + 1) % techanorPalettes.length;
       const rawProgress = palettePosition - Math.floor(palettePosition);
       const smoothProgress = rawProgress * rawProgress * (3 - 2 * rawProgress);
       const particles = pJS.particles.array;
 
       particles.forEach(function (particle, index) {
-        const colorIndex = index % techAnorPalettes[currentIndex].length;
+        const colorIndex = index % techanorPalettes[currentIndex].length;
         particle.color.rgb = mixColor(
-          techAnorPalettes[currentIndex][colorIndex],
-          techAnorPalettes[nextIndex][colorIndex],
+          techanorPalettes[currentIndex][colorIndex],
+          techanorPalettes[nextIndex][colorIndex],
           smoothProgress,
         );
       });
 
       pJS.particles.line_linked.color_rgb_line = mixColor(
-        techAnorLineColors[currentIndex],
-        techAnorLineColors[nextIndex],
+        techanorLineColors[currentIndex],
+        techanorLineColors[nextIndex],
         smoothProgress,
       );
 

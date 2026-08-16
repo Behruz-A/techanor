@@ -5,30 +5,6 @@
 
 <body class="auth_page">
   <div class="signup_container">
-    <div class="signup_identity_panel">
-      <a class="signup_identity" href="/admin" aria-label="Techanor Home">
-        <span class="signup_logo_orbit">
-          <span class="signup_orbit_dots" aria-hidden="true">
-            <% for (let ringIndex = 0; ringIndex < 3; ringIndex += 1) { %>
-            <% for (let dotIndex = 0; dotIndex < 32; dotIndex += 1) { %>
-            <span
-              class="orbit_color_<%= Math.floor(dotIndex / 4) %>"
-              style="--dot-angle: <%= dotIndex * 11.25 + ringIndex * 5.625 %>deg; --dot-radius: <%= 51 + ringIndex * 11 %>px; --dot-delay: <%= ringIndex * 80 + dotIndex * 18 %>ms"
-            ></span>
-            <% } %>
-            <% } %>
-          </span>
-          <img
-            class="signup_logo"
-            src="/img/techanor-favicon.svg"
-            alt="Techanor"
-          />
-        </span>
-      </a>
-      <h1>Techanor Account</h1>
-      <p>Manage your Techanor Account</p>
-    </div>
-
     <form
       class="signup_frame"
       action="/admin/signup"
