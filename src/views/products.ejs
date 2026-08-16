@@ -2,231 +2,300 @@
 
 <link rel="stylesheet" type="text/css" href="/css/products.css" />
 
-<body>
-  <div class="products-container">
-    <div class="navigation-menu">
-      <ul class="nav justify-content-center">
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link active" href="/admin/">Home</a>
-        </li>
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link" href="/admin/product/all">Menu</a>
-        </li>
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link" href="/admin/user/all">Users</a>
-        </li>
-        <li
-          class="nav-item"
-          style="cursor: pointer"
-          onclick="return confirm('Do you want to logout?')"
-        >
-          <a class="nav-link" href="/admin/logout">Logout</a>
-        </li>
-      </ul>
-    </div>
+<script>
+  (function restoreTechanorTheme() {
+    try {
+      document.documentElement.dataset.theme = localStorage.getItem("techanor-admin-theme") || "light";
+    } catch (error) {
+      document.documentElement.dataset.theme = "light";
+    }
+  })();
+</script>
 
-    <div class="restaurant-menu-frame">
-      <div class="board">
-        <div class="dishes-table">
-          <span class="new-dish-txt" style="margin-bottom: 30px">
-            RESTAURANT MENU
-          </span>
-          <table class="table table-bordered table-hover">
-            <thead class="thead-light">
-              <tr class="thead-light">
-                <th scope="col">T/r</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">Product Type</th>
-                <th scope="col">Product Volume</th>
-                <th scope="col">Product Price</th>
-                <th scope="col">Product Left Count</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <!--  LOOP PRODUCTS: START  -->
-              <% products.map(function(value, key) { %>
-                     <tbody style="background: white">
-              <td> <%= key + 1 %></td>
-              <td><%= value.productName %></td>
-              <td><%= value.productCollection %></td>
-              <td><%= value.productCollection === 'DRINK' ? value.productVolume : value.productSize %> 
-              </td>
-              <td><%= value.productPrice %></td>
-              <td><%= value.productLeftCount %></td>
-              <td>
-                <select class="spec-select new-product-status" id="<%= value._id  %>">
-                  <option value="PAUSE" <%= value.productStatus === 'PAUSE' ? 'selected': '' %>>PAUSE</option>
-                  <option value="PROCESS" <%= value.productStatus === 'PROCESS' ? 'selected': '' %>>PROCESS</option>
-                  <option value="DELETE" <%= value.productStatus === 'DELETE' ? 'selected': '' %>>DELETE</option>
-                </select>
-              </td>
-            </tbody>
+<body class="products_page">
+  <div class="admin_shell">
+    <aside class="admin_sidebar" id="admin-sidebar">
+      <a class="sidebar_brand" href="/admin" aria-label="Techanor home">
+        <img class="sidebar_brand_logo" src="/img/logoipsum-249.svg" alt="" aria-hidden="true" />
+        <span><strong>Techanor</strong><small>ADMIN PANEL</small></span>
+      </a>
 
-             <% }) %>
-       
-            <!--  LOOP PRODUCTS: END  -->
-          </table>
-          <div
-            class="long-input"
-            style="align-items: flex-end; margin-bottom: 25px"
-          >
-            <button class="btn btn-primary" id="process-btn">
-              New Product
-            </button>
+      <p class="sidebar_label" data-i18n="general">GENERAL</p>
+      <nav class="sidebar_navigation" aria-label="Admin navigation">
+        <a href="/admin"><span class="nav_icon">⌂</span><span data-i18n="home">Home</span></a>
+        <a class="is_active" href="/admin/product/all" aria-current="page"><span class="nav_icon">▦</span><span data-i18n="products">Products</span></a>
+        <a href="/admin/analytics"><span class="nav_icon">⌁</span><span>Analytics</span></a>
+        <a href="/admin/marketing"><span class="nav_icon">⌁</span><span data-i18n="marketing">Marketing</span></a>
+        <a href="/admin/user/all"><span class="nav_icon">♙</span><span data-i18n="users">Users</span></a>
+        <a href="/admin/blog/all"><span class="nav_icon">▤</span><span data-i18n="blogs">Blogs</span></a>
+        <button class="sidebar_future_item" type="button" data-coming-soon="AI"><span>AI</span><em>NEW</em></button>
+        <button class="sidebar_future_item" type="button" data-coming-soon="AI Assistant"><span>AI Assistant</span><em>NEW</em></button>
+      </nav>
+
+      <div class="sidebar_footer">
+        <span><i></i><span data-i18n="systemOnline">SYSTEM ONLINE</span></span>
+        <a class="sidebar_logout" href="/admin/logout" onclick="return confirm('Do you want to logout?')"><span>↪</span><span data-i18n="logout">Logout</span></a>
+      </div>
+    </aside>
+
+    <section class="admin_workspace">
+      <header class="workspace_header">
+        <button class="sidebar_toggle" id="sidebar-toggle" type="button" aria-label="Toggle navigation">☰</button>
+        <label class="global_search">
+          <span>⌕</span>
+          <input id="product-search" type="search" data-i18n-placeholder="search" placeholder="Search products..." />
+        </label>
+        <div class="header_actions">
+          <label class="language_picker" for="language-select">
+            <span>文</span>
+            <select id="language-select" aria-label="Language">
+              <option value="en" selected>English</option>
+              <option value="ko">한국어</option>
+              <option value="uz">O‘zbek</option>
+            </select>
+          </label>
+          <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+            <span class="theme_icon theme_icon_sun" aria-hidden="true">☀</span>
+            <span class="theme_icon theme_icon_moon" aria-hidden="true">☾</span>
+          </button>
+          <div class="admin_identity">
+            <img src="/img/Asensio.png" alt="Ryan" />
+            <div><strong>Ryan</strong><small>Admin</small></div>
           </div>
         </div>
-        <form
-        onsubmit="return validateForm()"
-          action="/admin/product/create"
-          method="POST"
-          class="dish-container"
-          enctype="multipart/form-data"
-        >
-          <div class="long-input" style="display: flex; align-items: center">
-            <span class="new-dish-txt">NEW PRODUCT DETAIL</span>
+      </header>
+
+      <main class="products_content">
+      <section class="products_heading">
+        <div>
+          <p class="section_label" data-i18n="catalog">STORE CATALOG</p>
+          <h1 data-i18n="productManagement">Product Management</h1>
+          <p data-i18n="productSubtitle">Manage your Techanor products, stock and availability.</p>
+        </div>
+        <button class="primary_button" id="process-btn" type="button">
+          <span>＋</span> <span data-i18n="addProduct">Add Product</span>
+        </button>
+      </section>
+
+      <section class="products_card" aria-labelledby="products-table-title">
+        <div class="card_heading">
+          <div>
+            <h2 id="products-table-title" data-i18n="productList">Product List</h2>
+            <p><span data-i18n="totalProducts">Total products</span>: <%= products.length %></p>
           </div>
-          <div class="login-input-frame">
-            <div class="long-input">
-              <label>Product Name</label>
-              <input
-                type="text"
-                placeholder="Name"
-                name="productName"
-                class="product-name"
-              />
-            </div>
+        </div>
+
+        <div class="table_wrapper">
+          <table class="products_table">
+            <thead>
+              <tr>
+                <th scope="col" data-i18n="number">No.</th>
+                <th scope="col" data-i18n="product">Product</th>
+                <th scope="col" data-i18n="category">Category</th>
+                <th scope="col" data-i18n="brand">Brand</th>
+                <th scope="col" data-i18n="condition">Condition</th>
+                <th scope="col" data-i18n="price">Price</th>
+                <th scope="col" data-i18n="stock">Stock</th>
+                <th scope="col" data-i18n="status">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% products.forEach(function (product, index) { %>
+                <%
+                  const normalizedName = String(product.productName || '').toLowerCase();
+                  const inferredBrand = normalizedName.includes('iphone') || normalizedName.includes('macbook') || normalizedName.includes('apple')
+                    ? 'APPLE'
+                    : normalizedName.includes('samsung') || normalizedName.includes('galaxy')
+                      ? 'SAMSUNG'
+                      : normalizedName.includes('sony')
+                        ? 'SONY'
+                        : normalizedName.includes('xiaomi') || normalizedName.includes('redmi')
+                          ? 'XIAOMI'
+                          : normalizedName.includes('lg')
+                            ? 'LG'
+                            : 'OTHER';
+                  const displayBrand = product.productBrand && product.productBrand !== 'OTHER' ? product.productBrand : inferredBrand;
+                %>
+                <tr class="product_row" data-search="<%= [product.productName, product.productCategory, displayBrand, product.productCondition, product.productStatus].join(' ').toLowerCase() %>">
+                  <td class="row_number"><%= index + 1 %></td>
+                  <td>
+                    <div class="product_identity">
+                      <% if (product.productImages && product.productImages[0]) { %>
+                        <img
+                          src="/<%= product.productImages[0].replace(/\\/g, '/') %>"
+                          alt=""
+                        />
+                      <% } else { %>
+                        <span class="product_placeholder" aria-hidden="true"></span>
+                      <% } %>
+                      <strong><%= product.productName %></strong>
+                    </div>
+                  </td>
+                  <td><%= ['LAPTOP', 'SMARTPHONE', 'TV', 'GAMING', 'CASES', 'OTHERS'].includes(product.productCategory) ? product.productCategory : 'OTHERS' %></td>
+                  <td><span class="brand_badge"><%= displayBrand %></span></td>
+                  <td>
+                    <span class="condition_badge condition_<%= (product.productCondition || 'unknown').toLowerCase() %>">
+                      <%= product.productCondition || '—' %>
+                    </span>
+                  </td>
+                  <td class="product_price">$<%= Number(product.productPrice).toLocaleString() %></td>
+                  <td><%= product.productLeftCount %></td>
+                  <td>
+                    <select
+                      class="status_select new-product-status status_<%= product.productStatus.toLowerCase() %>"
+                      data-product-id="<%= product._id %>"
+                      aria-label="Status for <%= product.productName %>"
+                    >
+                      <option value="PAUSE" <%= product.productStatus === 'PAUSE' ? 'selected' : '' %>>Paused</option>
+                      <option value="PROCESS" <%= product.productStatus === 'PROCESS' ? 'selected' : '' %>>Active</option>
+                      <option value="DELETE" <%= product.productStatus === 'DELETE' ? 'selected' : '' %>>Deleted</option>
+                    </select>
+                  </td>
+                </tr>
+              <% }) %>
+
+              <% if (!products.length) { %>
+                <tr>
+                  <td class="empty_state" colspan="8" data-i18n="emptyProducts">No products have been added yet.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <form
+        class="product_form"
+        id="product-form"
+        action="/admin/product/create"
+        method="POST"
+        enctype="multipart/form-data"
+        novalidate
+      >
+        <div class="form_heading">
+          <div>
+            <p class="section_label">NEW INVENTORY</p>
+            <h2>Add New Product</h2>
+            <p>Enter the product details and upload at least one image.</p>
+          </div>
+          <button class="close_form_button" id="cancel-btn" type="button" aria-label="Close form">×</button>
+        </div>
+
+        <input name="productStatus" value="PAUSE" type="hidden" />
+
+        <div class="form_grid">
+          <div class="form_field field_full">
+            <label for="product-name">Product Name</label>
             <input
-              name="productStatus"
-              value="PAUSE"
-              class="product-status"
-              hidden
+              id="product-name"
+              name="productName"
+              type="text"
+              placeholder="For example, Galaxy S26 Ultra"
+              required
             />
           </div>
-          <div class="half-input-frame">
-            <div class="half-input">
-              <label>Product Price</label>
-              <input
-                type="number"
-                placeholder="Price"
-                name="productPrice"
-                class="product-price"
-              />
-            </div>
-            <div class="half-input">
-              <label>Product Left Counts</label>
-              <input
-                type="number"
-                placeholder="Counts"
-                name="productLeftCount"
-                class="product-left-count"
-              />
-            </div>
-          </div>
-          <div class="half-input-frame">
-            <div class="half-input">
-              <label>Product Type</label>
-              <select class="product-collection" name="productCollection">
-                <option value="DISH" selected>Dish</option>
-                <option value="SALAD">Salad</option>
-                <option value="DESSERT">Dessert</option>
-                <option value="DRINK">Drink</option>
-                <option value="OTHER">Other</option>
-              </select>
-            </div>
 
-            <div class="half-input" id="product-collection">
-              <label>Dish Volume</label>
-              <select class="product-size" name="productSize">
-                <option value="SMALL">Small</option>
-                <option value="NORMAL" selected>Normal</option>
-                <option value="LARGE">Large</option>
-                <option value="SET">Set</option>
-              </select>
-            </div>
-
-            <div class="half-input" id="product-volume" style="display: none">
-              <label>Drink Volume</label>
-              <select class="product-volume" name="productVolume">
-                <option value="0.5">0,5 liters</option>
-                <option value="1" selected>1 liters</option>
-                <option value="1.2">1,2 liters</option>
-                <option value="1.5">1,5 liters</option>
-                <option value="2">2 liters</option>
-              </select>
-            </div>
-          </div>
-          <div class="long-input">
-            <label>Product Description</label>
-            <textarea name="productDesc" class="product-desc"></textarea>
+          <div class="form_field">
+            <label for="product-price">Price</label>
+            <input
+              id="product-price"
+              name="productPrice"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="0.00"
+              required
+            />
           </div>
 
-          <div class="img-frame">
-            <label>Product Images</label>
-            <div class="media-frame">
-              <div class="upload-img-box">
-                <img src="/img/upload.svg" class="1" id="image-section-1" />
-                <input
-                  type="file"
-                  id="file"
-                  name="productImages"
-                  class="image-one"
-                  required
-                  onchange="previewFileHandler(this, 1)"
-                />
-              </div>
-              <div class="upload-img-box">
-                <img src="/img/upload.svg" class="2" id="image-section-2" />
-                <input
-                  type="file"
-                  id="file"
-                  name="productImages"
-                  class="image-two"
-                  onchange="previewFileHandler(this, 2)"
-                />
-              </div>
-              <div class="upload-img-box">
-                <img src="/img/upload.svg" class="3" id="image-section-3" />
-                <input
-                  type="file"
-                  id="file"
-                  name="productImages"
-                  class="image-three"
-                  onchange="previewFileHandler(this, 3)"
-                />
-              </div>
-              <div class="upload-img-box">
-                <img src="/img/upload.svg" class="4" id="image-section-4" />
-                <input
-                  type="file"
-                  id="file"
-                  name="productImages"
-                  class="image-four"
-                  onchange="previewFileHandler(this, 4)"
-                />
-              </div>
-              <div class="upload-img-box">
-                <img src="/img/upload.svg" class="5" id="image-section-5" />
-                <input
-                  type="file"
-                  id="file"
-                  name="productImages"
-                  class="image-five"
-                  onchange="previewFileHandler(this, 5)"
-                />
-              </div>
-              <input name="restaurantIid" class="restaurant-id" hidden />
-            </div>
+          <div class="form_field">
+            <label for="product-stock">Stock</label>
+            <input
+              id="product-stock"
+              name="productLeftCount"
+              type="number"
+              min="0"
+              step="1"
+              placeholder="0"
+              required
+            />
           </div>
 
-          <div class="operation-buttons">
-            <button class="btn btn-danger" id="cancel-btn">Cancel</button>
-            <button type="submit" class="btn btn-primary" id="create-btn">
-              Create
-            </button>
+          <div class="form_field">
+            <label for="product-category">Category</label>
+            <select id="product-category" name="productCategory" required>
+              <option value="" selected disabled>Select category</option>
+              <option value="LAPTOP">LAPTOP</option>
+              <option value="SMARTPHONE">SMARTPHONE</option>
+              <option value="TV">TV</option>
+              <option value="GAMING">GAMING</option>
+              <option value="CASES">CASES</option>
+              <option value="OTHERS">OTHERS</option>
+            </select>
           </div>
-        </form>
-      </div>
-    </div>
+
+          <div class="form_field">
+            <label for="product-condition">Condition</label>
+            <select id="product-condition" name="productCondition" required>
+              <option value="" selected disabled>Select condition</option>
+              <option value="NEW">New</option>
+              <option value="USED">Used</option>
+            </select>
+          </div>
+
+          <div class="form_field">
+            <label for="product-brand">Brand</label>
+            <select id="product-brand" name="productBrand" required>
+              <option value="" selected disabled>Select brand</option>
+              <option value="APPLE">Apple</option>
+              <option value="SAMSUNG">Samsung</option>
+              <option value="SONY">Sony</option>
+              <option value="LG">LG</option>
+              <option value="XIAOMI">Xiaomi</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </div>
+
+          <div class="form_field field_full">
+            <label for="product-description">Description</label>
+            <textarea
+              id="product-description"
+              name="productDesc"
+              rows="5"
+              placeholder="Describe the product’s main features and specifications"
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <fieldset class="image_upload_section">
+          <legend>Product Images</legend>
+          <p>Upload up to 5 JPG, JPEG or PNG images. The first image is required.</p>
+          <div class="image_upload_grid">
+            <% for (let imageIndex = 1; imageIndex <= 5; imageIndex++) { %>
+              <label class="upload_box" for="product-image-<%= imageIndex %>">
+                <img id="image-preview-<%= imageIndex %>" src="/img/upload.svg" alt="Image <%= imageIndex %> preview" />
+                <span><%= imageIndex === 1 ? 'Main image' : 'Add image' %></span>
+                <input
+                  id="product-image-<%= imageIndex %>"
+                  name="productImages"
+                  type="file"
+                  accept="image/jpeg,image/png"
+                  data-preview-index="<%= imageIndex %>"
+                  <%= imageIndex === 1 ? 'required' : '' %>
+                />
+              </label>
+            <% } %>
+          </div>
+        </fieldset>
+
+        <div class="form_actions">
+          <button class="secondary_button" id="reset-btn" type="reset">Clear</button>
+          <button class="primary_button" type="submit">Create Product</button>
+        </div>
+      </form>
+      </main>
+    </section>
   </div>
 
   <script type="text/javascript" src="/js/products.js"></script>

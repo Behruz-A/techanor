@@ -163,7 +163,8 @@ body.auth_page {
   width: 46px;
   height: 46px;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .signup_top h1 {

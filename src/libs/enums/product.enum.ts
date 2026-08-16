@@ -17,3 +17,12 @@ export enum ProductCategory {
   CASES = "CASES",
   OTHERS = "OTHERS",
 }
+
+export enum ProductBrand {
+  APPLE = "APPLE",
+  SAMSUNG = "SAMSUNG",
+  SONY = "SONY",
+  LG = "LG",
+  XIAOMI = "XIAOMI",
+  OTHER = "OTHER",
+}

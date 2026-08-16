@@ -1,0 +1,93 @@
+<%- include('includes/header') %>
+<link rel="stylesheet" href="/css/products.css" />
+<link rel="stylesheet" href="/css/marketing.css" />
+<link rel="stylesheet" href="/css/analytics.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('techanor-admin-theme')||'light'}catch(e){document.documentElement.dataset.theme='light'}})();</script>
+
+<body class="products_page marketing_page analytics_page">
+  <div class="admin_shell">
+    <aside class="admin_sidebar" id="admin-sidebar">
+      <a class="sidebar_brand" href="/admin"><img class="sidebar_brand_logo" src="/img/logoipsum-249.svg" alt="" aria-hidden="true" /><span><strong>Techanor</strong></span></a>
+      <p class="sidebar_label">MENU</p>
+      <nav class="sidebar_navigation marketing_navigation" aria-label="Admin navigation">
+        <a href="/admin"><span class="nav_icon">⌂</span><span>Home</span></a>
+        <a href="/admin/product/all"><span class="nav_icon">▦</span><span>Products</span></a>
+        <a class="is_active" href="/admin/analytics"><span class="nav_icon">⌁</span><span>Analytics</span></a>
+        <a href="/admin/marketing"><span class="nav_icon">⌁</span><span>Marketing</span></a>
+        <a href="/admin/user/all"><span class="nav_icon">♙</span><span>Users</span></a>
+        <a href="/admin/blog/all"><span class="nav_icon">▤</span><span>Blogs</span></a>
+        <button class="sidebar_future_item" type="button" data-coming-soon="AI"><span>AI</span><em>NEW</em></button>
+        <button class="sidebar_future_item" type="button" data-coming-soon="AI Assistant"><span>AI Assistant</span><em>NEW</em></button>
+      </nav>
+      <div class="sidebar_footer"><span><i></i>SYSTEM ONLINE</span><a class="sidebar_logout" href="/admin/logout"><span>↪</span><span>Logout</span></a></div>
+    </aside>
+
+    <section class="admin_workspace">
+      <header class="workspace_header">
+        <button class="sidebar_toggle" id="sidebar-toggle" type="button" aria-label="Toggle navigation" aria-controls="admin-sidebar">☰</button>
+        <label class="global_search"><span aria-hidden="true">⌕</span><input id="product-search" type="search" placeholder="Search analytics..." aria-label="Search analytics" /></label>
+        <div class="header_actions">
+          <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"><span class="theme_icon theme_icon_sun">☀</span><span class="theme_icon theme_icon_moon">☾</span></button>
+          <label class="language_picker"><span aria-hidden="true">文</span><select id="language-select" aria-label="Language"><option value="en">English</option><option value="ko">한국어</option><option value="uz">O‘zbek</option></select></label>
+          <div class="admin_identity"><img src="/img/Asensio.png" alt="Ryan"/><div><strong>Ryan</strong><small>Admin</small></div></div>
+        </div>
+      </header>
+
+      <main class="analytics_content">
+        <section class="analytics_metrics">
+          <% [['Unique Visitors','24.7K','+20%','up'],['Total Pageviews','55.9K','+4%','up'],['Bounce Rate','54%','−1.59%','down'],['Visit Duration','2m 56s','+7%','up']].forEach(function(item){ %>
+            <article class="analytics_card metric_summary" data-search-row data-search="<%= item[0].toLowerCase() %>"><p><%= item[0] %></p><div><strong><%= item[1] %></strong><span class="trend trend_<%= item[3] %>"><%= item[2] %></span></div><small>vs last month</small></article>
+          <% }) %>
+        </section>
+
+        <article class="analytics_card main_analytics_card" data-search-row data-search="analytics visitors chart">
+          <div class="analytics_card_header"><div><h1>Analytics</h1><p>Techanor visitor analytics</p></div><div class="range_tabs"><button data-range="year">12 months</button><button data-range="month" class="is_active">30 days</button><button data-range="week">7 days</button></div></div>
+          <div class="bar_chart" id="analytics-bars" role="img" aria-label="Visitor analytics chart"></div>
+        </article>
+
+        <section class="analytics_detail_grid">
+          <article class="analytics_card list_card" data-search-row data-search="top channels google instagram youtube facebook"><div class="analytics_card_header"><h2>Top Channels</h2><span>•••</span></div><div class="list_head"><span>Source</span><span>Visitors</span></div><div class="list_row"><span>Google</span><strong>4.7K</strong></div><div class="list_row"><span>Instagram</span><strong>3.4K</strong></div><div class="list_row"><span>YouTube</span><strong>2.9K</strong></div><div class="list_row"><span>Facebook</span><strong>1.5K</strong></div></article>
+          <article class="analytics_card list_card" data-search-row data-search="top pages products blogs marketing views"><div class="analytics_card_header"><h2>Top Pages</h2><span>•••</span></div><div class="list_head"><span>Page</span><span>Views</span></div><div class="list_row"><span>techanor.com</span><strong>4.7K</strong></div><div class="list_row"><span>techanor.com/products</span><strong>3.4K</strong></div><div class="list_row"><span>techanor.com/blogs</span><strong>2.9K</strong></div><div class="list_row"><span>techanor.com/marketing</span><strong>1.5K</strong></div></article>
+          <article class="analytics_card active_users_card" data-search-row data-search="active users live visitors daily weekly monthly">
+            <div class="analytics_card_header"><h2>Active Users</h2><span>•••</span></div>
+            <div class="active_user_tabs" role="group" aria-label="Active user period"><button class="is_active" data-view="live" aria-pressed="true">Live</button><button data-view="day" aria-pressed="false">24 hours</button><button data-view="week" aria-pressed="false">7 days</button></div>
+            <div class="live_total" aria-live="polite"><i aria-hidden="true"></i><strong id="active-total">447</strong><span id="active-label">Live visitors</span></div>
+            <svg class="live_chart" viewBox="0 0 520 170"><defs><linearGradient id="liveFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#465FFF" stop-opacity=".24"/><stop offset="1" stop-color="#465FFF" stop-opacity="0"/></linearGradient></defs><path id="live-area" fill="url(#liveFill)" d="M0 115 C45 160 65 45 110 70 S160 145 210 125 S265 62 310 92 S375 45 420 78 S475 62 520 100 L520 170 L0 170Z"/><path id="live-line" fill="none" stroke="#465FFF" stroke-width="4" d="M0 115 C45 160 65 45 110 70 S160 145 210 125 S265 62 310 92 S375 45 420 78 S475 62 520 100"/></svg>
+            <div class="active_breakdown"><div><strong id="active-daily">224</strong><span>Avg. Daily</span></div><div><strong id="active-weekly">1.4K</strong><span>Avg. Weekly</span></div><div><strong id="active-monthly">22.1K</strong><span>Avg. Monthly</span></div></div>
+          </article>
+        </section>
+
+        <section class="analytics_bottom_grid">
+          <article class="analytics_card" data-search-row data-search="acquisition channels chart"><div class="analytics_card_header"><h2>Acquisition Channels</h2><span>•••</span></div><div class="stacked_chart"><div style="--a:44;--b:20;--c:14;--d:18"><span></span><i></i><b></b><em></em><small>Jan</small></div><div style="--a:55;--b:23;--c:16;--d:7"><span></span><i></i><b></b><em></em><small>Feb</small></div><div style="--a:41;--b:20;--c:15;--d:24"><span></span><i></i><b></b><em></em><small>Mar</small></div><div style="--a:67;--b:8;--c:15;--d:13"><span></span><i></i><b></b><em></em><small>Apr</small></div><div style="--a:24;--b:12;--c:20;--d:22"><span></span><i></i><b></b><em></em><small>May</small></div></div></article>
+          <article class="analytics_card device_card" data-search-row data-search="sessions device laptop gaming tv"><div class="analytics_card_header"><h2>Sessions by Device</h2><span aria-hidden="true">•••</span></div><div class="donut_chart" role="img" aria-label="Sessions: LAPTOP 52%, GAMING 30%, TV 18%"></div><div class="device_legend"><span><i></i>LAPTOP 52%</span><span><i></i>GAMING 30%</span><span><i></i>TV 18%</span></div></article>
+        </section>
+
+        <section class="analytics_footer_grid">
+          <article class="analytics_card demographic_card" data-search-row data-search="customers demographic usa south korea uzbekistan">
+            <div class="analytics_card_header"><div><h2>Customers Demographic</h2><p>Techanor customers by country</p></div><span>•••</span></div>
+            <div class="world_map"><img src="/img/marketing/world-map.svg" alt="World map" /><i class="map_dot dot_usa"></i><i class="map_dot dot_korea"></i><i class="map_dot dot_uzbekistan"></i></div>
+            <div class="country_row"><img class="flag" src="/img/marketing/flags/us.svg" alt="USA flag" /><div><strong>USA</strong><small>2,379 Customers</small></div><div class="country_progress"><i style="width:79%"></i></div><b>79%</b></div>
+            <div class="country_row"><img class="flag" src="/img/marketing/flags/kr.svg" alt="South Korea flag" /><div><strong>South Korea</strong><small>1,248 Customers</small></div><div class="country_progress"><i style="width:54%"></i></div><b>54%</b></div>
+            <div class="country_row"><img class="flag" src="/img/marketing/flags/uz.svg" alt="Uzbekistan flag" /><div><strong>Uzbekistan</strong><small>892 Customers</small></div><div class="country_progress"><i style="width:38%"></i></div><b>38%</b></div>
+          </article>
+
+          <article class="analytics_card recent_orders_card">
+            <div class="recent_orders_header"><h2>Recent Orders</h2><div><button id="order-filter" type="button" aria-label="Filter orders by status">☷ Filter: All</button><a href="/admin/product/all">See all</a></div></div>
+            <div class="orders_table_wrapper"><table class="orders_table"><thead><tr><th scope="col">Product</th><th scope="col">Category</th><th scope="col">Country</th><th scope="col">Status</th><th scope="col">Value</th></tr></thead><tbody>
+              <tr data-search-row data-search="macbook pro m3 laptop usa completed" data-order-status="complete"><td><strong>MacBook Pro M3</strong></td><td>LAPTOP</td><td><img class="order_flag" src="/img/marketing/flags/us.svg" alt="" /> USA</td><td><span class="order_status complete">Completed</span></td><td>$2,499</td></tr>
+              <tr data-search-row data-search="galaxy s24 ultra smartphone south korea pending" data-order-status="pending"><td><strong>Galaxy S24 Ultra</strong></td><td>SMARTPHONE</td><td><img class="order_flag" src="/img/marketing/flags/kr.svg" alt="" /> South Korea</td><td><span class="order_status pending">Pending</span></td><td>$1,299</td></tr>
+              <tr data-search-row data-search="sony wh-1000xm5 others uzbekistan completed" data-order-status="complete"><td><strong>Sony WH-1000XM5</strong></td><td>OTHERS</td><td><img class="order_flag" src="/img/marketing/flags/uz.svg" alt="" /> Uzbekistan</td><td><span class="order_status complete">Completed</span></td><td>$399</td></tr>
+              <tr data-search-row data-search="lg oled c3 tv germany canceled" data-order-status="canceled"><td><strong>LG OLED C3</strong></td><td>TV</td><td><img class="order_flag" src="/img/marketing/flags/de.svg" alt="" /> Germany</td><td><span class="order_status canceled">Canceled</span></td><td>$1,199</td></tr>
+              <tr data-search-row data-search="ipad air 5 others france completed" data-order-status="complete"><td><strong>iPad Air 5</strong></td><td>OTHERS</td><td><img class="order_flag" src="/img/marketing/flags/fr.svg" alt="" /> France</td><td><span class="order_status complete">Completed</span></td><td>$599</td></tr>
+            </tbody></table></div>
+          </article>
+        </section>
+      </main>
+    </section>
+  </div>
+  <script src="/js/products.js"></script><script src="/js/analytics.js"></script>
+</body>
+<%- include('includes/footer') %>

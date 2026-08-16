@@ -20,9 +20,13 @@ const blogPostSchema = new Schema(
     },
     blogPostTitle: {
       type: String,
+      required: true,
+      trim: true,
     },
     blogPostContent: {
       type: String,
+      required: true,
+      trim: true,
     },
 
     blogPostImage: {
@@ -31,6 +35,7 @@ const blogPostSchema = new Schema(
 
     blogPostViews: {
       type: Number,
+      default: 0,
     },
     //Soon
     blogPostLikes: {

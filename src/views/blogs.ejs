@@ -1,0 +1,86 @@
+<%- include('includes/header') %>
+
+<link rel="stylesheet" type="text/css" href="/css/products.css" />
+<link rel="stylesheet" type="text/css" href="/css/blogs.css" />
+
+<body class="products_page">
+  <div class="products_container">
+    <header class="admin_header">
+      <a class="admin_brand" href="/admin" aria-label="Techanor home">
+        <img src="/img/anorlogo.png" alt="" />
+        <span>Techanor</span>
+      </a>
+
+      <nav class="admin_navigation" aria-label="Admin navigation">
+        <a href="/admin">Home</a>
+        <a href="/admin/product/all">Products</a>
+        <a href="/admin/user/all">Users</a>
+        <a class="is_active" href="/admin/blog/all" aria-current="page">Blogs</a>
+        <a
+          class="logout_link"
+          href="/admin/logout"
+          onclick="return confirm('Do you want to logout?')"
+        >Logout</a>
+      </nav>
+    </header>
+
+    <main class="products_content">
+      <section class="products_heading">
+        <div>
+          <p class="section_label">CONTENT HUB</p>
+          <h1>Blog Management</h1>
+          <p>Create and manage Techanor news, recommendations and articles.</p>
+        </div>
+        <a class="primary_button blog_add_link" href="/admin/blog/create">Add Blog</a>
+      </section>
+
+      <section class="products_card" aria-labelledby="blogs-table-title">
+        <div class="card_heading">
+          <div>
+            <h2 id="blogs-table-title">Blogs</h2>
+            <p><%= blogs.length %> blog post<%= blogs.length === 1 ? '' : 's' %></p>
+          </div>
+        </div>
+
+        <div class="table_wrapper">
+          <table class="products_table blogs_table">
+            <thead>
+              <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Title</th>
+                <th scope="col">Category</th>
+                <th scope="col">Views</th>
+                <th scope="col">Created</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% blogs.forEach(function (blog, index) { %>
+                <tr>
+                  <td class="row_number"><%= index + 1 %></td>
+                  <td><strong><%= blog.blogPostTitle || 'Untitled blog' %></strong></td>
+                  <td><%= blog.blogPostCategory %></td>
+                  <td><%= blog.blogPostViews || 0 %></td>
+                  <td><%= new Date(blog.createdAt).toLocaleDateString('en-GB') %></td>
+                  <td>
+                    <span class="blog_status blog_status_<%= blog.blogPostStatus.toLowerCase() %>">
+                      <%= blog.blogPostStatus %>
+                    </span>
+                  </td>
+                </tr>
+              <% }) %>
+
+              <% if (!blogs.length) { %>
+                <tr>
+                  <td class="empty_state" colspan="6">No blog posts have been added yet.</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+
+<%- include('includes/footer') %>

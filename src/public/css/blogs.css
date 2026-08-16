@@ -1,0 +1,82 @@
+.blogs_table {
+  min-width: 760px;
+}
+
+.blog_status {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.blog_status_published {
+  color: #067647;
+  background: #ecfdf3;
+}
+
+.blog_status_draft {
+  color: #6941c6;
+  background: #f4f3ff;
+}
+
+.blog_status_delete {
+  color: #b42318;
+  background: #fef3f2;
+}
+
+.blog_add_link,
+.blog_add_link:hover {
+  display: inline-flex;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+}
+
+.blog_create_content {
+  width: min(980px, 100%);
+}
+
+.blog_create_heading {
+  padding-bottom: 22px;
+}
+
+.blog_create_heading .section_label a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.blog_form {
+  display: block;
+  margin-top: 0;
+  padding: 4px 0 28px;
+}
+
+.blog_form textarea {
+  min-height: 280px;
+  line-height: 1.7;
+}
+
+.blog_error {
+  margin: 24px 28px 0;
+  padding: 12px 14px;
+  border: 1px solid #fecdca;
+  border-radius: 12px;
+  color: #b42318;
+  background: #fef3f2;
+  font-size: 14px;
+}
+
+.blog_form_actions {
+  align-items: center;
+}
+
+.blog_cancel_link,
+.blog_cancel_link:hover {
+  display: inline-flex;
+  align-items: center;
+  color: #1d1d1f;
+  text-decoration: none;
+}

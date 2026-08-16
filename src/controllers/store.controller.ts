@@ -90,6 +90,14 @@ storeController.processLogin = async (req: AdminRequest, res: Response) => {
   }
 };
 
+storeController.getMarketing = (req: Request, res: Response) => {
+  res.render("marketing");
+};
+
+storeController.getAnalytics = (req: Request, res: Response) => {
+  res.render("analytics");
+};
+
 storeController.processGoogleAuth = async (
   req: AdminRequest,
   res: Response,

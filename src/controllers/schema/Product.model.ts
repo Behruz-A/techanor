@@ -4,6 +4,7 @@ import {
   ProductStatus,
   ProductCondition,
   ProductCategory,
+  ProductBrand,
 } from "../../libs/enums/product.enum";
 
 const productSchema = new Schema(
@@ -17,6 +18,11 @@ const productSchema = new Schema(
       type: String,
       enum: ProductCategory,
       required: true,
+    },
+    productBrand: {
+      type: String,
+      enum: ProductBrand,
+      default: ProductBrand.OTHER,
     },
 
     productCondition: {

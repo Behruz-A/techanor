@@ -1,0 +1,73 @@
+<%- include('includes/header') %>
+
+<link rel="stylesheet" type="text/css" href="/css/products.css" />
+<link rel="stylesheet" type="text/css" href="/css/blogs.css" />
+
+<body class="products_page">
+  <div class="products_container">
+    <header class="admin_header">
+      <a class="admin_brand" href="/admin" aria-label="Techanor home">
+        <img src="/img/anorlogo.png" alt="" />
+        <span>Techanor</span>
+      </a>
+      <nav class="admin_navigation" aria-label="Admin navigation">
+        <a href="/admin">Home</a>
+        <a href="/admin/product/all">Products</a>
+        <a href="/admin/user/all">Users</a>
+        <a class="is_active" href="/admin/blog/all">Blogs</a>
+        <a class="logout_link" href="/admin/logout" onclick="return confirm('Do you want to logout?')">Logout</a>
+      </nav>
+    </header>
+
+    <main class="products_content blog_create_content">
+      <section class="products_heading blog_create_heading">
+        <div>
+          <p class="section_label"><a href="/admin/blog/all">BLOGS</a> / NEW POST</p>
+          <h1>Create a new blog post</h1>
+          <p>Publish news, product guides and useful stories for your audience.</p>
+        </div>
+      </section>
+
+      <form class="product_form blog_form" action="/admin/blog/create" method="POST" enctype="multipart/form-data">
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="blog_error" role="alert"><%= error %></div>
+        <% } %>
+        <input type="hidden" name="blogPostStatus" value="DRAFT" />
+
+        <div class="form_grid">
+          <div class="form_field field_full">
+            <label for="blog-title">Title</label>
+            <input id="blog-title" name="blogPostTitle" type="text" maxlength="160" placeholder="Enter a clear, engaging title" value="<%= typeof formData !== 'undefined' ? formData.blogPostTitle || '' : '' %>" required />
+          </div>
+
+          <div class="form_field">
+            <label for="blog-category">Category</label>
+            <select id="blog-category" name="blogPostCategory" required>
+              <option value="" disabled <%= typeof formData === 'undefined' || !formData.blogPostCategory ? 'selected' : '' %>>Select category</option>
+              <option value="RECOMMENDED">Recommended</option>
+              <option value="NEWS">News</option>
+              <option value="HUMOR">Humor</option>
+            </select>
+          </div>
+
+          <div class="form_field">
+            <label for="blog-image">Cover image</label>
+            <input id="blog-image" name="blogPostImage" type="file" accept="image/jpeg,image/png,image/webp" />
+          </div>
+
+          <div class="form_field field_full">
+            <label for="blog-content">Content</label>
+            <textarea id="blog-content" name="blogPostContent" rows="12" placeholder="Write your blog post..." required><%= typeof formData !== 'undefined' ? formData.blogPostContent || '' : '' %></textarea>
+          </div>
+        </div>
+
+        <div class="form_actions blog_form_actions">
+          <a class="secondary_button blog_cancel_link" href="/admin/blog/all">Cancel</a>
+          <button class="primary_button" type="submit">Save as draft</button>
+        </div>
+      </form>
+    </main>
+  </div>
+</body>
+
+<%- include('includes/footer') %>
