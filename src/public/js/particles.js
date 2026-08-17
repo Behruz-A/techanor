@@ -1,7 +1,7 @@
 /* Techanor particles configuration */
 
 if (typeof particlesJS === "function") {
-  const techanorPrimary = getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim() || "#4F46E5";
+  const techanorPrimary = getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim() || "#2563EB";
   particlesJS("particles-js", {
     particles: {
       number: {

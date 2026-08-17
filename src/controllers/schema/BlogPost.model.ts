@@ -32,6 +32,13 @@ const blogPostSchema = new Schema(
     blogPostImage: {
       type: String,
     },
+    blogPostVideo: {
+      type: String,
+    },
+    blogPostVideoUrl: {
+      type: String,
+      trim: true,
+    },
 
     blogPostViews: {
       type: Number,

@@ -2,13 +2,13 @@
   <title id="techanor-logo-title">Techanor electronics logo</title>
   <defs>
     <linearGradient id="techanor-gradient" x1="7" y1="4" x2="43" y2="40" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#3B82F6"/>
-      <stop offset="0.52" stop-color="#6366F1"/>
-      <stop offset="1" stop-color="#8B5CF6"/>
+      <stop stop-color="#2563EB"/>
+      <stop offset="0.52" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
     </linearGradient>
     <linearGradient id="techanor-highlight" x1="14" y1="9" x2="36" y2="34" gradientUnits="userSpaceOnUse">
       <stop stop-color="white" stop-opacity="0.98"/>
-      <stop offset="1" stop-color="#E0E7FF" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#EFF6FF" stop-opacity="0.9"/>
     </linearGradient>
   </defs>
   <path d="M25 1.5 47 14.2v15.6L25 42.5 3 29.8V14.2L25 1.5Z" fill="url(#techanor-gradient)"/>

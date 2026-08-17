@@ -3,7 +3,7 @@ const routerAdmin = express.Router();
 import storeController from "./controllers/store.controller";
 import productController from "./controllers/product.controlle";
 import blogController from "./controllers/blog.controller";
-import makeUploader from "./libs/utils/uploader";
+import makeUploader, { makeBlogUploader } from "./libs/utils/uploader";
 
 /**STORE */
 routerAdmin.get("/", storeController.goHome);
@@ -70,7 +70,10 @@ routerAdmin.get(
 routerAdmin.post(
   "/blog/create",
   storeController.verifyStore,
-  makeUploader("blogs").single("blogPostImage"),
+  makeBlogUploader("blogs").fields([
+    { name: "blogPostImage", maxCount: 1 },
+    { name: "blogPostVideo", maxCount: 1 },
+  ]),
   blogController.createBlog,
 );
 routerAdmin.post(

@@ -30,7 +30,7 @@
         <button class="sidebar_toggle" id="sidebar-toggle" type="button" aria-label="Toggle navigation" aria-controls="admin-sidebar">☰</button>
         <label class="global_search"><span aria-hidden="true">⌕</span><input id="product-search" type="search" placeholder="Search analytics..." aria-label="Search analytics" /></label>
         <div class="header_actions">
-          <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"><span class="theme_icon theme_icon_sun">☀</span><span class="theme_icon theme_icon_moon">☾</span></button>
+          <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"><img class="theme_icon theme_icon_sun" src="/img/marketing/sun-svgrepo-com.svg" alt="" aria-hidden="true" /><span class="theme_icon theme_icon_moon">☾</span></button>
           <label class="language_picker"><span aria-hidden="true">文</span><select id="language-select" aria-label="Language"><option value="en">English</option><option value="ko">한국어</option><option value="uz">O‘zbek</option></select></label>
           <div class="admin_identity"><img src="/img/Asensio.png" alt="Ryan"/><div><strong>Ryan</strong><small>Admin</small></div></div>
         </div>
@@ -55,7 +55,7 @@
             <div class="analytics_card_header"><h2>Active Users</h2><span>•••</span></div>
             <div class="active_user_tabs" role="group" aria-label="Active user period"><button class="is_active" data-view="live" aria-pressed="true">Live</button><button data-view="day" aria-pressed="false">24 hours</button><button data-view="week" aria-pressed="false">7 days</button></div>
             <div class="live_total" aria-live="polite"><i aria-hidden="true"></i><strong id="active-total">447</strong><span id="active-label">Live visitors</span></div>
-            <svg class="live_chart" viewBox="0 0 520 170"><defs><linearGradient id="liveFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#465FFF" stop-opacity=".24"/><stop offset="1" stop-color="#465FFF" stop-opacity="0"/></linearGradient></defs><path id="live-area" fill="url(#liveFill)" d="M0 115 C45 160 65 45 110 70 S160 145 210 125 S265 62 310 92 S375 45 420 78 S475 62 520 100 L520 170 L0 170Z"/><path id="live-line" fill="none" stroke="#465FFF" stroke-width="4" d="M0 115 C45 160 65 45 110 70 S160 145 210 125 S265 62 310 92 S375 45 420 78 S475 62 520 100"/></svg>
+            <svg class="live_chart" viewBox="0 0 520 170"><defs><linearGradient id="liveFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--color-primary)" stop-opacity=".24"/><stop offset="1" stop-color="var(--color-primary)" stop-opacity="0"/></linearGradient></defs><path id="live-area" fill="url(#liveFill)" d="M0 115 C45 160 65 45 110 70 S160 145 210 125 S265 62 310 92 S375 45 420 78 S475 62 520 100 L520 170 L0 170Z"/><path id="live-line" fill="none" stroke="var(--color-primary)" stroke-width="4" d="M0 115 C45 160 65 45 110 70 S160 145 210 125 S265 62 310 92 S375 45 420 78 S475 62 520 100"/></svg>
             <div class="active_breakdown"><div><strong id="active-daily">224</strong><span>Avg. Daily</span></div><div><strong id="active-weekly">1.4K</strong><span>Avg. Weekly</span></div><div><strong id="active-monthly">22.1K</strong><span>Avg. Monthly</span></div></div>
           </article>
         </section>

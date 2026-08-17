@@ -151,8 +151,6 @@ storeController.checkAuthSession = async (req: AdminRequest, res: Response) => {
 
 storeController.getUsers = async (req: Request, res: Response) => {
   try {
-    console.log("getUsers");
-
     const result = await memberService.getUsers();
     res.render("users", { users: result });
   } catch (err) {
@@ -163,7 +161,6 @@ storeController.getUsers = async (req: Request, res: Response) => {
 
 storeController.updateChosenUser = async (req: Request, res: Response) => {
   try {
-    console.log("updateChosenUser");
     const result = await memberService.updateChosenUser(req.body);
 
     res.status(HttpCode.OK).json({ data: result });

@@ -1,6 +1,6 @@
 import MemberModel from "../controllers/schema/Member.model";
 import { shapeIntoMongooseObjectId } from "../libs/config";
-import { AuthProvider, MemberType } from "../libs/enums/member.enum";
+import { AuthProvider, MemberStatus, MemberType } from "../libs/enums/member.enum";
 import Errors, { HttpCode, Message } from "../libs/Error";
 import {
   LoginInput,
@@ -177,16 +177,24 @@ class MemberService {
   public async getUsers(): Promise<Member[]> {
     const result = await this.memberModel
       .find({ memberType: MemberType.USER })
+      .sort({ createdAt: -1 })
       .exec();
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
     return result;
   }
 
   public async updateChosenUser(input: MemberUpdateInput): Promise<Member> {
-    input._id = shapeIntoMongooseObjectId(input._id);
+    const memberId = shapeIntoMongooseObjectId(input._id);
+    if (!input.memberStatus || !Object.values(MemberStatus).includes(input.memberStatus)) {
+      throw new Errors(HttpCode.BAD_REQUEST, Message.UPDATE_FAILED);
+    }
 
     const result = await this.memberModel
-      .findByIdAndUpdate({ _id: input._id }, input, { new: true })
+      .findByIdAndUpdate(
+        { _id: memberId, memberType: MemberType.USER },
+        { memberStatus: input.memberStatus },
+        { new: true, runValidators: true },
+      )
       .exec();
     if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
     return result;

@@ -11,6 +11,8 @@ export interface BlogPost {
   blogPostTitle: string;
   blogPostContent: string;
   blogPostImage?: string;
+  blogPostVideo?: string;
+  blogPostVideoUrl?: string;
   blogPostViews: number;
   blogPostLikes: number;
   createdAt: Date;
@@ -23,6 +25,8 @@ export interface BlogPostInput {
   blogPostTitle: string;
   blogPostContent: string;
   blogPostImage?: string;
+  blogPostVideo?: string;
+  blogPostVideoUrl?: string;
   blogPostViews?: number;
   blogPostLikes?: number;
 }
@@ -33,4 +37,6 @@ export interface BlogPostUpdateInput {
   blogPostTitle?: string;
   blogPostContent?: string;
   blogPostImage?: string;
+  blogPostVideo?: string;
+  blogPostVideoUrl?: string;
 }

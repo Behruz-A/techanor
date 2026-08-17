@@ -7,5 +7,9 @@ export enum BlogPostStatus {
 export enum BlogPostCategory {
   RECOMMENDED = "RECOMMENDED",
   NEWS = "NEWS",
+  PRODUCT_GUIDE = "PRODUCT_GUIDE",
+  REVIEWS = "REVIEWS",
+  TECHNOLOGY = "TECHNOLOGY",
+  HOW_TO = "HOW_TO",
   HUMOR = "HUMOR",
 }

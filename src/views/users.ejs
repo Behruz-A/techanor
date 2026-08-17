@@ -1,93 +1,79 @@
 <%- include('includes/header') %>
+<link rel="stylesheet" href="/css/products.css" />
+<link rel="stylesheet" href="/css/users.css" />
+<script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('techanor-admin-theme')||'light'}catch(e){document.documentElement.dataset.theme='light'}})();</script>
+<body class="users_page">
+<div class="admin_shell">
+  <aside class="admin_sidebar" id="admin-sidebar">
+    <a class="sidebar_brand" href="/admin"><img class="sidebar_brand_logo" src="/img/logoipsum-249.svg" alt="" /><span><strong>Techanor</strong><small>ADMIN PANEL</small></span></a>
+    <p class="sidebar_label" data-i18n="general">GENERAL</p>
+    <nav class="sidebar_navigation" aria-label="Admin navigation">
+      <a href="/admin"><span class="nav_icon">⌂</span><span data-i18n="home">Home</span></a>
+      <a href="/admin/product/all"><span class="nav_icon">▦</span><span data-i18n="products">Products</span></a>
+      <a href="/admin/analytics"><span class="nav_icon">⌁</span><span data-i18n="analytics">Analytics</span></a>
+      <a href="/admin/marketing"><span class="nav_icon">⌁</span><span data-i18n="marketing">Marketing</span></a>
+      <a class="is_active" href="/admin/user/all" aria-current="page"><span class="nav_icon">♙</span><span data-i18n="users">Users</span></a>
+      <a href="/admin/blog/all"><span class="nav_icon">▤</span><span data-i18n="blogs">Blogs</span></a>
+      <button class="sidebar_future_item" type="button" data-coming-soon="AI"><span>AI</span><em>NEW</em></button>
+      <button class="sidebar_future_item" type="button" data-coming-soon="AI Assistant"><span>AI Assistant</span><em>NEW</em></button>
+    </nav>
+    <div class="sidebar_footer"><span><i></i><span data-i18n="systemOnline">SYSTEM ONLINE</span></span><a class="sidebar_logout" href="/admin/logout" onclick="return confirm('Do you want to logout?')"><span>↪</span><span data-i18n="logout">Logout</span></a></div>
+  </aside>
 
-<link rel="stylesheet" type="text/css" href="/css/users.css" />
-
-<body>
-  <div class="users-container">
-    <% if(!member) { %>
-    <div class="navigation-menu">
-      <ul class="nav justify-content-center">
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link active" href="/admin/">Home</a>
-        </li>
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link" href="/admin/signup">SignUp</a>
-        </li>
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link" href="/admin/login">Login</a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="users-frame" style="color: #dddddd">
-      <div class="board" style="font-size: 40px">Please login first!</div>
-    </div>
-
-    <% } else { %>
-    <div class="navigation-menu">
-      <ul class="nav justify-content-center">
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link active" href="/admin/">Home</a>
-        </li>
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link" href="/admin/product/all">Menu</a>
-        </li>
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link" href="/admin/user/all">Users</a>
-        </li>
-        <li class="nav-item" style="cursor: pointer">
-          <a class="nav-link" href="/admin/blog/all">Blogs</a>
-        </li>
-        <li
-          class="nav-item"
-          style="cursor: pointer"
-          onclick="return confirm('Do you really want to logout?')"
-        >
-          <a class="nav-link" href="/admin/logout">Logout</a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="users-frame">
-      <div class="board">
-        <div class="user-table">
-          <span class="header-name" style="margin-bottom: 30px"
-            >All Users List</span
-          >
-          <table class="table table-hover table-sm">
-            <thead class="thead-light">
-              <tr class="thead-light">
-                <th scope="col">No</th>
-                <th scope="col">Name</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-         
-              <% users.map(function(value, index) {  %>
-                  <tbody style="background: white">
-              <td><%= index+1  %></td>
-              <td><%= value.memberNick %> </td>
-              <td><%= value.memberPhone %></td>
-              <td style="width: 13%">
-                <select class="spec-select member-status" id="<%= value._id%>">
-                  <option value="ACTIVE" <%= value.memberStatus === 'ACTIVE' ? 'selected': '' %> >ACTIVE</option>
-                  <option value="BLOCK" <%= value.memberStatus === 'BLOCK' ? 'selected': '' %>>BLOCK</option>
-                  <option value="DELETE" <%= value.memberStatus === 'DELETE' ? 'selected': '' %>>DELETE</option>
-                </select>
-              </td>
-            </tbody>
-              <% }) %>
-          
-    
-          </table>
-        </div>
+  <section class="admin_workspace">
+    <header class="workspace_header">
+      <button class="sidebar_toggle" id="sidebar-toggle" type="button" aria-label="Toggle navigation">☰</button>
+      <label class="global_search"><span>⌕</span><input id="global-search" type="search" data-i18n-placeholder="navigationSearch" placeholder="Search pages..." aria-label="Global navigation search" /></label>
+      <div class="header_actions">
+        <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false"><img class="theme_icon theme_icon_sun" src="/img/marketing/sun-svgrepo-com.svg" alt="" aria-hidden="true" /><span class="theme_icon theme_icon_moon">☾</span></button>
+        <label class="language_picker" for="language-select"><span>文</span><select id="language-select"><option value="en">English</option><option value="ko">한국어</option><option value="uz">O‘zbek</option></select></label>
+        <div class="admin_identity"><img src="/img/Asensio.png" alt="Ryan" /><div><strong>Ryan</strong><small data-i18n="admin">Admin</small></div></div>
       </div>
-    </div>
-    <% } %>
-  </div>
+    </header>
 
-  <script type="text/javascript" src="/js/users.js"></script>
+    <main class="users_content">
+      <section class="users_heading"><div><h1 data-i18n="users">Users</h1><nav class="users_breadcrumb"><a href="/admin" data-i18n="home">Home</a><span>›</span><strong data-i18n="users">Users</strong></nav></div></section>
+      <section class="user_metrics" aria-label="User summary">
+        <article><span data-i18n="totalUsers">Total users</span><strong id="metric-total"><%= users.length %></strong><small data-i18n="registeredAccounts">Registered accounts</small></article>
+        <article><span data-i18n="activeUsers">Active users</span><strong id="metric-active"><%= users.filter(user => user.memberStatus === 'ACTIVE').length %></strong><small data-i18n="currentlyAvailable">Currently available</small></article>
+        <article><span data-i18n="blockedUsers">Blocked users</span><strong id="metric-block"><%= users.filter(user => user.memberStatus === 'BLOCK').length %></strong><small data-i18n="accessRestricted">Access restricted</small></article>
+        <article><span data-i18n="deletedUsers">Deleted users</span><strong id="metric-delete"><%= users.filter(user => user.memberStatus === 'DELETE').length %></strong><small data-i18n="markedDeleted">Marked as deleted</small></article>
+      </section>
+
+      <section class="users_card" aria-labelledby="users-table-title">
+        <div class="users_card_heading"><div><h2 id="users-table-title" data-i18n="usersList">Users List</h2><p data-i18n="usersSubtitle">Review customer accounts and manage access.</p></div></div>
+        <div class="users_toolbar">
+          <label class="users_search"><span>⌕</span><input id="users-search" type="search" data-i18n-placeholder="searchUsers" placeholder="Search by name, phone or email..." autocomplete="off" /></label>
+          <div class="users_filters" role="group" aria-label="Filter users by status"><button class="status_filter is_active" type="button" data-status="ALL" data-i18n="all">All</button><button class="status_filter" type="button" data-status="ACTIVE" data-i18n="active">Active</button><button class="status_filter" type="button" data-status="BLOCK" data-i18n="blocked">Blocked</button><button class="status_filter" type="button" data-status="DELETE" data-i18n="deleted">Deleted</button></div>
+        </div>
+        <div class="bulk_toolbar" id="bulk-toolbar" hidden><strong><span id="selected-count">0</span> <span data-i18n="selected">selected</span></strong><label><span data-i18n="changeStatus">Change status</span><select id="bulk-status"><option value="" data-i18n="chooseStatus">Choose status</option><option value="ACTIVE" data-i18n="active">Active</option><option value="BLOCK" data-i18n="blocked">Blocked</option><option value="DELETE" data-i18n="deleted">Deleted</option></select></label><button id="clear-selection" type="button" data-i18n="clearSelection">Clear selection</button></div>
+        <div class="users_table_wrap">
+          <table class="users_table">
+            <colgroup><col class="col_select" /><col class="col_user" /><col class="col_contact" /><col class="col_provider" /><col class="col_points" /><col class="col_joined" /><col class="col_status" /></colgroup>
+            <thead><tr><th class="select_column"><input id="select-all-users" type="checkbox" aria-label="Select all visible users" /></th><th data-i18n="user">User</th><th data-i18n="contact">Contact</th><th class="center_column" data-i18n="provider">Sign-in method</th><th class="center_column" data-i18n="points">Points</th><th class="center_column" data-i18n="joined">Joined</th><th class="center_column" data-i18n="status">Status</th></tr></thead>
+            <tbody id="users-table-body">
+            <% users.forEach(function(user) { const searchable = [user.memberNick,user.memberPhone,user.memberEmail,user.memberAddress,user.authProvider].filter(Boolean).join(' ').toLowerCase(); %>
+              <tr class="user_row" data-user-id="<%= user._id %>" data-status="<%= user.memberStatus %>" data-search="<%= searchable %>">
+                <td class="select_column"><input class="user_checkbox" type="checkbox" aria-label="Select <%= user.memberNick %>" /></td>
+                <td><div class="user_profile"><% if(user.memberImage){ %><img src="/<%= user.memberImage.replace(/\\/g,'/') %>" alt="" /><% }else{ %><span class="avatar_fallback"><%= String(user.memberNick||'U').charAt(0).toUpperCase() %></span><% } %><div><strong><%= user.memberNick %></strong><small data-i18n="customerAccount">Customer account</small></div></div></td>
+                <td><div class="contact_details"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2.1Z"/></svg><strong><%= user.memberPhone %></strong></span><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm18 2-10 7L2 6"/></svg><small><%= user.memberEmail || 'No email provided' %></small></span></div></td>
+                <td class="center_column"><span class="provider_badge" data-provider="<%= user.authProvider || 'LOCAL' %>"><%= (user.authProvider || 'LOCAL') === 'GOOGLE' ? 'Google account' : 'Email & password' %></span></td>
+                <td class="center_column"><strong><%= Number(user.memberPoints||0).toLocaleString('en-US') %></strong></td>
+                <td class="center_column"><time datetime="<%= new Date(user.createdAt).toISOString() %>"><%= new Date(user.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) %></time></td>
+                <td class="center_column"><select class="member_status status_<%= String(user.memberStatus).toLowerCase() %>" data-user-id="<%= user._id %>"><option value="ACTIVE" <%= user.memberStatus==='ACTIVE'?'selected':'' %>>Active</option><option value="BLOCK" <%= user.memberStatus==='BLOCK'?'selected':'' %>>Blocked</option><option value="DELETE" <%= user.memberStatus==='DELETE'?'selected':'' %>>Deleted</option></select></td>
+              </tr>
+            <% }) %>
+            </tbody>
+          </table>
+          <div class="users_empty" id="users-empty" hidden><strong data-i18n="noUsers">No users found</strong><span data-i18n="adjustSearch">Try another search or status filter.</span></div>
+        </div>
+        <footer class="users_pagination"><p id="users-summary"></p><nav id="users-pages" aria-label="Users pagination"></nav></footer>
+      </section>
+    </main>
+  </section>
+</div>
+<div class="users_toast" id="users-toast" role="status" aria-live="polite"></div>
+<div class="coming_soon_modal" id="coming-soon-modal" hidden><div><button type="button" aria-label="Close">×</button><span>NEW</span><h2>Coming Soon</h2><p>This Techanor feature is currently being prepared.</p></div></div>
+<script src="/js/users.js"></script>
 </body>
-
 <%- include('includes/footer') %>

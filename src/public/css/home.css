@@ -10,7 +10,7 @@ body.admin-home-page {
   min-height: 100vh;
   margin: 0;
   overflow: hidden;
-  color: #1d1d1f;
+  color: var(--color-dark);
   background: var(--color-surface);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
     sans-serif;
@@ -25,7 +25,7 @@ body.admin-home-page {
   background-color: var(--color-surface);
   background-image: radial-gradient(
       circle at 20% 20%,
-      rgba(139, 92, 246, 0.1),
+      rgba(37, 99, 235, 0.1),
       transparent 28%
     ),
     radial-gradient(
@@ -35,15 +35,15 @@ body.admin-home-page {
     ),
     radial-gradient(
       circle at 50% 80%,
-      rgba(99, 102, 241, 0.08),
+      rgba(37, 99, 235, 0.08),
       transparent 28%
     ),
     linear-gradient(
       125deg,
       var(--color-surface) 0%,
       #e8f6fb 24%,
-      #edf1ff 48%,
-      #f2ecff 72%,
+      #eff6ff 48%,
+      #f8fafc 72%,
       #eef8fa 100%
     );
   background-repeat: no-repeat;
@@ -204,10 +204,10 @@ body.admin-home-page {
 .screen-navigation.is_ready .screen-link:focus-visible {
   opacity: 1;
   color: #ffffff;
-  border-color: rgba(99, 102, 241, 0.68);
+  border-color: rgba(37, 99, 235, 0.68);
   background: rgba(15, 23, 42, 0.48);
   box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.05),
-    0 2px 7px rgba(79, 70, 229, 0.1);
+    0 2px 7px rgba(37, 99, 235, 0.1);
   filter: none;
   text-decoration: none;
 }
@@ -227,7 +227,7 @@ body.admin-home-page {
 
 .admin-welcome {
   margin: 20px 0 0;
-  color: #1d1d1f;
+  color: var(--color-dark);
   text-align: center;
   opacity: 0;
   transform: translateY(8px);
@@ -235,7 +235,7 @@ body.admin-home-page {
 
 .admin-welcome h1 {
   margin: 0;
-  color: #1d1d1f;
+  color: var(--color-dark);
   font-size: clamp(25px, 3vw, 36px);
   font-weight: 600;
   letter-spacing: -0.035em;
@@ -244,7 +244,7 @@ body.admin-home-page {
 
 .admin-welcome p {
   margin: 8px 0 0;
-  color: #6e6e73;
+  color: var(--color-secondary);
   font-size: 13px;
   font-weight: 400;
   letter-spacing: 2px;
