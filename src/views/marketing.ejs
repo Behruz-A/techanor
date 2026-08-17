@@ -6,68 +6,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-<script>
-  (function restoreTechanorTheme() {
-    try {
-      document.documentElement.dataset.theme = localStorage.getItem("techanor-admin-theme") || "light";
-    } catch (error) {
-      document.documentElement.dataset.theme = "light";
-    }
-  })();
-</script>
+<%- include('includes/admin-theme') %>
 
 <body class="products_page marketing_page">
   <div class="admin_shell">
-    <aside class="admin_sidebar" id="admin-sidebar">
-      <a class="sidebar_brand" href="/admin" aria-label="Techanor home">
-        <img class="sidebar_brand_logo" src="/img/logoipsum-249.svg" alt="" aria-hidden="true" />
-        <span><strong>Techanor</strong><small>ADMIN PANEL</small></span>
-      </a>
-
-      <p class="sidebar_label">MENU</p>
-      <nav class="sidebar_navigation marketing_navigation" aria-label="Admin navigation">
-        <a href="/admin"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10Z"/></svg></span><span>Home</span></a>
-        <a href="/admin/product/all"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4.5 7.8 7.5 4.3 7.5-4.3M12 12v9"/></svg></span><span>Products</span></a>
-        <a href="/admin/analytics"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V10m6 10V4m6 16v-7m4 7H2"/></svg></span><span>Analytics</span></a>
-        <a class="is_active" href="/admin/marketing" aria-current="page"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m4 13 2.2 6h3.6L8 13m0-5h3l7-4v16l-7-4H5a3 3 0 0 1 0-6h3V8Z"/></svg></span><span>Marketing</span></a>
-        <a href="/admin/user/all"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m7-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm13 10v-2a4 4 0 0 0-3-3.9m-2-11.8a4 4 0 0 1 0 7.4"/></svg></span><span>Users</span></a>
-        <a href="/admin/blog/all"><span class="nav_icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3h14a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg></span><span>Blogs</span></a>
-        <button class="sidebar_future_item" type="button" data-coming-soon="AI"><span>AI</span><em>NEW</em></button>
-        <button class="sidebar_future_item" type="button" data-coming-soon="AI Assistant"><span>AI Assistant</span><em>NEW</em></button>
-      </nav>
-
-      <div class="sidebar_footer">
-        <span><i></i><span data-i18n="systemOnline">SYSTEM ONLINE</span></span>
-        <a class="sidebar_logout" href="/admin/logout"><svg class="logout_icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5m5 5H3m10-8h6a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"/></svg><span data-i18n="logout">Logout</span></a>
-      </div>
-    </aside>
+    <%- include('includes/admin-sidebar', { activePage: 'marketing' }) %>
 
     <section class="admin_workspace">
-      <header class="workspace_header">
-        <button class="sidebar_toggle" id="sidebar-toggle" type="button" aria-label="Toggle navigation">☰</button>
-        <label class="global_search">
-          <span>⌕</span>
-          <input id="product-search" type="search" placeholder="Search campaigns..." />
-        </label>
-        <div class="header_actions">
-          <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-            <img class="theme_icon theme_icon_sun" src="/img/marketing/sun-svgrepo-com.svg" alt="" aria-hidden="true" />
-            <span class="theme_icon theme_icon_moon" aria-hidden="true">☾</span>
-          </button>
-          <label class="language_picker" for="language-select">
-            <span>文</span>
-            <select id="language-select" aria-label="Language">
-              <option value="en" selected>English</option>
-              <option value="ko">한국어</option>
-              <option value="uz">O‘zbek</option>
-            </select>
-          </label>
-          <div class="admin_identity">
-            <img src="/img/Asensio.png" alt="Ryan" />
-            <div><strong>Ryan</strong><small>Admin</small></div>
-          </div>
-        </div>
-      </header>
+      <%- include('includes/admin-header', {
+        searchId: 'product-search',
+        searchPlaceholder: 'Search campaigns...',
+        searchLabel: 'Search campaigns'
+      }) %>
 
       <main class="marketing_content">
         <section class="metric_grid" aria-label="Marketing metrics">
@@ -139,8 +89,9 @@
     </section>
   </div>
 
-  <script type="text/javascript" src="/js/products.js"></script>
-  <script type="text/javascript" src="/js/marketing.js?v=4"></script>
+  <script src="/js/admin-shell.js"></script>
+  <script src="/js/products.js"></script>
+  <script src="/js/marketing.js?v=4"></script>
 </body>
 
 <%- include('includes/footer') %>

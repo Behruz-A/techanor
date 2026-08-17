@@ -1,6 +1,10 @@
 import MemberModel from "../controllers/schema/Member.model";
 import { shapeIntoMongooseObjectId } from "../libs/config";
-import { AuthProvider, MemberStatus, MemberType } from "../libs/enums/member.enum";
+import {
+  AuthProvider,
+  MemberStatus,
+  MemberType,
+} from "../libs/enums/member.enum";
 import Errors, { HttpCode, Message } from "../libs/Error";
 import {
   LoginInput,
@@ -35,14 +39,19 @@ class MemberService {
   }
 
   public async login(input: LoginInput): Promise<Member> {
-    //TODO: CONSIDER member status later
     const member = await this.memberModel
       .findOne(
-        { memberNick: input.memberNick },
-        { memberNick: 1, memberPassword: 1 },
+        {
+          memberNick: input.memberNick,
+          memberSTatus: { $ne: MemberStatus.DELETE },
+        },
+        { memberNick: 1, memberPassword: 1, MemberStatus: 1 },
       )
       .exec();
     if (!member) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_NICK);
+    else if (member.memberSTatus === MemberStatus.BLOCK) {
+      throw new Errors(HttpCode.FORBIDDEN, Message.CREATION_FAILED);
+    }
 
     const isMatch = await bcrypt.compare(
       input.memberPassword,
@@ -138,10 +147,7 @@ class MemberService {
         Message.GOOGLE_EMAIL_NOT_VERIFIED,
       );
     if (email !== approvedEmail)
-      throw new Errors(
-        HttpCode.FORBIDDEN,
-        Message.GOOGLE_ACCOUNT_NOT_ALLOWED,
-      );
+      throw new Errors(HttpCode.FORBIDDEN, Message.GOOGLE_ACCOUNT_NOT_ALLOWED);
 
     const store = await this.memberModel
       .findOne({ memberType: MemberType.STORE })
@@ -153,20 +159,11 @@ class MemberService {
       .findOne({ $or: [{ googleId }, { memberEmail: email }] })
       .exec();
     if (identityOwner && !identityOwner._id.equals(store._id))
-      throw new Errors(
-        HttpCode.CONFLICT,
-        Message.GOOGLE_ACCOUNT_CONFLICT,
-      );
+      throw new Errors(HttpCode.CONFLICT, Message.GOOGLE_ACCOUNT_CONFLICT);
     if (store.googleId && store.googleId !== googleId)
-      throw new Errors(
-        HttpCode.FORBIDDEN,
-        Message.GOOGLE_ACCOUNT_NOT_ALLOWED,
-      );
+      throw new Errors(HttpCode.FORBIDDEN, Message.GOOGLE_ACCOUNT_NOT_ALLOWED);
     if (store.memberEmail && store.memberEmail.toLowerCase() !== email)
-      throw new Errors(
-        HttpCode.CONFLICT,
-        Message.GOOGLE_ACCOUNT_CONFLICT,
-      );
+      throw new Errors(HttpCode.CONFLICT, Message.GOOGLE_ACCOUNT_CONFLICT);
 
     store.googleId = googleId;
     store.memberEmail = email;
@@ -185,7 +182,10 @@ class MemberService {
 
   public async updateChosenUser(input: MemberUpdateInput): Promise<Member> {
     const memberId = shapeIntoMongooseObjectId(input._id);
-    if (!input.memberStatus || !Object.values(MemberStatus).includes(input.memberStatus)) {
+    if (
+      !input.memberStatus ||
+      !Object.values(MemberStatus).includes(input.memberStatus)
+    ) {
       throw new Errors(HttpCode.BAD_REQUEST, Message.UPDATE_FAILED);
     }
 

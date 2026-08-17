@@ -867,9 +867,14 @@ html[data-theme="dark"] .theme_icon_moon {
 
 .product_form {
   display: none;
-  width: min(100%, 900px);
+  width: min(100%, 980px);
+  max-height: calc(100vh - 48px);
   margin: 28px auto 0;
-  padding-bottom: 28px;
+  padding-bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-margin-top: 24px;
+  scrollbar-gutter: stable;
 }
 
 .close_form_button {
@@ -890,7 +895,7 @@ html[data-theme="dark"] .theme_icon_moon {
 .form_grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  gap: 18px 22px;
   padding: 28px;
 }
 
@@ -910,13 +915,13 @@ html[data-theme="dark"] .theme_icon_moon {
 .image_upload_section legend {
   margin: 0;
   color: #344054;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 650;
 }
 
-.optional_label { margin-left: 5px; color: var(--secondary_text); font-size: 11px; font-weight: 500; }
+.optional_label { display: inline-flex; margin-left: 7px; padding: 2px 7px; border-radius: 999px; color: var(--secondary_text); background: #f2f4f7; font-size: 10px; font-weight: 650; vertical-align: middle; }
 .required_mark { color: #dc2626; font-weight: 800; }
-.description_help { margin-top: -2px; color: var(--secondary_text); font-size: 11px; }
+.description_help { margin-top: 0; color: var(--secondary_text); font-size: 12px; }
 
 .form_field input,
 .form_field select,
@@ -928,7 +933,7 @@ html[data-theme="dark"] .theme_icon_moon {
   color: var(--primary_text);
   background: #ffffff;
   font: inherit;
-  font-size: 14px;
+  font-size: 15px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -936,7 +941,8 @@ html[data-theme="dark"] .theme_icon_moon {
 .add_memory_button:hover { border-color: var(--color-primary); color: var(--color-primary-hover); background: var(--color-primary-light); }
 .memory_select_row { display: flex; gap: 9px; }
 .memory_select_row select { flex: 1; }
-.remove_memory_button { width: 48px; flex: 0 0 48px; border: 1px solid #fecaca; border-radius: 12px; color: #b42318; background: #fef2f2; font-size: 21px; cursor: pointer; }
+.memory_input_field { grid-column: 1 / -1; }
+.remove_memory_button { min-width: 82px; flex: 0 0 82px; padding: 0 14px; border: 1px solid #fecaca; border-radius: 12px; color: #b42318; background: #fef2f2; font: inherit; font-size: 12px; font-weight: 700; cursor: pointer; }
 
 .form_field input,
 .form_field select {
@@ -979,6 +985,7 @@ html[data-theme="dark"] .theme_icon_moon {
   display: flex;
   min-width: 0;
   aspect-ratio: 1 / 0.82;
+  min-height: 126px;
   flex-direction: column;
   gap: 9px;
   align-items: center;
@@ -1038,10 +1045,24 @@ html[data-theme="dark"] .theme_icon_moon {
 }
 
 .form_actions {
+  position: sticky;
+  z-index: 3;
+  bottom: 0;
   display: flex;
   gap: 12px;
   justify-content: flex-end;
-  padding: 0 28px;
+  padding: 18px 28px 24px;
+  border-top: 1px solid var(--border_color);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(10px);
+}
+
+.product_form .form_heading {
+  position: sticky;
+  z-index: 4;
+  top: 0;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(10px);
 }
 
 html[data-theme="dark"] {
@@ -1216,6 +1237,9 @@ html[data-theme="dark"] .upload_box:hover {
 }
 html[data-theme="dark"] .add_memory_button { border-color: rgba(37,99,235,.55); color: var(--color-primary-border); background: rgba(37,99,235,.1); }
 html[data-theme="dark"] .remove_memory_button { border-color: rgba(239,68,68,.35); color: #fca5a5; background: rgba(239,68,68,.1); }
+html[data-theme="dark"] .optional_label { color: #cbd5e1; background: #293548; }
+html[data-theme="dark"] .product_form .form_heading,
+html[data-theme="dark"] .product_form .form_actions { background: rgba(24, 34, 53, 0.97); }
 
 html[data-theme="dark"] .status_process {
   border-color: rgba(34, 197, 94, 0.35);
@@ -1333,6 +1357,7 @@ html[data-theme="dark"] .status_delete {
 
   .form_grid {
     grid-template-columns: 1fr;
+    padding: 22px 18px;
   }
 
   .field_full {
@@ -1341,6 +1366,29 @@ html[data-theme="dark"] .status_delete {
 
   .image_upload_grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .image_upload_section {
+    padding: 0 18px 22px;
+  }
+
+  .form_actions {
+    padding: 16px 18px 20px;
+  }
+
+  .form_actions button {
+    flex: 1;
+  }
+
+  .memory_select_row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .remove_memory_button {
+    width: 100%;
+    min-height: 42px;
+    flex-basis: auto;
   }
 }
 

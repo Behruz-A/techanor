@@ -1,35 +1,17 @@
 <%- include('includes/header') %>
 <link rel="stylesheet" href="/css/products.css" />
 <link rel="stylesheet" href="/css/users.css" />
-<script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('techanor-admin-theme')||'light'}catch(e){document.documentElement.dataset.theme='light'}})();</script>
+<%- include('includes/admin-theme') %>
 <body class="users_page">
 <div class="admin_shell">
-  <aside class="admin_sidebar" id="admin-sidebar">
-    <a class="sidebar_brand" href="/admin"><img class="sidebar_brand_logo" src="/img/logoipsum-249.svg" alt="" /><span><strong>Techanor</strong><small>ADMIN PANEL</small></span></a>
-    <p class="sidebar_label" data-i18n="general">GENERAL</p>
-    <nav class="sidebar_navigation" aria-label="Admin navigation">
-      <a href="/admin"><span class="nav_icon">⌂</span><span data-i18n="home">Home</span></a>
-      <a href="/admin/product/all"><span class="nav_icon">▦</span><span data-i18n="products">Products</span></a>
-      <a href="/admin/analytics"><span class="nav_icon">⌁</span><span data-i18n="analytics">Analytics</span></a>
-      <a href="/admin/marketing"><span class="nav_icon">⌁</span><span data-i18n="marketing">Marketing</span></a>
-      <a class="is_active" href="/admin/user/all" aria-current="page"><span class="nav_icon">♙</span><span data-i18n="users">Users</span></a>
-      <a href="/admin/blog/all"><span class="nav_icon">▤</span><span data-i18n="blogs">Blogs</span></a>
-      <button class="sidebar_future_item" type="button" data-coming-soon="AI"><span>AI</span><em>NEW</em></button>
-      <button class="sidebar_future_item" type="button" data-coming-soon="AI Assistant"><span>AI Assistant</span><em>NEW</em></button>
-    </nav>
-    <div class="sidebar_footer"><span><i></i><span data-i18n="systemOnline">SYSTEM ONLINE</span></span><a class="sidebar_logout" href="/admin/logout" onclick="return confirm('Do you want to logout?')"><span>↪</span><span data-i18n="logout">Logout</span></a></div>
-  </aside>
+  <%- include('includes/admin-sidebar', { activePage: 'users' }) %>
 
   <section class="admin_workspace">
-    <header class="workspace_header">
-      <button class="sidebar_toggle" id="sidebar-toggle" type="button" aria-label="Toggle navigation">☰</button>
-      <label class="global_search"><span>⌕</span><input id="global-search" type="search" data-i18n-placeholder="navigationSearch" placeholder="Search pages..." aria-label="Global navigation search" /></label>
-      <div class="header_actions">
-        <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false"><img class="theme_icon theme_icon_sun" src="/img/marketing/sun-svgrepo-com.svg" alt="" aria-hidden="true" /><span class="theme_icon theme_icon_moon">☾</span></button>
-        <label class="language_picker" for="language-select"><span>文</span><select id="language-select"><option value="en">English</option><option value="ko">한국어</option><option value="uz">O‘zbek</option></select></label>
-        <div class="admin_identity"><img src="/img/Asensio.png" alt="Ryan" /><div><strong>Ryan</strong><small data-i18n="admin">Admin</small></div></div>
-      </div>
-    </header>
+    <%- include('includes/admin-header', {
+      searchId: 'global-search',
+      searchPlaceholder: 'Search pages...',
+      searchLabel: 'Global navigation search'
+    }) %>
 
     <main class="users_content">
       <section class="users_heading"><div><h1 data-i18n="users">Users</h1><nav class="users_breadcrumb"><a href="/admin" data-i18n="home">Home</a><span>›</span><strong data-i18n="users">Users</strong></nav></div></section>
@@ -73,7 +55,7 @@
   </section>
 </div>
 <div class="users_toast" id="users-toast" role="status" aria-live="polite"></div>
-<div class="coming_soon_modal" id="coming-soon-modal" hidden><div><button type="button" aria-label="Close">×</button><span>NEW</span><h2>Coming Soon</h2><p>This Techanor feature is currently being prepared.</p></div></div>
+<script src="/js/admin-shell.js"></script>
 <script src="/js/users.js"></script>
 </body>
 <%- include('includes/footer') %>

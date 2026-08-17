@@ -5,36 +5,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<script>(function(){try{document.documentElement.dataset.theme=localStorage.getItem('techanor-admin-theme')||'light'}catch(e){document.documentElement.dataset.theme='light'}})();</script>
+<%- include('includes/admin-theme') %>
 
 <body class="products_page marketing_page analytics_page">
   <div class="admin_shell">
-    <aside class="admin_sidebar" id="admin-sidebar">
-      <a class="sidebar_brand" href="/admin"><img class="sidebar_brand_logo" src="/img/logoipsum-249.svg" alt="" aria-hidden="true" /><span><strong>Techanor</strong></span></a>
-      <p class="sidebar_label">MENU</p>
-      <nav class="sidebar_navigation marketing_navigation" aria-label="Admin navigation">
-        <a href="/admin"><span class="nav_icon">⌂</span><span>Home</span></a>
-        <a href="/admin/product/all"><span class="nav_icon">▦</span><span>Products</span></a>
-        <a class="is_active" href="/admin/analytics"><span class="nav_icon">⌁</span><span>Analytics</span></a>
-        <a href="/admin/marketing"><span class="nav_icon">⌁</span><span>Marketing</span></a>
-        <a href="/admin/user/all"><span class="nav_icon">♙</span><span>Users</span></a>
-        <a href="/admin/blog/all"><span class="nav_icon">▤</span><span>Blogs</span></a>
-        <button class="sidebar_future_item" type="button" data-coming-soon="AI"><span>AI</span><em>NEW</em></button>
-        <button class="sidebar_future_item" type="button" data-coming-soon="AI Assistant"><span>AI Assistant</span><em>NEW</em></button>
-      </nav>
-      <div class="sidebar_footer"><span><i></i>SYSTEM ONLINE</span><a class="sidebar_logout" href="/admin/logout"><span>↪</span><span>Logout</span></a></div>
-    </aside>
+    <%- include('includes/admin-sidebar', { activePage: 'analytics' }) %>
 
     <section class="admin_workspace">
-      <header class="workspace_header">
-        <button class="sidebar_toggle" id="sidebar-toggle" type="button" aria-label="Toggle navigation" aria-controls="admin-sidebar">☰</button>
-        <label class="global_search"><span aria-hidden="true">⌕</span><input id="product-search" type="search" placeholder="Search analytics..." aria-label="Search analytics" /></label>
-        <div class="header_actions">
-          <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode"><img class="theme_icon theme_icon_sun" src="/img/marketing/sun-svgrepo-com.svg" alt="" aria-hidden="true" /><span class="theme_icon theme_icon_moon">☾</span></button>
-          <label class="language_picker"><span aria-hidden="true">文</span><select id="language-select" aria-label="Language"><option value="en">English</option><option value="ko">한국어</option><option value="uz">O‘zbek</option></select></label>
-          <div class="admin_identity"><img src="/img/Asensio.png" alt="Ryan"/><div><strong>Ryan</strong><small>Admin</small></div></div>
-        </div>
-      </header>
+      <%- include('includes/admin-header', {
+        searchId: 'product-search',
+        searchPlaceholder: 'Search analytics...',
+        searchLabel: 'Search analytics'
+      }) %>
 
       <main class="analytics_content">
         <section class="analytics_metrics">
@@ -88,6 +70,8 @@
       </main>
     </section>
   </div>
-  <script src="/js/products.js"></script><script src="/js/analytics.js"></script>
+  <script src="/js/admin-shell.js"></script>
+  <script src="/js/products.js"></script>
+  <script src="/js/analytics.js"></script>
 </body>
 <%- include('includes/footer') %>

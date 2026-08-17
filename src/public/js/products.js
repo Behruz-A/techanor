@@ -1,6 +1,6 @@
 /* Techanor admin product management */
 
-$(function () {
+$(window).on("load", function () {
   const productForm = $("#product-form");
   const processButton = $("#process-btn");
 
@@ -107,9 +107,6 @@ $(function () {
   initializeProductTable();
   initializeProductActions();
   initializeLanguagePicker();
-  initializeSidebar();
-  initializeThemeToggle();
-  initializeComingSoon();
   initializeMemoryField();
 });
 
@@ -624,63 +621,6 @@ function initializeMemoryField() {
     window.setTimeout(function () { removeMemory(); removeScreenSize(); triggerField.hidden = true; screenTriggerField.hidden = true; }, 0);
   });
   syncCategory();
-}
-
-function initializeSidebar() {
-  const toggle = document.getElementById("sidebar-toggle");
-  const sidebar = document.getElementById("admin-sidebar");
-  if (!toggle || !sidebar) return;
-
-  toggle.addEventListener("click", function () {
-    sidebar.classList.toggle("is_open");
-  });
-}
-
-function initializeThemeToggle() {
-  const themeToggle = document.getElementById("theme-toggle");
-  if (!themeToggle) return;
-
-  function updateThemeControl(theme) {
-    const isDark = theme === "dark";
-    themeToggle.setAttribute("aria-pressed", String(isDark));
-    themeToggle.setAttribute(
-      "aria-label",
-      isDark ? "Switch to light mode" : "Switch to dark mode",
-    );
-  }
-
-  const currentTheme = document.documentElement.dataset.theme || "light";
-  updateThemeControl(currentTheme);
-
-  themeToggle.addEventListener("click", function () {
-    const nextTheme =
-      document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = nextTheme;
-    updateThemeControl(nextTheme);
-
-    try {
-      localStorage.setItem("techanor-admin-theme", nextTheme);
-    } catch (error) {
-      console.warn("Theme preference could not be saved.");
-    }
-  });
-}
-
-function initializeComingSoon() {
-  document.querySelectorAll("[data-coming-soon]").forEach(function (button) {
-    button.addEventListener("click", function () {
-      const feature = button.dataset.comingSoon || "AI";
-      const overlay = document.createElement("div");
-      overlay.className = "coming_soon_overlay";
-      overlay.innerHTML = `<section class="coming_soon_card" role="dialog" aria-modal="true" aria-labelledby="coming-soon-title"><span>AI</span><h2 id="coming-soon-title">${feature} is coming soon</h2><p>We are building a smarter Techanor experience to help you work faster and make better decisions. This feature will be available in a future update.</p><button type="button">Got it</button></section>`;
-      document.body.appendChild(overlay);
-      const close = function () { overlay.remove(); };
-      overlay.querySelector("button").addEventListener("click", close);
-      overlay.addEventListener("click", function (event) { if (event.target === overlay) close(); });
-      document.addEventListener("keydown", function escape(event) { if (event.key === "Escape") { close(); document.removeEventListener("keydown", escape); } });
-      overlay.querySelector("button").focus();
-    });
-  });
 }
 
 function previewProductImage(input) {

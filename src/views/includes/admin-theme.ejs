@@ -1,0 +1,10 @@
+<script>
+  (function restoreAdminTheme() {
+    try {
+      document.documentElement.dataset.theme =
+        localStorage.getItem("techanor-admin-theme") || "light";
+    } catch (error) {
+      document.documentElement.dataset.theme = "light";
+    }
+  })();
+</script>

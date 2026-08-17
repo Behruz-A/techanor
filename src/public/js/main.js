@@ -1,1 +1,1 @@
-console.log("Basic frontend javascript file");
+/* Reserved for site-wide public behavior. */

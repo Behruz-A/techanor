@@ -2,68 +2,18 @@
 
 <link rel="stylesheet" type="text/css" href="/css/products.css" />
 
-<script>
-  (function restoreTechanorTheme() {
-    try {
-      document.documentElement.dataset.theme = localStorage.getItem("techanor-admin-theme") || "light";
-    } catch (error) {
-      document.documentElement.dataset.theme = "light";
-    }
-  })();
-</script>
+<%- include('includes/admin-theme') %>
 
 <body class="products_page">
   <div class="admin_shell">
-    <aside class="admin_sidebar" id="admin-sidebar">
-      <a class="sidebar_brand" href="/admin" aria-label="Techanor home">
-        <img class="sidebar_brand_logo" src="/img/logoipsum-249.svg" alt="" aria-hidden="true" />
-        <span><strong>Techanor</strong><small>ADMIN PANEL</small></span>
-      </a>
-
-      <p class="sidebar_label" data-i18n="general">GENERAL</p>
-      <nav class="sidebar_navigation" aria-label="Admin navigation">
-        <a href="/admin"><span class="nav_icon">⌂</span><span data-i18n="home">Home</span></a>
-        <a class="is_active" href="/admin/product/all" aria-current="page"><span class="nav_icon">▦</span><span data-i18n="products">Products</span></a>
-        <a href="/admin/analytics"><span class="nav_icon">⌁</span><span>Analytics</span></a>
-        <a href="/admin/marketing"><span class="nav_icon">⌁</span><span data-i18n="marketing">Marketing</span></a>
-        <a href="/admin/user/all"><span class="nav_icon">♙</span><span data-i18n="users">Users</span></a>
-        <a href="/admin/blog/all"><span class="nav_icon">▤</span><span data-i18n="blogs">Blogs</span></a>
-        <button class="sidebar_future_item" type="button" data-coming-soon="AI"><span>AI</span><em>NEW</em></button>
-        <button class="sidebar_future_item" type="button" data-coming-soon="AI Assistant"><span>AI Assistant</span><em>NEW</em></button>
-      </nav>
-
-      <div class="sidebar_footer">
-        <span><i></i><span data-i18n="systemOnline">SYSTEM ONLINE</span></span>
-        <a class="sidebar_logout" href="/admin/logout" onclick="return confirm('Do you want to logout?')"><span>↪</span><span data-i18n="logout">Logout</span></a>
-      </div>
-    </aside>
+    <%- include('includes/admin-sidebar', { activePage: 'products' }) %>
 
     <section class="admin_workspace">
-      <header class="workspace_header">
-        <button class="sidebar_toggle" id="sidebar-toggle" type="button" aria-label="Toggle navigation">☰</button>
-        <label class="global_search">
-          <span>⌕</span>
-          <input id="product-search" type="search" data-i18n-placeholder="navigationSearch" placeholder="Search pages..." aria-label="Global navigation search" />
-        </label>
-        <div class="header_actions">
-          <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-            <img class="theme_icon theme_icon_sun" src="/img/marketing/sun-svgrepo-com.svg" alt="" aria-hidden="true" />
-            <span class="theme_icon theme_icon_moon" aria-hidden="true">☾</span>
-          </button>
-          <label class="language_picker" for="language-select">
-            <span>文</span>
-            <select id="language-select" aria-label="Language">
-              <option value="en" selected>English</option>
-              <option value="ko">한국어</option>
-              <option value="uz">O‘zbek</option>
-            </select>
-          </label>
-          <div class="admin_identity">
-            <img src="/img/Asensio.png" alt="Ryan" />
-            <div><strong>Ryan</strong><small>Admin</small></div>
-          </div>
-        </div>
-      </header>
+      <%- include('includes/admin-header', {
+        searchId: 'product-search',
+        searchPlaceholder: 'Search pages...',
+        searchLabel: 'Global navigation search'
+      }) %>
 
       <main class="products_content">
       <section class="products_heading">
@@ -316,7 +266,7 @@
                 <option value="32GB">32 GB</option><option value="64GB">64 GB</option><option value="128GB">128 GB</option>
                 <option value="256GB">256 GB</option><option value="512GB">512 GB</option><option value="1TB">1 TB</option><option value="2TB">2 TB</option>
               </select>
-              <button class="remove_memory_button" id="remove-memory-button" type="button" aria-label="Remove memory">×</button>
+              <button class="remove_memory_button" id="remove-memory-button" type="button" aria-label="Remove memory">Remove</button>
             </div>
           </div>
 
@@ -334,7 +284,7 @@
                 <option value="43">43″</option><option value="50">50″</option><option value="55">55″</option>
                 <option value="65">65″</option><option value="75">75″</option><option value="85">85″</option>
               </select>
-              <button class="remove_memory_button" id="remove-screen-button" type="button" aria-label="Remove screen size">×</button>
+              <button class="remove_memory_button" id="remove-screen-button" type="button" aria-label="Remove screen size">Remove</button>
             </div>
           </div>
 
@@ -402,7 +352,8 @@
     </section>
   </div>
 
-  <script type="text/javascript" src="/js/products.js"></script>
+  <script src="/js/admin-shell.js"></script>
+  <script src="/js/products.js"></script>
 </body>
 
 <%- include('includes/footer') %>

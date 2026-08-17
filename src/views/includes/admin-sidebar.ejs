@@ -1,0 +1,37 @@
+<aside class="admin_sidebar" id="admin-sidebar">
+  <a class="sidebar_brand" href="/admin" aria-label="Techanor home">
+    <img class="sidebar_brand_logo" src="/img/logoipsum-249.svg" alt="" aria-hidden="true" />
+    <span><strong>Techanor</strong><small>ADMIN PANEL</small></span>
+  </a>
+
+  <p class="sidebar_label" data-i18n="general">GENERAL</p>
+  <nav class="sidebar_navigation" aria-label="Admin navigation">
+    <% const adminLinks = [
+      { key: 'home', label: 'Home', href: '/admin', icon: '⌂' },
+      { key: 'products', label: 'Products', href: '/admin/product/all', icon: '▦' },
+      { key: 'analytics', label: 'Analytics', href: '/admin/analytics', icon: '⌁' },
+      { key: 'marketing', label: 'Marketing', href: '/admin/marketing', icon: '⌁' },
+      { key: 'users', label: 'Users', href: '/admin/user/all', icon: '♙' },
+      { key: 'blogs', label: 'Blogs', href: '/admin/blog/all', icon: '▤' }
+    ]; %>
+    <% adminLinks.forEach(function(link) { %>
+      <a
+        class="<%= activePage === link.key ? 'is_active' : '' %>"
+        href="<%= link.href %>"
+        <%- activePage === link.key ? 'aria-current="page"' : '' %>
+      >
+        <span class="nav_icon" aria-hidden="true"><%= link.icon %></span>
+        <span data-i18n="<%= link.key %>"><%= link.label %></span>
+      </a>
+    <% }); %>
+    <button class="sidebar_future_item" type="button" data-coming-soon="AI"><span>AI</span><em>NEW</em></button>
+    <button class="sidebar_future_item" type="button" data-coming-soon="AI Assistant"><span>AI Assistant</span><em>NEW</em></button>
+  </nav>
+
+  <div class="sidebar_footer">
+    <span><i></i><span data-i18n="systemOnline">SYSTEM ONLINE</span></span>
+    <a class="sidebar_logout" href="/admin/logout" onclick="return confirm('Do you want to logout?')">
+      <span aria-hidden="true">↪</span><span data-i18n="logout">Logout</span>
+    </a>
+  </div>
+</aside>
