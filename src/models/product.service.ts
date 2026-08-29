@@ -6,6 +6,7 @@ import { T } from "../libs/types/common";
 import {
   Product,
   ProductInput,
+  ProductInquiry,
   ProductUpdateInput,
 } from "../libs/types/product";
 import ViewService from "./View.service";
@@ -17,6 +18,40 @@ class ProductService {
   constructor() {
     this.productModel = ProductModel;
     this.viewService = new ViewService();
+  }
+
+  /* SPA */
+
+  public async getProducts(inquiry: ProductInquiry): Promise<Product[]> {
+    const match: T = { productStatus: ProductStatus.PROCESS };
+
+    if (inquiry.productCondition)
+      match.productCondition = inquiry.productCondition;
+    if (inquiry.productCategory) match.productCategory = inquiry.productCategory;
+    if (inquiry.productBrand) match.productBrand = inquiry.productBrand;
+    if (inquiry.productMemory) match.productMemory = inquiry.productMemory;
+    if (inquiry.productScreenSize)
+      match.productScreenSize = inquiry.productScreenSize;
+    if (inquiry.search)
+      match.productName = { $regex: new RegExp(inquiry.search, "i") };
+
+    const allowedOrders = ["createdAt", "productPrice", "productViews"];
+    const order = allowedOrders.includes(inquiry.order)
+      ? inquiry.order
+      : "createdAt";
+    const sort: T =
+      order === "productPrice" ? { [order]: 1 } : { [order]: -1 };
+
+    const result = await this.productModel
+      .aggregate([
+        { $match: match },
+        { $sort: sort },
+        { $skip: (inquiry.page - 1) * inquiry.limit },
+        { $limit: inquiry.limit },
+      ])
+      .exec();
+
+    return result;
   }
 
   /*SSR */
