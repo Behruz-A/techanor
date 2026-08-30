@@ -54,6 +54,20 @@ class ProductService {
     return result;
   }
 
+  public async getProduct(id: string): Promise<Product> {
+    const productId = shapeIntoMongooseObjectId(id);
+    const result = await this.productModel
+      .findOneAndUpdate(
+        { _id: productId, productStatus: ProductStatus.PROCESS },
+        { $inc: { productViews: 1 } },
+        { new: true },
+      )
+      .exec();
+
+    if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+    return result;
+  }
+
   /*SSR */
 
   public async getAllProducts(): Promise<Product[]> {

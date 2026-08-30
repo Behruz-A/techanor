@@ -9,4 +9,6 @@ router.post("/signup", memberController.signup);
 
 router.get("/product/all", productController.getProducts);
 
+router.get("/product/:id", productController.getProduct);
+
 export default router;

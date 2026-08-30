@@ -57,6 +57,17 @@ productController.getProducts = async (req: Request, res: Response) => {
   }
 };
 
+productController.getProduct = async (req: Request, res: Response) => {
+  try {
+    const result = await productService.getProduct(req.params.id);
+    res.status(HttpCode.OK).json(result);
+  } catch (err) {
+    console.log("Error, getProduct:", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standart.code).json(Errors.standart);
+  }
+};
+
 /*SSR */
 
 productController.getAllProducts = async (req: Request, res: Response) => {

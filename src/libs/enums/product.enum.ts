@@ -16,6 +16,7 @@ export enum ProductCategory {
   GAMING = "GAMING",
   AUDIO = "AUDIO",
   CASES = "CASES",
+  WEARABLES = "WEARABLES",
   OTHERS = "OTHERS",
 }
 
