@@ -5,6 +5,10 @@ import productController from "./controllers/product.controlle";
 
 router.post("/login", memberController.login);
 
+router.get("/member/me", memberController.getCurrentMember);
+
+router.post("/logout", memberController.logout);
+
 router.post("/signup", memberController.signup);
 
 router.get("/product/all", productController.getProducts);

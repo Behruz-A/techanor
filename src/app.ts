@@ -33,10 +33,13 @@ app.use(
     secret: String(process.env.SESSION_SECRET),
     cookie: {
       maxAge: 1000 * 3600 * 6, // 6h
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
     },
     store: store,
-    resave: true, // 10:30 auth => 13:30 12:00
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
   }),
 );
 
