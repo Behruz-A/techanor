@@ -17,6 +17,9 @@ export enum Message {
   UPDATE_FAILED = "Update is failed!",
 
   USED_NICK_PHONE = "You are inserting already used nick or phone!",
+  INVALID_MEMBER_NICK = "Username must be 2 to 30 characters and use only letters, numbers, or underscores!",
+  INVALID_MEMBER_PHONE = "Enter a valid phone number containing 7 to 15 digits!",
+  INVALID_MEMBER_PASSWORD = "Password must be between 6 and 72 characters!",
   NO_MEMBER_NICK = "No member with that member nick!",
   BLOCKED_USER = "You have been blocked, contact the Admin",
   WRONG_PASSWORD = "Wrong passsword, please try again!",

@@ -24,18 +24,36 @@ class MemberService {
   /**SPA */
 
   public async signup(input: MemberInput): Promise<Member> {
+    const memberNick = String(input.memberNick || "").trim();
+    const memberPhone = String(input.memberPhone || "").replace(/[\s()-]/g, "");
+    const memberPassword = String(input.memberPassword || "");
+
+    if (!/^[A-Za-z0-9_]{2,30}$/.test(memberNick))
+      throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_MEMBER_NICK);
+    if (!/^\+?\d{7,15}$/.test(memberPhone))
+      throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_MEMBER_PHONE);
+    if (memberPassword.length < 6 || memberPassword.length > 72)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_MEMBER_PASSWORD);
+
     const salt = await bcrypt.genSalt();
-    input.memberPassword = await bcrypt.hash(input.memberPassword, salt);
+    const hashedPassword = await bcrypt.hash(memberPassword, salt);
+    const safeInput: MemberInput = {
+      memberType: MemberType.USER,
+      memberStatus: MemberStatus.ACTIVE,
+      memberNick,
+      memberPhone,
+      memberPassword: hashedPassword,
+    };
 
+    let createdMember;
     try {
-      const result = await this.memberModel.create(input);
-
-      console.log("PASSED HERE");
-      return result.toJSON();
+      createdMember = await this.memberModel.create(safeInput);
     } catch (err) {
       console.log("Error, model:signup", err);
       throw new Errors(HttpCode.BAD_REQUEST, Message.USED_NICK_PHONE);
     }
+
+    return await this.memberModel.findById(createdMember._id).lean().exec();
   }
 
   public async login(input: LoginInput): Promise<Member> {
