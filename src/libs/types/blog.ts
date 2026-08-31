@@ -40,3 +40,10 @@ export interface BlogPostUpdateInput {
   blogPostVideo?: string;
   blogPostVideoUrl?: string;
 }
+
+export interface BlogPostInquiry {
+  page: number;
+  limit: number;
+  blogPostCategory?: BlogPostCategory;
+  search?: string;
+}

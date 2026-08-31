@@ -4,7 +4,7 @@ import { T } from "../libs/types/common";
 import BlogService from "../models/blog.service";
 import fs from "fs";
 import { AdminRequest } from "../libs/types/member";
-import { BlogPostInput } from "../libs/types/blog";
+import { BlogPostInquiry, BlogPostInput } from "../libs/types/blog";
 import { BlogPostCategory, BlogPostStatus } from "../libs/enums/blogPost.enum";
 
 const blogService = new BlogService();
@@ -12,6 +12,37 @@ const blogController: T = {};
 const blogCategories = Object.values(BlogPostCategory);
 const blogStatuses = Object.values(BlogPostStatus);
 const youtubeUrlPattern = /^(https?:\/\/)?(www\.)?(youtube\.com\/(watch\?v=|shorts\/|embed\/)|youtu\.be\/)[A-Za-z0-9_-]{6,}(?:[?&][^\s]*)?$/i;
+
+/* SPA */
+
+blogController.getPublishedBlogs = async (req: Request, res: Response) => {
+  try {
+    const inquiry: BlogPostInquiry = {
+      page: Math.max(1, Number(req.query.page) || 1),
+      limit: Math.min(50, Math.max(1, Number(req.query.limit) || 12)),
+    };
+    if (req.query.blogPostCategory) inquiry.blogPostCategory = req.query.blogPostCategory as BlogPostCategory;
+    if (req.query.search) inquiry.search = String(req.query.search).trim();
+
+    const result = await blogService.getPublishedBlogs(inquiry);
+    res.status(200).json(result);
+  } catch (err) {
+    console.log("Error, getPublishedBlogs:", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standart.code).json(Errors.standart);
+  }
+};
+
+blogController.getPublishedBlog = async (req: Request, res: Response) => {
+  try {
+    const result = await blogService.getPublishedBlog(req.params.id);
+    res.status(200).json(result);
+  } catch (err) {
+    console.log("Error, getPublishedBlog:", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standart.code).json(Errors.standart);
+  }
+};
 
 const getBlogFiles = (req: AdminRequest) => {
   const files = req.files as unknown as Record<string, Express.Multer.File[]> | undefined;
