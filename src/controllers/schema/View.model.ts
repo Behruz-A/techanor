@@ -20,4 +20,5 @@ const viewSchema = new Schema(
   },
   { timestamps: true },
 );
+viewSchema.index({ memberId: 1, viewRefId: 1, viewGroup: 1 }, { unique: true });
 export default mongoose.model("View", viewSchema);

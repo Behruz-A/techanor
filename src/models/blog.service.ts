@@ -21,7 +21,8 @@ class BlogService {
     const match: T = { blogPostStatus: BlogPostStatus.PUBLISHED };
     if (inquiry.blogPostCategory) match.blogPostCategory = inquiry.blogPostCategory;
     if (inquiry.search) {
-      const search = new RegExp(inquiry.search, "i");
+      const escapedSearch = inquiry.search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const search = new RegExp(escapedSearch, "i");
       match.$or = [{ blogPostTitle: search }, { blogPostContent: search }];
     }
 
@@ -68,14 +69,25 @@ class BlogService {
     input: BlogPostUpdateInput,
   ): Promise<BlogPost> {
     const blogId = shapeIntoMongooseObjectId(id);
+    const allowedFields: Array<keyof BlogPostUpdateInput> = [
+      "blogPostStatus", "blogPostCategory", "blogPostTitle",
+      "blogPostContent", "blogPostImage", "blogPostVideo", "blogPostVideoUrl",
+    ];
+    const update = Object.fromEntries(
+      allowedFields
+        .filter((field) => input[field] !== undefined)
+        .map((field) => [field, input[field]]),
+    );
+    if (!Object.keys(update).length)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.UPDATE_FAILED);
     const result = await this.blogPostModel
-      .findOneAndUpdate({ _id: blogId }, input, {
+      .findOneAndUpdate({ _id: blogId }, { $set: update }, {
         new: true,
         runValidators: true,
       })
       .exec();
 
-    if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
+    if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.UPDATE_FAILED);
     return result;
   }
 }

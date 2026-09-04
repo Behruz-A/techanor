@@ -1,7 +1,8 @@
 import path from "path";
 import fs from "fs";
 import multer from "multer";
-import { v4 } from "uuid";
+import { randomUUID } from "crypto";
+import { Message } from "../Error";
 
 function getTargetImageStorage(address: any) {
   return multer.diskStorage({
@@ -12,7 +13,7 @@ function getTargetImageStorage(address: any) {
     },
     filename: function (req, file, cb) {
       const extension = path.parse(file.originalname).ext;
-      const random_name = v4() + extension;
+      const random_name = randomUUID() + extension.toLowerCase();
       cb(null, random_name);
     },
   });
@@ -21,6 +22,21 @@ function getTargetImageStorage(address: any) {
 const makeUploader = (address: string) => {
   const storage = getTargetImageStorage(address);
   return multer({ storage: storage });
+};
+
+export const makeProductUploader = (address: string) => {
+  const storage = getTargetImageStorage(address);
+  return multer({
+    storage,
+    limits: { files: 5, fileSize: 5 * 1024 * 1024 },
+    fileFilter: (_req, file, cb) => {
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.mimetype)) {
+        cb(new Error(Message.INVALID_PRODUCT_IMAGE));
+        return;
+      }
+      cb(null, true);
+    },
+  });
 };
 
 export const makeBlogUploader = (address: string) => {
@@ -37,6 +53,21 @@ export const makeBlogUploader = (address: string) => {
 
       if (!allowed) {
         cb(new Error("Unsupported blog media type"));
+        return;
+      }
+      cb(null, true);
+    },
+  });
+};
+
+export const makeAvatarUploader = (address: string) => {
+  const storage = getTargetImageStorage(address);
+  return multer({
+    storage,
+    limits: { files: 1, fileSize: 5 * 1024 * 1024 },
+    fileFilter: (_req, file, cb) => {
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.mimetype)) {
+        cb(new Error("Unsupported profile image type"));
         return;
       }
       cb(null, true);

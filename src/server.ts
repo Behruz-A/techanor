@@ -4,8 +4,11 @@ dotenv.config();
 import mongoose from "mongoose";
 import app from "./app";
 
+const mongoUrl = process.env.MONGO_URL_TECH?.trim();
+if (!mongoUrl) throw new Error("MONGO_URL_TECH is required");
+
 mongoose
-  .connect(process.env.MONGO_URL_TECH as string, {})
+  .connect(mongoUrl, {})
   .then((data) => {
     console.log("MongoDB connection succeed");
     const PORT = process.env.PORT ?? 3001;
@@ -14,4 +17,7 @@ mongoose
       console.info(`Admin project on http://localhost:${PORT}/admin \n`);
     });
   })
-  .catch((err) => console.log("Error on connection MongoDB", err));
+  .catch((err) => {
+    console.error("Error on connection MongoDB", err);
+    process.exitCode = 1;
+  });

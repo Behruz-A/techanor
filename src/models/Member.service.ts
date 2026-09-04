@@ -57,9 +57,13 @@ class MemberService {
   }
 
   public async login(input: LoginInput): Promise<Member> {
+    const memberNick = String(input?.memberNick || "").trim();
+    const memberPassword = String(input?.memberPassword || "");
+    if (!memberNick || !memberPassword)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_LOGIN_INPUT);
     const member = await this.memberModel
       .findOne({
-        memberNick: input.memberNick,
+        memberNick,
         memberStatus: { $ne: MemberStatus.DELETE },
       })
       .select("+memberPassword")
@@ -70,7 +74,7 @@ class MemberService {
     }
 
     const isMatch = await bcrypt.compare(
-      input.memberPassword,
+      memberPassword,
       member.memberPassword,
     );
 
@@ -88,6 +92,29 @@ class MemberService {
     return member;
   }
 
+  public async updateMember(memberId: string, input: MemberUpdateInput): Promise<Member> {
+    const memberNick = String(input.memberNick || "").trim();
+    const memberPhone = String(input.memberPhone || "").replace(/[\s()-]/g, "");
+    const memberAddress = String(input.memberAddress || "").trim().slice(0, 180);
+    const memberDesc = String(input.memberDesc || "").trim().slice(0, 500);
+    if (!/^[A-Za-z0-9_]{2,30}$/.test(memberNick)) throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_MEMBER_NICK);
+    if (!/^\+?\d{7,15}$/.test(memberPhone)) throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_MEMBER_PHONE);
+    const update: Partial<MemberUpdateInput> = { memberNick, memberPhone, memberAddress, memberDesc };
+    if (input.memberImage) update.memberImage = input.memberImage;
+    try {
+      const result = await this.memberModel.findOneAndUpdate(
+        { _id: shapeIntoMongooseObjectId(memberId), memberStatus: MemberStatus.ACTIVE },
+        { $set: update },
+        { new: true, runValidators: true },
+      ).lean().exec();
+      if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+      return result;
+    } catch (err) {
+      if (err instanceof Errors) throw err;
+      throw new Errors(HttpCode.BAD_REQUEST, Message.USED_NICK_PHONE);
+    }
+  }
+
   /** BSSR  */
 
   public async processSignup(input: MemberInput): Promise<Member> {
@@ -97,30 +124,49 @@ class MemberService {
 
     if (exist) throw new Errors(HttpCode.BAD_REQUEST, Message.CREATION_FAILED);
 
+    const memberNick = String(input.memberNick || "").trim();
+    const memberPhone = String(input.memberPhone || "").replace(/[\s()-]/g, "");
+    const memberPassword = String(input.memberPassword || "");
+    if (!/^[A-Za-z0-9_]{2,30}$/.test(memberNick))
+      throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_MEMBER_NICK);
+    if (!/^\+?\d{7,15}$/.test(memberPhone))
+      throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_MEMBER_PHONE);
+    if (memberPassword.length < 8 || memberPassword.length > 72)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_MEMBER_PASSWORD);
+
     const salt = await bcrypt.genSalt();
-    input.memberPassword = await bcrypt.hash(input.memberPassword, salt);
+    const safeInput: MemberInput = {
+      ...input,
+      memberNick,
+      memberPhone,
+      memberPassword: await bcrypt.hash(memberPassword, salt),
+      memberType: MemberType.STORE,
+      memberStatus: MemberStatus.ACTIVE,
+    };
 
     try {
-      const result = await this.memberModel.create(input);
-
-      console.log("PASSED HERE");
-      return result;
+      const result = await this.memberModel.create(safeInput);
+      return await this.memberModel.findById(result._id).lean().exec();
     } catch (err) {
       throw new Errors(HttpCode.BAD_REQUEST, Message.CREATION_FAILED);
     }
   }
 
   public async processLogin(input: LoginInput): Promise<Member> {
+    const memberNick = String(input.memberNick || "").trim();
+    const memberPassword = String(input.memberPassword || "");
+    if (!memberNick || !memberPassword)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_LOGIN_INPUT);
     const member = await this.memberModel
-      .findOne(
-        { memberNick: input.memberNick },
-        { memberNick: 1, memberPassword: 1 },
-      )
+      .findOne({ memberNick, memberType: MemberType.STORE })
+      .select("+memberPassword memberNick memberStatus memberType")
       .exec();
     if (!member) throw new Errors(HttpCode.NOT_FOUND, Message.NO_MEMBER_NICK);
+    if (member.memberStatus !== MemberStatus.ACTIVE)
+      throw new Errors(HttpCode.FORBIDDEN, Message.BLOCKED_USER);
 
     const isMatch = await bcrypt.compare(
-      input.memberPassword,
+      memberPassword,
       member.memberPassword,
     );
 
@@ -215,13 +261,13 @@ class MemberService {
     }
 
     const result = await this.memberModel
-      .findByIdAndUpdate(
+      .findOneAndUpdate(
         { _id: memberId, memberType: MemberType.USER },
         { memberStatus: input.memberStatus },
         { new: true, runValidators: true },
       )
       .exec();
-    if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
+    if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.UPDATE_FAILED);
     return result;
   }
 }

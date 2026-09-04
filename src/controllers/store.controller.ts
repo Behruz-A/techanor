@@ -8,6 +8,14 @@ import fs from "fs";
 const memberService = new MemberService();
 
 const storeController: T = {};
+const saveAdminSession = (req: AdminRequest, member: any): Promise<void> =>
+  new Promise((resolve, reject) => {
+    req.session.regenerate((regenerateError) => {
+      if (regenerateError) return reject(regenerateError);
+      req.session.member = member;
+      req.session.save((saveError) => saveError ? reject(saveError) : resolve());
+    });
+  });
 storeController.goHome = (req: Request, res: Response) => {
   try {
     console.log("goHome");
@@ -15,7 +23,7 @@ storeController.goHome = (req: Request, res: Response) => {
   } catch (err) {
     console.log("Error, goHome:", err);
 
-    res.redirect("/admin");
+    res.status(HttpCode.INTERNAL_SEVER_ERROR).send(Message.SOMETHING_WENT_WRONG);
   }
 };
 
@@ -27,7 +35,7 @@ storeController.getSignup = (req: Request, res: Response) => {
     });
   } catch (err) {
     console.log("Error, getSignup:", err);
-    res.redirect("/admin");
+    res.status(HttpCode.INTERNAL_SEVER_ERROR).send(Message.SOMETHING_WENT_WRONG);
   }
 };
 
@@ -39,7 +47,7 @@ storeController.getLogin = (req: Request, res: Response) => {
     });
   } catch (err) {
     console.log("Error, getLogin:", err);
-    res.redirect("/admin");
+    res.status(HttpCode.INTERNAL_SEVER_ERROR).send(Message.SOMETHING_WENT_WRONG);
   }
 };
 
@@ -50,16 +58,18 @@ storeController.processSignup = async (req: AdminRequest, res: Response) => {
     if (!file)
       throw new Errors(HttpCode.BAD_REQUEST, Message.SOMETHING_WENT_WRONG);
 
+    if (req.body.memberPassword !== req.body.confirmPassword)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.PASSWORD_MISMATCH);
+
     const newMember: MemberInput = req.body;
     newMember.memberImage = file?.path.replace(/\\/g, "/");
     newMember.memberType = MemberType.STORE;
     const result = await memberService.processSignup(newMember);
 
-    req.session.member = result;
-    req.session.save(function () {
-      res.redirect("/admin/product/all");
-    });
+    await saveAdminSession(req, result);
+    res.redirect("/admin/product/all");
   } catch (err) {
+    if (req.file?.path && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
     console.log("Error, processSignup!!!!!!!", err);
     const message =
       err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
@@ -76,10 +86,8 @@ storeController.processLogin = async (req: AdminRequest, res: Response) => {
     const input: LoginInput = req.body;
     const result = await memberService.processLogin(input);
 
-    req.session.member = result;
-    req.session.save(function () {
-      res.redirect("/admin/product/all");
-    });
+    await saveAdminSession(req, result);
+    res.redirect("/admin/product/all");
   } catch (err) {
     console.log("Error, processLogin:", err);
     const message =
@@ -105,17 +113,8 @@ storeController.processGoogleAuth = async (
   try {
     const result = await memberService.processGoogleAuth(req.body.credential);
 
-    req.session.member = result;
-    req.session.save(function (sessionError) {
-      if (sessionError)
-        return res
-          .status(HttpCode.INTERNAL_SEVER_ERROR)
-          .json(Errors.standart);
-
-      return res.status(HttpCode.OK).json({
-        redirectUrl: "/admin/product/all",
-      });
-    });
+    await saveAdminSession(req, result);
+    return res.status(HttpCode.OK).json({ redirectUrl: "/admin/product/all" });
   } catch (err) {
     console.log("Error, processGoogleAuth");
     if (err instanceof Errors) return res.status(err.code).json(err);
@@ -127,7 +126,10 @@ storeController.logout = async (req: AdminRequest, res: Response) => {
   try {
     console.log("logout");
 
-    req.session.destroy(function () {
+    req.session.destroy(function (sessionError) {
+      if (sessionError)
+        return res.status(HttpCode.INTERNAL_SEVER_ERROR).send(Message.SOMETHING_WENT_WRONG);
+      res.clearCookie("connect.sid");
       res.redirect("/admin");
     });
   } catch (err) {
@@ -141,11 +143,14 @@ storeController.checkAuthSession = async (req: AdminRequest, res: Response) => {
   try {
     console.log("checkAuthSession");
     if (req.session?.member)
-      res.send(`<script> alert("${req.session.member.memberNick}") </script>`);
-    else res.send(`<script> alert("${Message.NOT_AUTHENTICATED}") </script>`);
+      return res.status(HttpCode.OK).json({ authenticated: true, member: req.session.member });
+    return res.status(HttpCode.UNAUTHORIZED).json({
+      authenticated: false,
+      message: Message.NOT_AUTHENTICATED,
+    });
   } catch (err) {
     console.log("Error, checkAuthSession:", err);
-    res.send(err);
+    res.status(HttpCode.INTERNAL_SEVER_ERROR).json(Errors.standart);
   }
 };
 
@@ -155,7 +160,7 @@ storeController.getUsers = async (req: Request, res: Response) => {
     res.render("users", { users: result });
   } catch (err) {
     console.log("Error, getUsers:", err);
-    res.redirect("/admin/login");
+    res.status(HttpCode.INTERNAL_SEVER_ERROR).send(Message.SOMETHING_WENT_WRONG);
   }
 };
 
@@ -181,7 +186,7 @@ storeController.verifyStore = (
     next();
   } else {
     const message = Message.NOT_AUTHENTICATED;
-    res.send(
+    res.status(HttpCode.UNAUTHORIZED).send(
       `<script> alert("${Message.NOT_AUTHENTICATED}"); window.location.replace('/admin/login'); </script>`,
     );
   }

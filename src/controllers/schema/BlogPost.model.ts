@@ -22,11 +22,15 @@ const blogPostSchema = new Schema(
       type: String,
       required: true,
       trim: true,
+      minlength: 3,
+      maxlength: 180,
     },
     blogPostContent: {
       type: String,
       required: true,
       trim: true,
+      minlength: 40,
+      maxlength: 50000,
     },
 
     blogPostImage: {

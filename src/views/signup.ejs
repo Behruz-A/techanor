@@ -12,14 +12,11 @@
       enctype="multipart/form-data"
       onsubmit="return validateSignupForm()"
     >
-      <a class="signup_back" href="/admin">← Back to home</a>
+      <a class="signup_back" href="/admin">← Back to Admin Home</a>
 
       <div class="signup_top">
-        <h1>Create your account</h1>
-        <p class="signup_intro">
-          Start managing your Techanor store in seconds. Already have an
-          account? <a href="/admin/login">Log in here.</a>
-        </p>
+        <h1>Create your Techanor admin account</h1>
+        <p class="signup_intro">Set up your store administrator account.</p>
       </div>
 
       <div class="sign_input_frame">
@@ -31,6 +28,7 @@
             name="memberNick"
             class="member_nick"
             placeholder="Store name"
+            autocomplete="organization"
             required
           />
         </div>
@@ -38,10 +36,12 @@
           <label for="signup-phone">Phone</label>
           <input
             id="signup-phone"
-            type="text"
+            type="tel"
             name="memberPhone"
             class="member_phone"
             placeholder="Phone"
+            autocomplete="tel"
+            inputmode="tel"
             required
           />
         </div>
@@ -58,6 +58,7 @@
               class="member_password"
               placeholder="Password"
               minlength="8"
+              autocomplete="new-password"
               required
             />
             <button
@@ -65,6 +66,7 @@
               type="button"
               data-password-target="signup-password"
               aria-label="Show password"
+              aria-pressed="false"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
@@ -72,7 +74,6 @@
               </svg>
             </button>
           </div>
-          <span class="password_help">Use at least 8 characters.</span>
         </div>
         <div class="sign_up_frame">
           <label for="signup-confirm-password">Confirm password</label>
@@ -84,6 +85,7 @@
               class="confirm_password"
               placeholder="Confirm password"
               minlength="8"
+              autocomplete="new-password"
               required
             />
             <button
@@ -91,6 +93,7 @@
               type="button"
               data-password-target="signup-confirm-password"
               aria-label="Show confirm password"
+              aria-pressed="false"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
@@ -100,6 +103,7 @@
           </div>
         </div>
       </div>
+      <span class="password_help">Use at least 8 characters.</span>
 
       <div class="media_frame">
           <div class="upload_preview_wrap">
@@ -110,9 +114,9 @@
             />
           </div>
           <div class="upload_container">
-            <span class="media_text">Store profile image <b>*</b></span>
+            <span class="media_text">Upload a store profile image <b>*</b></span>
             <p class="upload_help">
-              Upload a square JPG or PNG image, maximum 2MB.
+              JPG or PNG · Max 2 MB
             </p>
             <div class="file_box">
               <input
@@ -135,6 +139,10 @@
           </div>
       </div>
 
+      <button class="signup_btn" name="signup" type="submit">
+        Create account
+      </button>
+
       <div class="auth_divider"><span>OR</span></div>
 
       <div class="google_auth" data-client-id="<%= googleClientId %>">
@@ -155,10 +163,9 @@
         <p class="google_auth_error" role="alert"></p>
       </div>
 
+      <p class="signup_login">Already have an account? <a href="/admin/login">Sign in</a></p>
+
       <input name="memberType" value="STORE" hidden />
-      <button class="signup_btn" name="signup" type="submit">
-        Create Account
-      </button>
     </form>
   </div>
 

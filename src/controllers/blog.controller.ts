@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Errors from "../libs/Error";
+import Errors, { HttpCode, Message } from "../libs/Error";
 import { T } from "../libs/types/common";
 import BlogService from "../models/blog.service";
 import fs from "fs";
@@ -21,7 +21,12 @@ blogController.getPublishedBlogs = async (req: Request, res: Response) => {
       page: Math.max(1, Number(req.query.page) || 1),
       limit: Math.min(50, Math.max(1, Number(req.query.limit) || 12)),
     };
-    if (req.query.blogPostCategory) inquiry.blogPostCategory = req.query.blogPostCategory as BlogPostCategory;
+    if (req.query.blogPostCategory) {
+      const category = req.query.blogPostCategory as BlogPostCategory;
+      if (!blogCategories.includes(category))
+        throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_BLOG_CATEGORY);
+      inquiry.blogPostCategory = category;
+    }
     if (req.query.search) inquiry.search = String(req.query.search).trim();
 
     const result = await blogService.getPublishedBlogs(inquiry);

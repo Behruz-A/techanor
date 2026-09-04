@@ -240,6 +240,7 @@
               <option value="GAMING">GAMING</option>
               <option value="AUDIO">AUDIO</option>
               <option value="CASES">CASES</option>
+              <option value="WEARABLES">WEARABLES</option>
               <option value="OTHERS">OTHERS</option>
             </select>
           </div>
@@ -323,7 +324,7 @@
 
         <fieldset class="image_upload_section">
           <legend>Product Images</legend>
-          <p>Upload up to 5 JPG, JPEG or PNG images. The first image is required.</p>
+          <p>Upload up to 5 JPG, PNG or WebP images (max 5 MB each). The first image is required.</p>
           <div class="image_upload_grid">
             <% for (let imageIndex = 1; imageIndex <= 5; imageIndex++) { %>
               <label class="upload_box <%= imageIndex === 1 ? 'main_upload_box' : '' %>" for="product-image-<%= imageIndex %>">
@@ -334,7 +335,7 @@
                   id="product-image-<%= imageIndex %>"
                   name="productImages"
                   type="file"
-                  accept="image/jpeg,image/png"
+                  accept="image/jpeg,image/png,image/webp"
                   data-preview-index="<%= imageIndex %>"
                   <%= imageIndex === 1 ? 'required' : '' %>
                 />
@@ -345,7 +346,7 @@
 
         <div class="form_actions">
           <button class="secondary_button" id="reset-btn" type="reset">Clear</button>
-          <button class="primary_button" type="submit">Create Product</button>
+          <button class="primary_button" type="submit" data-submit-product>Create Product</button>
         </div>
       </form>
       </main>

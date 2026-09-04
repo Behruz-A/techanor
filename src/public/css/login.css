@@ -224,3 +224,40 @@ body.auth_page {
     border-radius: 17px;
   }
 }
+
+/* Light authentication surface */
+body.auth_page { background:radial-gradient(circle at 50% 25%,#fff 0%,#f7f9fc 45%,#f2f5f8 100%); }
+.login_page { padding:40px 20px; }
+.login_card {
+  padding:38px 40px 36px;
+  color:#111827;
+  border-color:#e0e5eb;
+  background:#fff;
+  box-shadow:0 20px 50px rgba(15,23,42,.08);
+  transform:none;
+}
+.login_back { color:#5f6b7a; }
+.login_back:hover { color:#2563eb; }
+.login_field label { color:#263342; }
+.login_card h1{font-size:clamp(25px,4vw,29px)}
+.login_intro{margin:8px 0 0;color:#778391;font-size:14px;line-height:1.5}
+.login_fields{margin-top:28px;gap:21px}
+.login_button{box-shadow:0 6px 16px rgba(37,99,235,.16);transition:background-color 220ms ease,box-shadow 220ms ease,transform 220ms ease}
+.login_button:hover{box-shadow:0 9px 20px rgba(37,99,235,.2)}
+.login_field input {
+  color:#17212b;
+  border-color:#d8dee7;
+  background:#f7f8fa;
+}
+.login_field input::placeholder { color:#98a2af; }
+.login_field input:hover { border-color:#bdc7d4; }
+.login_field input:focus { border-color:#2563eb; background:#fff; box-shadow:0 0 0 3px rgba(37,99,235,.11); }
+.password_toggle { color:#7b8794; }
+.password_toggle:hover { color:#2563eb; background:#edf3ff; }
+.auth_divider { color:#8a95a3; }
+.auth_divider::before,.auth_divider::after { background:#dde3ea; }
+.login_signup { color:#6f7a87; }
+.login_signup a { color:#2563eb; }
+.login_signup a:hover { color:#174fc5; }
+.google_auth_error { color:#c9363e; }
+@media(max-width:640px){.login_card{padding:28px 22px}.login_page{padding:18px 12px;justify-content:center}}

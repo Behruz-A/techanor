@@ -5,12 +5,12 @@
   "license": "ISC",
   "author": "Ryan",
   "type": "commonjs",
-  "main": "src/server.ts",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
+    "start": "npm run build && node dist/server.js",
     "start:dev": "nodemon --exec ts-node src/server.ts",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run build && node --test tests/backend.test.js"
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.10",

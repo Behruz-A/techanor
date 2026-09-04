@@ -3,7 +3,20 @@ const routerAdmin = express.Router();
 import storeController from "./controllers/store.controller";
 import productController from "./controllers/product.controlle";
 import blogController from "./controllers/blog.controller";
-import makeUploader, { makeBlogUploader } from "./libs/utils/uploader";
+import { makeAvatarUploader, makeBlogUploader, makeProductUploader } from "./libs/utils/uploader";
+import { Request, Response, NextFunction } from "express";
+import { Message } from "./libs/Error";
+
+const productUpload = makeProductUploader("products").array("productImages", 5);
+const handleProductUpload = (req: Request, res: Response, next: NextFunction) => {
+  productUpload(req, res, (err) => {
+    if (!err) return next();
+    const message = JSON.stringify(err.message || Message.INVALID_PRODUCT_IMAGE);
+    return res.status(400).send(
+      `<script>alert(${message});window.location.replace('/admin/product/all')</script>`,
+    );
+  });
+};
 
 /**STORE */
 routerAdmin.get("/", storeController.goHome);
@@ -16,7 +29,7 @@ routerAdmin
   .get("/signup", storeController.getSignup)
   .post(
     "/signup",
-    makeUploader("members").single("memberImage"),
+    makeAvatarUploader("members").single("memberImage"),
     storeController.processSignup,
   );
 routerAdmin.get("/logout", storeController.logout);
@@ -42,7 +55,7 @@ routerAdmin.get(
 routerAdmin.post(
   "/product/create",
   storeController.verifyStore,
-  makeUploader("products").array("productImages", 5),
+  handleProductUpload,
   productController.createNewProduct,
 );
 routerAdmin.post(

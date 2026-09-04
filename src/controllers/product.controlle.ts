@@ -34,8 +34,8 @@ productController.getProducts = async (req: Request, res: Response) => {
     } = req.query;
     const inquiry: ProductInquiry = {
       order: String(order || "createdAt"),
-      page: Number(page) || 1,
-      limit: Number(limit) || 8,
+      page: Math.max(1, Number(page) || 1),
+      limit: Math.min(50, Math.max(1, Number(limit) || 8)),
     };
 
     if (productCondition)
@@ -88,7 +88,7 @@ productController.createNewProduct = async (
 ) => {
   try {
     if (!req.files?.length)
-      throw new Errors(HttpCode.BAD_REQUEST, Message.CREATION_FAILED);
+      throw new Errors(HttpCode.BAD_REQUEST, Message.PRODUCT_IMAGE_REQUIRED);
 
     const data: ProductInput = req.body;
     data.productImages = req.files?.map((ele) => {
@@ -97,7 +97,7 @@ productController.createNewProduct = async (
 
     await productService.createNewProduct(data);
 
-    res.send(
+    res.status(HttpCode.CREATED).send(
       `<script> alert("Successful creation!"); window.location.replace('/admin/product/all') </script>`,
     );
   } catch (err) {
@@ -111,7 +111,7 @@ productController.createNewProduct = async (
     console.log("Error, createNewProduct:", err);
     const message =
       err instanceof Errors ? err.message : Message.SOMETHING_WENT_WRONG;
-    res.send(
+    res.status(err instanceof Errors ? err.code : HttpCode.BAD_REQUEST).send(
       `<script> alert("${message}"); window.location.replace('/admin/product/all') </script>`,
     );
   }

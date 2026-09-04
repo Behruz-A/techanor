@@ -1,10 +1,10 @@
 body.marketing_page { color:var(--color-dark); background:var(--color-surface); font-family:"Outfit",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
 .marketing_page button,.marketing_page input,.marketing_page select { font-family:inherit; }
 .marketing_page .admin_sidebar { overflow-y:auto; padding:34px 20px 22px; border-right-color:var(--color-border); background:#fff; }
-.marketing_page .sidebar_brand { min-height:46px; gap:13px; align-items:center; margin:0 8px 50px; }
-.marketing_page .sidebar_brand_logo { width:46px; height:46px; flex:0 0 46px; object-fit:contain; }
+.marketing_page .sidebar_brand { min-height:46px; gap:5px; align-items:center; margin:0 8px 50px; }
+.marketing_page .sidebar_brand_mark { width:35px; height:32px; flex:0 0 35px; }
 .marketing_page .sidebar_brand > span { display:flex; align-items:center; min-height:46px; }
-.marketing_page .sidebar_brand strong { color:var(--color-dark); font-size:28px; font-weight:700; line-height:1; letter-spacing:-.7px; }
+.marketing_page .sidebar_brand strong { color:#102a35; font-size:22px; font-weight:850; line-height:1; letter-spacing:.35px; }
 .marketing_page .sidebar_brand small { display:none; }
 .marketing_page .sidebar_label { margin-bottom:18px; color:#98a2b3; font-size:14px; font-weight:600; letter-spacing:.08em; }
 .marketing_navigation { gap:0; }
@@ -70,7 +70,8 @@ body.marketing_page { color:var(--color-dark); background:var(--color-surface); 
 .source_row { display:grid; grid-template-columns:42px 82px 1fr 42px; gap:12px; align-items:center; padding:22px 0; border-bottom:1px solid var(--color-border); }.source_row strong { color:#334155; font-size:15px; }.source_row > div { height:8px; overflow:hidden; border-radius:8px; background:var(--color-border); }.source_row i { display:block; height:100%; border-radius:inherit; background:var(--color-primary); }.source_row > span:last-child { color:#64748b; font-size:14px; font-weight:700; text-align:right; }.source_logo { width:36px; height:36px; flex-basis:36px; font-size:21px; }.google_logo { color:transparent; background:conic-gradient(from -45deg,#4285f4 0 25%,#34a853 0 42%,#fbbc05 0 63%,#ea4335 0 78%,#4285f4 0); background-clip:text; -webkit-background-clip:text; font-family:Arial,sans-serif; font-size:28px; }.youtube_logo { border-radius:9px; background:#ff0000; font-size:15px; }.view_all_button { width:100%; min-height:44px; margin-top:22px; display:flex; align-items:center; justify-content:center; border:1px solid var(--color-border); border-radius:11px; color:#334155; background:#fff; font-weight:700; text-decoration:none; cursor:pointer; }.view_all_button:hover { border-color:var(--color-primary); color:var(--color-primary); text-decoration:none; }.campaign_empty { margin:24px 0 4px; padding:18px; border-radius:12px; color:var(--color-secondary); background:var(--color-surface); font-size:15px; text-align:center; }
 
 html[data-theme="dark"] .marketing_heading h1,html[data-theme="dark"] .metric_card strong,html[data-theme="dark"] .marketing_card_header h2,html[data-theme="dark"] .marketing_card_header > div:last-child strong,html[data-theme="dark"] .traffic_stat strong,html[data-theme="dark"] .campaign_row strong,html[data-theme="dark"] .source_row strong { color:#f8fafc; }
-html[data-theme="dark"] .marketing_page .sidebar_brand strong { color:#f8fafc; }
+html[data-theme="dark"] .marketing_page .sidebar_brand strong,
+html[data-theme="dark"] .marketing_page .sidebar_brand_mark { color:#f8fafc; }
 html[data-theme="dark"] .marketing_navigation .dashboard_parent { color:var(--color-primary-border); background:rgba(37,99,235,.14); }
 html[data-theme="dark"] .marketing_navigation .dashboard_parent .nav_icon,html[data-theme="dark"] .marketing_navigation .dashboard_parent b { color:var(--color-primary-border); }
 html[data-theme="dark"] .dashboard_children a { color:#cbd5e1; }

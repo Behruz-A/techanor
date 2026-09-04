@@ -32,8 +32,10 @@ class ProductService {
     if (inquiry.productMemory) match.productMemory = inquiry.productMemory;
     if (inquiry.productScreenSize)
       match.productScreenSize = inquiry.productScreenSize;
-    if (inquiry.search)
-      match.productName = { $regex: new RegExp(inquiry.search, "i") };
+    if (inquiry.search) {
+      const escapedSearch = inquiry.search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      match.productName = { $regex: new RegExp(escapedSearch, "i") };
+    }
 
     const allowedOrders = ["createdAt", "productPrice", "productViews"];
     const order = allowedOrders.includes(inquiry.order)
@@ -78,10 +80,32 @@ class ProductService {
   }
 
   public async createNewProduct(input: ProductInput): Promise<Product> {
+    const productName = String(input.productName || "").trim();
+    const productPrice = Number(input.productPrice);
+    const productLeftCount = Number(input.productLeftCount);
+
+    if (!productName)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.PRODUCT_NAME_REQUIRED);
+    if (!Number.isFinite(productPrice) || productPrice < 0)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_PRODUCT_PRICE);
+    if (!Number.isInteger(productLeftCount) || productLeftCount < 0)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_PRODUCT_STOCK);
+
+    const safeInput: ProductInput = {
+      ...input,
+      productName,
+      productSku: String(input.productSku || "").trim().toUpperCase() || undefined,
+      productPrice,
+      productLeftCount,
+      productDesc: String(input.productDesc || "").trim() || undefined,
+    };
+
     try {
-      return await this.productModel.create(input);
-    } catch (err) {
+      return await this.productModel.create(safeInput);
+    } catch (err: any) {
       console.log("Error, model:createNewProduct:", err);
+      if (err?.code === 11000)
+        throw new Errors(HttpCode.CONFLICT, Message.PRODUCT_NAME_USED);
       throw new Errors(HttpCode.BAD_REQUEST, Message.CREATION_FAILED);
     }
   }
@@ -90,18 +114,34 @@ class ProductService {
     id: string,
     input: ProductUpdateInput,
   ): Promise<Product> {
-    id = shapeIntoMongooseObjectId(id);
+    const productId = shapeIntoMongooseObjectId(id);
+    const allowedFields: Array<keyof ProductUpdateInput> = [
+      "productStatus", "productCondition", "productCategory", "productBrand",
+      "productMemory", "productScreenSize", "productName", "productSku",
+      "productPrice", "productLeftCount", "productDesc",
+    ];
+    const update = Object.fromEntries(
+      allowedFields
+        .filter((field) => input[field] !== undefined)
+        .map((field) => [field, input[field]]),
+    );
+    if (!Object.keys(update).length)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.UPDATE_FAILED);
     const result = await this.productModel
-      .findOneAndUpdate({ _id: id }, input, { new: true })
+      .findOneAndUpdate({ _id: productId }, { $set: update }, { new: true, runValidators: true })
       .exec();
-    if (!result) throw new Errors(HttpCode.NOT_MODIFIED, Message.UPDATE_FAILED);
+    if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.UPDATE_FAILED);
 
     return result;
   }
 
   public async deleteChosenProduct(id: string): Promise<Product> {
-    id = shapeIntoMongooseObjectId(id);
-    const result = await this.productModel.findByIdAndDelete(id).exec();
+    const productId = shapeIntoMongooseObjectId(id);
+    const result = await this.productModel.findOneAndUpdate(
+      { _id: productId },
+      { $set: { productStatus: ProductStatus.DELETE } },
+      { new: true, runValidators: true },
+    ).exec();
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
 
     return result;

@@ -14,6 +14,7 @@ $(function () {
       "aria-label",
       shouldShowPassword ? "Hide password" : "Show password",
     );
+    $(this).attr("aria-pressed", String(shouldShowPassword));
   });
 
   fileTarget.on("change", function () {

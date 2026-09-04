@@ -54,10 +54,13 @@ const productSchema = new Schema(
     productPrice: {
       type: Number,
       required: true,
+      min: 0,
     },
     productLeftCount: {
       type: Number,
       required: true,
+      min: 0,
+      validate: Number.isInteger,
     },
     productDesc: {
       type: String,

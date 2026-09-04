@@ -97,6 +97,12 @@ $(window).on("load", function () {
     if (!event.currentTarget.checkValidity()) {
       event.preventDefault();
       event.currentTarget.reportValidity();
+      return;
+    }
+    const submitButton = event.currentTarget.querySelector("[data-submit-product]");
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = "Creating...";
     }
   });
   document.getElementById("product-description")?.addEventListener("input", function (event) {
@@ -627,10 +633,16 @@ function previewProductImage(input) {
   const file = input.files[0];
   if (!file) return;
 
-  const validImageTypes = ["image/jpeg", "image/png"];
+  const validImageTypes = ["image/jpeg", "image/png", "image/webp"];
   if (!validImageTypes.includes(file.type)) {
     input.value = "";
-    alert("Please upload only JPG, JPEG or PNG images.");
+    alert("Please upload only JPG, PNG or WebP images.");
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    input.value = "";
+    alert("Each product image must be 5 MB or smaller.");
     return;
   }
 
