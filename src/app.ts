@@ -14,6 +14,7 @@ import Errors, { HttpCode, Message } from "./libs/Error";
 import dns from "dns";
 
 const mongoUrl = process.env.MONGO_URL_TECH?.trim();
+if (!mongoUrl) throw new Error("MONGO_URL_TECH is required");
 if (mongoUrl?.startsWith("mongodb+srv://")) {
   const configuredServers = String(process.env.DNS_SERVERS || "")
     .split(",")
@@ -25,7 +26,7 @@ if (mongoUrl?.startsWith("mongodb+srv://")) {
 
 const MongoDBStore = ConnectMongoDB(session);
 const store = new MongoDBStore({
-  uri: String(mongoUrl),
+  uri: mongoUrl,
   collection: "sessions",
 });
 store.on("error", (error) => {
@@ -37,6 +38,7 @@ store.on("error", (error) => {
 const app = express();
 console.log("__dirname:", __dirname);
 const projectRoot = process.cwd();
+const uploadRoot = path.resolve(process.env.UPLOAD_DIR || path.join(projectRoot, "uploads"));
 if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
 app.disable("x-powered-by");
 app.use((_req, res, next) => {
@@ -46,18 +48,23 @@ app.use((_req, res, next) => {
   res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
   next();
 });
-app.use(express.static(path.join(projectRoot, "src", "public")));
-app.use("/uploads", express.static(path.join(projectRoot, "uploads")));
+const staticOptions = process.env.NODE_ENV === "production"
+  ? { maxAge: "7d", immutable: true }
+  : undefined;
+app.use(express.static(path.join(projectRoot, "src", "public"), staticOptions));
+app.use("/uploads", express.static(uploadRoot, staticOptions));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const productionOrigins = String(process.env.CLIENT_ORIGIN || "")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
-app.use(cors({
-  credentials: true,
-  origin: process.env.NODE_ENV === "production" ? productionOrigins : true,
-}));
+if (process.env.NODE_ENV !== "production" || productionOrigins.length) {
+  app.use(cors({
+    credentials: true,
+    origin: process.env.NODE_ENV === "production" ? productionOrigins : true,
+  }));
+}
 app.use(morgan(MORGAN_FORMAT));
 
 /**2-Sessions */
@@ -91,6 +98,9 @@ app.set("views", path.join(projectRoot, "src", "views"));
 app.set("view engine", "ejs");
 
 /**4-Routers*/
+app.get("/health", (_req, res) => {
+  res.status(HttpCode.OK).json({ status: "ok" });
+});
 app.use("/admin", routerAdmin); // EJS
 app.use("/", router); // REACT
 

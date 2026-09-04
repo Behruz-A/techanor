@@ -10,6 +10,10 @@ import {
   ProductUpdateInput,
 } from "../libs/types/product";
 import ViewService from "./View.service";
+import OrderItemModel from "../controllers/schema/OrderItems.model";
+import { OrderStatus } from "../libs/enums/order.enum";
+import { ViewGroup } from "../libs/enums/view.enum";
+import { Types } from "mongoose";
 
 class ProductService {
   private readonly productModel;
@@ -56,24 +60,80 @@ class ProductService {
     return result;
   }
 
-  public async getProduct(id: string): Promise<Product> {
+  public async getBestSellers(limit: number): Promise<Product[]> {
+    return OrderItemModel.aggregate([
+      {
+        $lookup: {
+          from: "orders",
+          localField: "orderId",
+          foreignField: "_id",
+          as: "order",
+        },
+      },
+      { $unwind: "$order" },
+      { $match: { "order.orderStatus": { $ne: OrderStatus.DELETE } } },
+      {
+        $group: {
+          _id: "$productId",
+          productSales: { $sum: "$itemQuantity" },
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "product",
+        },
+      },
+      { $unwind: "$product" },
+      { $match: { "product.productStatus": ProductStatus.PROCESS } },
+      {
+        $replaceRoot: {
+          newRoot: {
+            $mergeObjects: ["$product", { productSales: "$productSales" }],
+          },
+        },
+      },
+      { $sort: { productSales: -1, productViews: -1, createdAt: -1 } },
+      { $limit: limit },
+    ]).exec();
+  }
+
+  public async getProduct(id: string, memberId?: string): Promise<Product> {
     const productId = shapeIntoMongooseObjectId(id);
-    const result = await this.productModel
-      .findOneAndUpdate(
-        { _id: productId, productStatus: ProductStatus.PROCESS },
-        { $inc: { productViews: 1 } },
-        { new: true },
-      )
+    let result = await this.productModel
+      .findOne({ _id: productId, productStatus: ProductStatus.PROCESS })
       .exec();
 
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+
+    if (memberId && Types.ObjectId.isValid(memberId)) {
+      const isFirstView = await this.viewService.registerUniqueView({
+        memberId: shapeIntoMongooseObjectId(memberId),
+        viewRefId: productId,
+        viewGroup: ViewGroup.PRODUCT,
+      });
+
+      if (isFirstView) {
+        result = await this.productModel.findByIdAndUpdate(
+          productId,
+          { $inc: { productViews: 1 } },
+          { new: true },
+        ).exec() || result;
+      }
+    }
+
     return result;
   }
 
   /*SSR */
 
   public async getAllProducts(): Promise<Product[]> {
-    const result = await this.productModel.find().exec();
+    const result = await this.productModel
+      .find({ productStatus: { $ne: ProductStatus.DELETE } })
+      .sort({ createdAt: -1 })
+      .exec();
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
 
     return result;

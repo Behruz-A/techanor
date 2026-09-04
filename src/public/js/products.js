@@ -41,6 +41,10 @@ $(window).on("load", function () {
       if (!response.data.data) throw new Error("Product update failed");
       statusSelect.removeClass("status_pause status_process status_delete").addClass(`status_${String(productStatus).toLowerCase()}`);
       statusSelect.closest(".product_row").attr("data-status", productStatus);
+      if (productStatus === "DELETE") {
+        statusSelect.closest(".product_row").remove();
+        document.dispatchEvent(new CustomEvent("techanor:producttablechange"));
+      }
       statusSelect.blur();
     } catch (error) {
       console.error("Error, updateProductStatus:", error);
@@ -436,6 +440,10 @@ function initializeProductTable() {
     try {
       await Promise.all(selected.map((row) => axios.post(`/admin/product/${row.dataset.productId}`, { productStatus })));
       selected.forEach(function (row) {
+        if (productStatus === "DELETE") {
+          row.remove();
+          return;
+        }
         const select = row.querySelector(".new-product-status");
         select.value = productStatus;
         select.className = `new-product-status status_select status_${productStatus.toLowerCase()}`;

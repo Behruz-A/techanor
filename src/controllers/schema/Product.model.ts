@@ -8,8 +8,9 @@ import {
   ProductMemory,
   ProductScreenSize,
 } from "../../libs/enums/product.enum";
+import { Product } from "../../libs/types/product";
 
-const productSchema = new Schema(
+const productSchema = new Schema<Product>(
   {
     productStatus: {
       type: String,
@@ -78,4 +79,4 @@ const productSchema = new Schema(
   { timestamps: true },
 );
 productSchema.index({ productName: 1 }, { unique: true });
-export default mongoose.model("Product", productSchema);
+export default mongoose.model<Product>("Product", productSchema);

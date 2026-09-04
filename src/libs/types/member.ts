@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { Session } from "express-session";
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 import {
   AuthProvider,
   MemberStatus,
@@ -9,7 +9,7 @@ import {
 import multer from "multer";
 
 export interface Member {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   memberType: MemberType;
   memberStatus: MemberStatus;
   memberNick: string;
@@ -42,7 +42,7 @@ export interface MemberInput {
 }
 
 export interface MemberUpdateInput {
-  _id: ObjectId;
+  _id: Types.ObjectId;
 
   memberStatus?: MemberStatus;
   memberNick?: string;

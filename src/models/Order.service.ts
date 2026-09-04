@@ -2,8 +2,10 @@ import mongoose from "mongoose";
 import OrderModel from "../controllers/schema/Order.model";
 import OrderItemModel from "../controllers/schema/OrderItems.model";
 import ProductModel from "../controllers/schema/Product.model";
+import MemberModel from "../controllers/schema/Member.model";
 import { ProductStatus } from "../libs/enums/product.enum";
 import { OrderStatus } from "../libs/enums/order.enum";
+import { MemberStatus, MemberType } from "../libs/enums/member.enum";
 import Errors, { HttpCode, Message } from "../libs/Error";
 import { DeliveryAddress, Order, OrderCreateInput, OrderInquiry, OrderUpdateInput } from "../libs/types/order";
 
@@ -31,6 +33,15 @@ class OrderService {
       quantities.set(productId, (quantities.get(productId) || 0) + quantity);
     }
 
+    const memberObjectId = new mongoose.Types.ObjectId(memberId);
+    const memberExists = await MemberModel.exists({
+      _id: memberObjectId,
+      memberType: MemberType.USER,
+      memberStatus: MemberStatus.ACTIVE,
+    });
+    if (!memberExists)
+      throw new Errors(HttpCode.UNAUTHORIZED, Message.NOT_AUTHENTICATED);
+
     const productIds = [...quantities.keys()].map((id) => new mongoose.Types.ObjectId(id));
     const products = await ProductModel.find({ _id: { $in: productIds }, productStatus: ProductStatus.PROCESS }).lean().exec();
     if (products.length !== productIds.length) throw new Errors(HttpCode.BAD_REQUEST, Message.INVALID_ORDER);
@@ -44,6 +55,7 @@ class OrderService {
     const delivery = deliveryMethod === "EXPRESS" ? EXPRESS_DELIVERY_COST : subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : STANDARD_DELIVERY_COST;
     const decremented: Array<{ productId: mongoose.Types.ObjectId; quantity: number }> = [];
     let createdOrderId: mongoose.Types.ObjectId | null = null;
+    let pointAwarded = false;
 
     try {
       for (const item of preparedItems) {
@@ -59,14 +71,28 @@ class OrderService {
       const order = await OrderModel.create({
         orderTotal: subtotal + delivery,
         orderDelivery: delivery,
-        memberId: new mongoose.Types.ObjectId(memberId),
+        memberId: memberObjectId,
         deliveryAddress,
         deliveryMethod,
       });
       createdOrderId = order._id;
       await OrderItemModel.insertMany(preparedItems.map((item) => ({ ...item, orderId: order._id })));
+      const member = await MemberModel.findOneAndUpdate(
+        { _id: memberObjectId, memberType: MemberType.USER, memberStatus: MemberStatus.ACTIVE },
+        { $inc: { memberPoints: 1 } },
+        { new: true },
+      ).exec();
+      if (!member)
+        throw new Errors(HttpCode.UNAUTHORIZED, Message.NOT_AUTHENTICATED);
+      pointAwarded = true;
       return order.toObject() as Order;
     } catch (err) {
+      if (pointAwarded) {
+        await MemberModel.updateOne(
+          { _id: memberObjectId, memberPoints: { $gt: 0 } },
+          { $inc: { memberPoints: -1 } },
+        ).exec();
+      }
       if (createdOrderId) {
         await OrderItemModel.deleteMany({ orderId: createdOrderId }).exec();
         await OrderModel.deleteOne({ _id: createdOrderId }).exec();

@@ -18,6 +18,8 @@ router.post("/signup", memberController.signup);
 
 router.get("/product/all", productController.getProducts);
 
+router.get("/product/best-sellers", productController.getBestSellers);
+
 router.get("/product/:id", productController.getProduct);
 
 router.get("/blog/all", blogController.getPublishedBlogs);

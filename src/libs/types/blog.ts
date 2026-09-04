@@ -1,11 +1,11 @@
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 import {
   BlogPostCategory,
   BlogPostStatus,
 } from "../enums/blogPost.enum";
 
 export interface BlogPost {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   blogPostStatus: BlogPostStatus;
   blogPostCategory: BlogPostCategory;
   blogPostTitle: string;

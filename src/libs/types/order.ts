@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 import { OrderStatus } from "../enums/order.enum";
 import { Product } from "./product";
 
@@ -24,21 +24,21 @@ export interface OrderCreateInput {
 }
 
 export interface OrderItem {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   itemQuantity: number;
   itemPrice: number;
-  orderId: ObjectId;
-  productId: ObjectId;
+  orderId: Types.ObjectId;
+  productId: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface Order {
-  _id: ObjectId;
+  _id: Types.ObjectId;
   orderTotal: number;
   orderDelivery: number;
   orderStatus: OrderStatus;
-  memberId: ObjectId;
+  memberId: Types.ObjectId;
   deliveryAddress: DeliveryAddress;
   deliveryMethod: "STANDARD" | "EXPRESS";
   createdAt: Date;

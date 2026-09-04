@@ -53,7 +53,10 @@ class MemberService {
       throw new Errors(HttpCode.BAD_REQUEST, Message.USED_NICK_PHONE);
     }
 
-    return await this.memberModel.findById(createdMember._id).lean().exec();
+    const safeMember = await this.memberModel.findById(createdMember._id).lean().exec();
+    if (!safeMember)
+      throw new Errors(HttpCode.BAD_REQUEST, Message.CREATION_FAILED);
+    return safeMember;
   }
 
   public async login(input: LoginInput): Promise<Member> {
@@ -73,14 +76,16 @@ class MemberService {
       throw new Errors(HttpCode.FORBIDDEN, Message.BLOCKED_USER);
     }
 
-    const isMatch = await bcrypt.compare(
-      memberPassword,
-      member.memberPassword,
-    );
+    if (!member.memberPassword)
+      throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
+    const isMatch = await bcrypt.compare(memberPassword, member.memberPassword);
 
     if (!isMatch)
       throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
-    return await this.memberModel.findById(member._id).lean().exec();
+    const safeMember = await this.memberModel.findById(member._id).lean().exec();
+    if (!safeMember)
+      throw new Errors(HttpCode.UNAUTHORIZED, Message.NOT_AUTHENTICATED);
+    return safeMember;
   }
 
   public async getMemberDetail(memberId: string): Promise<Member> {
@@ -146,7 +151,10 @@ class MemberService {
 
     try {
       const result = await this.memberModel.create(safeInput);
-      return await this.memberModel.findById(result._id).lean().exec();
+      const safeMember = await this.memberModel.findById(result._id).lean().exec();
+      if (!safeMember)
+        throw new Errors(HttpCode.BAD_REQUEST, Message.CREATION_FAILED);
+      return safeMember;
     } catch (err) {
       throw new Errors(HttpCode.BAD_REQUEST, Message.CREATION_FAILED);
     }
@@ -165,14 +173,16 @@ class MemberService {
     if (member.memberStatus !== MemberStatus.ACTIVE)
       throw new Errors(HttpCode.FORBIDDEN, Message.BLOCKED_USER);
 
-    const isMatch = await bcrypt.compare(
-      memberPassword,
-      member.memberPassword,
-    );
+    if (!member.memberPassword)
+      throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
+    const isMatch = await bcrypt.compare(memberPassword, member.memberPassword);
 
     if (!isMatch)
       throw new Errors(HttpCode.UNAUTHORIZED, Message.WRONG_PASSWORD);
-    return await this.memberModel.findById(member._id).exec();
+    const safeMember = await this.memberModel.findById(member._id).exec();
+    if (!safeMember)
+      throw new Errors(HttpCode.UNAUTHORIZED, Message.NOT_AUTHENTICATED);
+    return safeMember;
   }
 
   public async processGoogleAuth(credential: string): Promise<Member> {

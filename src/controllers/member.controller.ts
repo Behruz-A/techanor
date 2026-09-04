@@ -4,6 +4,7 @@ import { LoginInput, Member, MemberInput, MemberUpdateInput } from "../libs/type
 import MemberService from "../models/Member.service";
 import Errors, { HttpCode, Message } from "../libs/Error";
 import fs from "fs";
+import { toPublicUploadPath } from "../libs/utils/uploader";
 
 const memberController: T = {};
 
@@ -72,7 +73,7 @@ memberController.updateMember = async (req: Request, res: Response) => {
     const memberId = sessionInstance.member?._id;
     if (!memberId) throw new Errors(HttpCode.UNAUTHORIZED, Message.NOT_AUTHENTICATED);
     const input: MemberUpdateInput = { ...req.body, _id: memberId };
-    if (req.file) input.memberImage = req.file.path.replace(/\\/g, "/");
+    if (req.file) input.memberImage = toPublicUploadPath(req.file);
     else delete input.memberImage;
     const result = await memberService.updateMember(String(memberId), input);
     memberUpdated = true;

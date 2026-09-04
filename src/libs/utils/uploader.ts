@@ -4,25 +4,39 @@ import multer from "multer";
 import { randomUUID } from "crypto";
 import { Message } from "../Error";
 
+const extensionsByMime: Record<string, string> = {
+  "image/jpeg": ".jpg",
+  "image/png": ".png",
+  "image/webp": ".webp",
+  "video/mp4": ".mp4",
+  "video/webm": ".webm",
+  "video/quicktime": ".mov",
+};
+
+const getUploadRoot = () =>
+  path.resolve(process.env.UPLOAD_DIR || path.join(process.cwd(), "uploads"));
+
+export const toPublicUploadPath = (file: Express.Multer.File): string => {
+  const relativePath = path.relative(getUploadRoot(), file.path);
+  if (!relativePath || relativePath.startsWith("..") || path.isAbsolute(relativePath)) {
+    throw new Error("Invalid upload path");
+  }
+  return path.posix.join("uploads", relativePath.replace(/\\/g, "/"));
+};
+
 function getTargetImageStorage(address: any) {
   return multer.diskStorage({
     destination: function (req, file, cb) {
-      const uploadPath = `./uploads/${address}`;
+      const uploadPath = path.join(getUploadRoot(), String(address));
       fs.mkdirSync(uploadPath, { recursive: true });
       cb(null, uploadPath);
     },
     filename: function (req, file, cb) {
-      const extension = path.parse(file.originalname).ext;
-      const random_name = randomUUID() + extension.toLowerCase();
-      cb(null, random_name);
+      const extension = extensionsByMime[file.mimetype] || ".bin";
+      cb(null, randomUUID() + extension);
     },
   });
 }
-
-const makeUploader = (address: string) => {
-  const storage = getTargetImageStorage(address);
-  return multer({ storage: storage });
-};
 
 export const makeProductUploader = (address: string) => {
   const storage = getTargetImageStorage(address);
@@ -74,5 +88,3 @@ export const makeAvatarUploader = (address: string) => {
     },
   });
 };
-
-export default makeUploader;

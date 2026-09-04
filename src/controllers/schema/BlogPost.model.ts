@@ -4,8 +4,9 @@ import {
   BlogPostStatus,
   BlogPostCategory,
 } from "../../libs/enums/blogPost.enum";
+import { BlogPost } from "../../libs/types/blog";
 
-const blogPostSchema = new Schema(
+const blogPostSchema = new Schema<BlogPost>(
   {
     blogPostStatus: {
       type: String,
@@ -57,4 +58,4 @@ const blogPostSchema = new Schema(
   { timestamps: true, collection: "blogPosts" },
 );
 
-export default mongoose.model("BlogPost", blogPostSchema);
+export default mongoose.model<BlogPost>("BlogPost", blogPostSchema);

@@ -12,6 +12,7 @@ import {
   ProductMemory,
   ProductScreenSize,
 } from "../libs/enums/product.enum";
+import { toPublicUploadPath } from "../libs/utils/uploader";
 
 const productService = new ProductService();
 
@@ -57,9 +58,25 @@ productController.getProducts = async (req: Request, res: Response) => {
   }
 };
 
+productController.getBestSellers = async (req: Request, res: Response) => {
+  try {
+    const limit = Math.min(12, Math.max(1, Number(req.query.limit) || 3));
+    const result = await productService.getBestSellers(limit);
+    res.status(HttpCode.OK).json(result);
+  } catch (err) {
+    console.log("Error, getBestSellers:", err);
+    if (err instanceof Errors) res.status(err.code).json(err);
+    else res.status(Errors.standart.code).json(Errors.standart);
+  }
+};
+
 productController.getProduct = async (req: Request, res: Response) => {
   try {
-    const result = await productService.getProduct(req.params.id);
+    const sessionMember = (req.session as T).member;
+    const result = await productService.getProduct(
+      req.params.id,
+      sessionMember?._id ? String(sessionMember._id) : undefined,
+    );
     res.status(HttpCode.OK).json(result);
   } catch (err) {
     console.log("Error, getProduct:", err);
@@ -91,9 +108,7 @@ productController.createNewProduct = async (
       throw new Errors(HttpCode.BAD_REQUEST, Message.PRODUCT_IMAGE_REQUIRED);
 
     const data: ProductInput = req.body;
-    data.productImages = req.files?.map((ele) => {
-      return ele.path.replace(/\\/g, "/");
-    });
+    data.productImages = req.files.map(toPublicUploadPath);
 
     await productService.createNewProduct(data);
 

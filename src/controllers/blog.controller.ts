@@ -6,6 +6,7 @@ import fs from "fs";
 import { AdminRequest } from "../libs/types/member";
 import { BlogPostInquiry, BlogPostInput } from "../libs/types/blog";
 import { BlogPostCategory, BlogPostStatus } from "../libs/enums/blogPost.enum";
+import { toPublicUploadPath } from "../libs/utils/uploader";
 
 const blogService = new BlogService();
 const blogController: T = {};
@@ -89,8 +90,8 @@ blogController.createBlog = async (req: AdminRequest, res: Response) => {
     }
     if (image && image.size > 5 * 1024 * 1024) throw new Error("Cover image must be 5 MB or smaller");
     if (video && video.size > 50 * 1024 * 1024) throw new Error("Video must be 50 MB or smaller");
-    if (image) input.blogPostImage = image.path.replace(/\\/g, "/");
-    if (video && !videoUrl) input.blogPostVideo = video.path.replace(/\\/g, "/");
+    if (image) input.blogPostImage = toPublicUploadPath(image);
+    if (video && !videoUrl) input.blogPostVideo = toPublicUploadPath(video);
     if (videoUrl) {
       input.blogPostVideoUrl = /^https?:\/\//i.test(videoUrl) ? videoUrl : `https://${videoUrl}`;
       if (video?.path && fs.existsSync(video.path)) fs.unlinkSync(video.path);

@@ -5,6 +5,7 @@ import { AdminRequest, LoginInput, MemberInput } from "../libs/types/member";
 import { MemberType } from "../libs/enums/member.enum";
 import Errors, { HttpCode, Message } from "../libs/Error";
 import fs from "fs";
+import { toPublicUploadPath } from "../libs/utils/uploader";
 const memberService = new MemberService();
 
 const storeController: T = {};
@@ -62,7 +63,7 @@ storeController.processSignup = async (req: AdminRequest, res: Response) => {
       throw new Errors(HttpCode.BAD_REQUEST, Message.PASSWORD_MISMATCH);
 
     const newMember: MemberInput = req.body;
-    newMember.memberImage = file?.path.replace(/\\/g, "/");
+    newMember.memberImage = toPublicUploadPath(file);
     newMember.memberType = MemberType.STORE;
     const result = await memberService.processSignup(newMember);
 
