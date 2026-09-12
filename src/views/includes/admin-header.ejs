@@ -1,0 +1,40 @@
+<header class="workspace_header">
+  <button
+    class="sidebar_toggle"
+    id="sidebar-toggle"
+    type="button"
+    aria-label="Toggle navigation"
+    aria-controls="admin-sidebar"
+    aria-expanded="false"
+  >☰</button>
+
+  <label class="global_search">
+    <span aria-hidden="true">⌕</span>
+    <input
+      id="<%= searchId || 'global-search' %>"
+      type="search"
+      data-i18n-placeholder="navigationSearch"
+      placeholder="<%= searchPlaceholder || 'Search pages...' %>"
+      aria-label="<%= searchLabel || searchPlaceholder || 'Global navigation search' %>"
+    />
+  </label>
+
+  <div class="header_actions">
+    <button class="theme_toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <img class="theme_icon theme_icon_sun" src="/img/marketing/sun-svgrepo-com.svg" alt="" aria-hidden="true" />
+      <span class="theme_icon theme_icon_moon" aria-hidden="true">☾</span>
+    </button>
+    <label class="language_picker" for="language-select">
+      <span aria-hidden="true">文</span>
+      <select id="language-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="ko">한국어</option>
+        <option value="uz">O‘zbek</option>
+      </select>
+    </label>
+    <div class="admin_identity">
+      <img src="/img/Asensio.png" alt="Ryan" />
+      <div><strong>Ryan</strong><small data-i18n="admin">Admin</small></div>
+    </div>
+  </div>
+</header>
