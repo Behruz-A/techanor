@@ -18,3 +18,9 @@ Techanor is a full-stack e-commerce platform for technology products.
 - Shopping cart
 - Order management
 - Admin dashboard
+
+## Architecture
+
+Techanor follows a layered architecture with separate controllers,
+services, models, schemas, routes, and middleware for maintainable
+and scalable development.
