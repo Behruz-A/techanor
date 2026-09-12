@@ -1,0 +1,44 @@
+<%- include('includes/header') %>
+<link rel="stylesheet" type="text/css" href="/css/home.css" />
+<body class="admin-home-page">
+  <div id="particles-js" aria-hidden="true"></div>
+  <main class="admin-gateway" aria-labelledby="gateway-title">
+    <header class="gateway-header">
+      <a class="gateway-brand" href="/admin" aria-label="Techanor Admin home">
+        <span class="brand-logo" aria-label="Techanor">
+          <span class="brand-logo__mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="brand-logo__name">ECHANOR</span>
+        </span>
+        <span class="admin-label">Admin</span>
+      </a>
+      <nav class="gateway-nav" aria-label="Admin authentication">
+        <span class="system-state"><i aria-hidden="true"></i> Admin portal</span>
+        <a href="/admin/signup">Sign up</a>
+      </nav>
+    </header>
+
+    <section class="gateway-content">
+      <div class="hero-copy">
+        <p class="hero-label"><span aria-hidden="true"></span> Store management portal</p>
+        <h1 id="gateway-title">Manage your<br /><span>Techanor <strong>store.</strong></span></h1>
+        <p class="hero-summary">Sign in to manage products, orders, customers, analytics, and editorial content in one secure workspace.</p>
+        <div class="hero-actions">
+          <a class="primary-action" href="/admin/login">
+            <i class="grid-icon" aria-hidden="true"><span></span><span></span><span></span><span></span></i>
+            Open admin panel <b aria-hidden="true">&rarr;</b>
+          </a>
+          <a class="secondary-action" href="/admin/signup">Create account</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="gateway-footer">
+      <span>&copy; <%= new Date().getFullYear() %> Techanor</span>
+      <span>Authorized administrators only</span>
+    </footer>
+  </main>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="/js/particles.js"></script>
+  <script src="/js/home.js"></script>
+</body>
+<%- include('includes/footer') %>

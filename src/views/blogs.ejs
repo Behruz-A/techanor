@@ -1,0 +1,32 @@
+<%- include('includes/header') %>
+<link rel="stylesheet" type="text/css" href="/css/products.css" />
+<link rel="stylesheet" type="text/css" href="/css/blogs.css" />
+<%- include('includes/admin-theme') %>
+<body class="products_page">
+<div class="admin_shell">
+  <%- include('includes/admin-sidebar', { activePage: 'blogs' }) %>
+  <section class="admin_workspace">
+    <%- include('includes/admin-header', {
+      searchId: 'blog-global-search',
+      searchPlaceholder: 'Search pages...',
+      searchLabel: 'Global navigation search'
+    }) %>
+    <main class="products_content blogs_content">
+      <section class="products_heading"><div><h1 data-i18n="blogs">Blogs</h1><nav class="products_breadcrumb"><a href="/admin" data-i18n="home">Home</a><span>›</span><strong data-i18n="blogs">Blogs</strong></nav></div></section>
+      <section class="products_card blog_card">
+        <div class="card_heading"><div><h2 data-i18n="blogList">Blog Posts</h2><p data-i18n="blogListSubtitle">Create, publish and manage Techanor editorial content.</p></div><a class="primary_button blog_add_link" href="/admin/blog/create"><span>+</span><span data-i18n="addBlog">Add Blog</span></a></div>
+        <div class="blogs_toolbar"><div class="table_search_group"><span class="table_search_context" data-i18n="tableSearchLabel">Search this table</span><label class="table_search"><span>&#128269;</span><input id="blog-table-search" type="search" data-i18n-placeholder="searchBlogs" placeholder="Search title or category..." /></label></div><div class="blog_filters"><label><span data-i18n="category">Category</span><select id="blog-category-filter"><option value="" data-i18n="allCategories">All categories</option><% blogCategories.forEach(function(category){ %><option value="<%= category %>"><%= category.replace(/_/g,' ') %></option><% }) %></select></label><label><span data-i18n="status">Status</span><select id="blog-status-filter"><option value="" data-i18n="allStatuses">All statuses</option><% blogStatuses.forEach(function(status){ %><option value="<%= status %>"><%= status === 'DELETE' ? 'DELETED' : status %></option><% }) %></select></label><button class="clear_blog_filters" id="clear-blog-filters" type="button" data-i18n="clearFilters">Clear filters</button></div></div>
+        <div class="table_wrapper"><table class="products_table blogs_table"><colgroup><col class="blog_col_number"/><col class="blog_col_media"/><col class="blog_col_title"/><col class="blog_col_category"/><col class="blog_col_metrics"/><col class="blog_col_created"/><col class="blog_col_status"/></colgroup><thead><tr><th>No.</th><th data-i18n="media">Media</th><th data-i18n="title">Title</th><th data-i18n="category">Category</th><th data-i18n="engagement">Engagement</th><th data-i18n="created">Created</th><th data-i18n="status">Status</th></tr></thead><tbody>
+          <% blogs.forEach(function(blog,index){ const imagePath=blog.blogPostImage?'/'+String(blog.blogPostImage).replace(/\\/g,'/').replace(/^\//,''):''; const videoPath=blog.blogPostVideo?'/'+String(blog.blogPostVideo).replace(/\\/g,'/').replace(/^\//,''):String(blog.blogPostVideoUrl||''); %>
+          <tr class="blog_row" data-search="<%= [blog.blogPostTitle,blog.blogPostCategory,blog.blogPostStatus].join(' ').toLowerCase() %>" data-category="<%= blog.blogPostCategory %>" data-status="<%= blog.blogPostStatus %>"><td class="row_number"><%= index+1 %></td><td><div class="blog_media_preview"><% if(imagePath){ %><img src="<%= imagePath %>" alt=""/><% }else{ %><span>T</span><% } %><% if(videoPath){ %><a href="<%= videoPath %>" target="_blank" rel="noopener" aria-label="Open video">&#9654;</a><% } %></div></td><td><strong class="blog_title"><%= blog.blogPostTitle||'Untitled blog' %></strong><small><%= String(blog.blogPostContent||'').slice(0,92) %><%= String(blog.blogPostContent||'').length>92?'…':'' %></small></td><td><span class="blog_category"><%= String(blog.blogPostCategory).replace(/_/g,' ') %></span></td><td><div class="blog_metrics"><span><strong><%= Number(blog.blogPostViews||0).toLocaleString() %></strong> views</span><span><strong><%= Number(blog.blogPostLikes||0).toLocaleString() %></strong> likes</span></div></td><td class="blog_date"><%= blog.createdAt?new Date(blog.createdAt).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}):'—' %></td><td><select class="blog_status_select blog_status_<%= blog.blogPostStatus.toLowerCase() %>" data-blog-id="<%= blog._id %>"><% blogStatuses.forEach(function(status){ %><option value="<%= status %>" <%= blog.blogPostStatus===status?'selected':'' %>><%= status==='DELETE'?'Deleted':status.charAt(0)+status.slice(1).toLowerCase() %></option><% }) %></select></td></tr>
+          <% }) %><% if(!blogs.length){ %><tr><td class="empty_state" colspan="7" data-i18n="emptyBlogs">No blog posts have been added yet.</td></tr><% } %>
+        </tbody></table></div>
+        <footer class="table_footer" <%= blogs.length?'':'hidden' %>><p id="blogs-result-count"></p><nav class="table_pagination" id="blogs-pagination"></nav></footer>
+      </section>
+    </main>
+  </section>
+</div>
+<script src="/js/admin-shell.js"></script>
+<script src="/js/blog-admin.js"></script>
+</body>
+<%- include('includes/footer') %>
