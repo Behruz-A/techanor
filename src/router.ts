@@ -4,6 +4,7 @@ import memberController from "./controllers/member.controller";
 import productController from "./controllers/product.controlle";
 import orderController from "./controllers/order.controller";
 import blogController from "./controllers/blog.controller";
+import blogCommentController from "./controllers/blogComment.controller";
 import { makeAvatarUploader } from "./libs/utils/uploader";
 
 router.post("/login", memberController.login);
@@ -23,6 +24,10 @@ router.get("/product/best-sellers", productController.getBestSellers);
 router.get("/product/:id", productController.getProduct);
 
 router.get("/blog/all", blogController.getPublishedBlogs);
+
+router.get("/blog/:id/comments", blogCommentController.getComments);
+
+router.post("/blog/:id/comments", blogCommentController.createComment);
 
 router.get("/blog/:id", blogController.getPublishedBlog);
 

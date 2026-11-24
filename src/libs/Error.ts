@@ -22,6 +22,7 @@ export enum Message {
   PRODUCT_IMAGE_REQUIRED = "Upload at least one product image!",
   INVALID_PRODUCT_IMAGE = "Product images must be JPG, PNG, or WebP files up to 5 MB!",
   INVALID_BLOG_CATEGORY = "Blog category is invalid!",
+  INVALID_BLOG_COMMENT = "Enter a valid name, email, comment, and optional website. Replies must belong to this article.",
   UPDATE_FAILED = "Update is failed!",
   INVALID_ORDER = "Order information is invalid!",
   INSUFFICIENT_STOCK = "One or more products do not have enough stock!",
